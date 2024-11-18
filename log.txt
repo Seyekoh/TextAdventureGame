@@ -1,0 +1,165 @@
+commit ff0386c6b68348644a4dc1ccad30697d32c2daf7
+Author: James Bridges <jb00656@my.westga.edu>
+Date:   Thu Nov 14 23:33:52 2024 -0500
+
+    Updated README
+
+commit fc8eeb59e7e6e58177fd6405ccbd2b9e568a3175
+Author: James Bridges <jb00656@my.westga.edu>
+Date:   Thu Nov 14 23:14:50 2024 -0500
+
+    Added GameManager class and refactored project.
+    
+    Added GameManager class:
+        fields:
+            world:              the game world
+            worldManager:       the manager for the game world
+            player:             the player of the game
+            currentLocation:    the current Location that the player is ActionTest
+            isGameOverLose:     flag for if the player loses the game
+            isGameOverWin:      flag for if the player wins the game
+            gameOverMessage:    the message to be displayed at gameOver
+    
+    Refactored the following:
+        WorldManager:           no longer had the startLcoation field
+    
+        Location:               removed the hazardDamage field
+    
+        GlobalEnums:            Added PIT to HazardType
+    
+        World:                  Added HazardManager reference
+                                Moved startLocation reference here
+    
+    Added/updated test classes
+
+commit 98dd77a893a23ac51a62ccc34b5ab8bc92258382
+Author: James Bridges <jb00656@my.westga.edu>
+Date:   Thu Nov 14 17:54:13 2024 -0500
+
+    Implemented classes to help with data management.
+    
+    Classes added:
+        HazardData:             Holds the information associated with a
+                                specific HazardType
+            fields:
+                damage:         the amount of damage the Hazard can do
+                description:    a description of the Hazard
+    
+        HazardManager:          Manages the Hazards by linking HazardType
+                                with the associated HazardData
+            fields:
+                hazardDatamap:  Map that holds the HazardType<Key> and
+                                HazardData<Value>
+    
+        WorldManager:           Manages the World. Creates the Locations,
+                                Connects the Locations, and populates
+                                Location Actions
+            fields:
+                world:          reference to the World class
+                startLocation:  the location that will be used as a
+                                standard starting location
+    
+    Added tests for each.
+
+commit edca34780513d46583d6453f33caa6398ca60b22
+Author: James Bridges <jb00656@my.westga.edu>
+Date:   Tue Nov 12 21:15:14 2024 -0500
+
+    WARNING FORGOT TO COMMIT: UPDATE TO PROJECT BELOW
+    
+    Location class updates:
+        Fields added:
+            name:           the name of the Location
+            hazardType:     the type of Hazard at the Location
+            connections:    a collection of Locations connected to this.Location
+    
+    GlobalEnums updates:
+        enums added:
+        Direction:
+            NORTH, SOUTH, EAST, westg
+        hazardType:
+            NONE
+    
+    World Class created:
+        Fields:
+            locations:      a collection of locations in the World
+            goalLocation:   the location of the goalLocation in the text_adventure_game
+    
+    Test Classes added:
+        ActionTest
+        LocationTest
+        PlayerTest
+        WorldTest
+
+commit 843494c35d01a0f1cb0a72ee09a809ec8253f301
+Author: James Bridges <jb00656@my.westga.edu>
+Date:   Tue Nov 12 16:38:06 2024 -0500
+
+    Added GlobalEnums class
+    
+    Created a GlobalEnums class to hold relevant enums for the game.
+    Currently contains enum 'ActionType' with types of actions available
+    in the game (currently only holds 'MOVE')
+
+commit 3719c1cbcf939a36eef942b199f3eccff1766ff0
+Author: James Bridges <jb00656@my.westga.edu>
+Date:   Tue Nov 12 16:24:30 2024 -0500
+
+    Added Action class
+    
+    Created Action class that has the following fields:
+        name:           the name of the Action (i.e. "Move North")
+        description:    the description of the Action
+        type:           the type of Action as an Enum (i.e. "Move")
+    
+    Added appropriate getters/setters
+
+commit 1f9ceb9fa08e45f86f3a6b7e7bd6fce0da9785b8
+Author: James Bridges <jb00656@my.westga.edu>
+Date:   Tue Nov 12 16:09:17 2024 -0500
+
+    Added a Location class
+    
+    Created Location class that has the following fields:
+        description:    the description of the Location
+        hazardDamage:   the damage value of the location's hazard
+                        0 if no hazard present in Location
+        isGoal:         true if the Location is the player's goal
+                        false otherwise
+        actions:        list of actions assosciated with the Location
+    
+    Each field has appropriate getters/setters
+
+commit 0df549e2b8ceedfd3172010852b9d4ea69e28226
+Author: James Bridges <jb00656@my.westga.edu>
+Date:   Tue Nov 12 15:51:14 2024 -0500
+
+    Added Player class with basic functionality.
+    
+    Added Player class that has a 'health' field with getters/setters.
+
+commit 14e23b94136ae3565e3536211cc00173ca7c69a1
+Author: James Bridges <jb00656@my.westga.edu>
+Date:   Tue Nov 12 15:37:39 2024 -0500
+
+    Created UI based on the wireframe.
+    
+    Created and added the MainWindow.fxml code to display the UI that is
+    shown in the wireframe.
+    Updated the MainWindow.java code to reflect the added fxml elements to
+    the view.
+
+commit cfac56284477df29dea6aa71f3385382b0514f4e
+Author: James Bridges <jb00656@my.westga.edu>
+Date:   Tue Nov 12 14:46:57 2024 -0500
+
+    Initial commit
+    
+    Added code folder to root that contains the starter project.
+    Added Documentation folder to root that contains the following:
+        Product Backlog
+        Sprint Backlog Burndown
+        UI Wireframe
+        Use Case Scenarios
+    Added .gitignore Java file to root.
+    Added README to root.
