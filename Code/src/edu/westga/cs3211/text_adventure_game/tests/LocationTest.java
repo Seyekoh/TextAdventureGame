@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 import org.junit.jupiter.api.Test;
 
+import edu.westga.cs3211.text_adventure_game.Action;
 import edu.westga.cs3211.text_adventure_game.GlobalEnums.Direction;
 import edu.westga.cs3211.text_adventure_game.GlobalEnums.HazardType;
 import edu.westga.cs3211.text_adventure_game.Location;
@@ -131,17 +132,6 @@ public class LocationTest {
 	}
 	
 	/**
-	 * Tests the getHazardDamage method for a location with no hazard
-	 */
-	@Test
-	public void testGetHazardDamageForNoHazard() {
-		Location testLocation = new Location("Test Location", "This is a test location", HazardType.NONE, false,
-				new ArrayList<>());
-
-		assertEquals(0, testLocation.getHazardDamage());
-	}
-	
-	/**
 	 * Tests the constructor of the Location class with a null actions list
 	 */
 	@Test
@@ -151,6 +141,19 @@ public class LocationTest {
 		});
 
 		assertTrue(exception.getMessage().equalsIgnoreCase("Actions cannot be null"));
+	}
+	
+	/**
+	 * Tests the setActions method for a location with no actions
+	 */
+	@Test
+	public void testSetActionsForLocationWithNoActions() {
+		Location testLocation = new Location("Test Location", "This is a test location", HazardType.NONE, false,
+				new ArrayList<>());
+		ArrayList<Action> newActions = new ArrayList<>();
+		testLocation.setActions(newActions);
+		
+		assertEquals(newActions, testLocation.getActions());
 	}
 	
 	/**
@@ -240,7 +243,9 @@ public class LocationTest {
 				new ArrayList<>());
 		testLocation.addConnection(Direction.NORTH, testLocation2);
 
-		assertEquals(1, testLocation.getConnections().size());
+		assertAll(() -> assertEquals(1, testLocation.getConnections().size()),
+				() -> assertEquals(testLocation2, testLocation.getConnection(Direction.NORTH)),
+				() -> assertEquals(testLocation, testLocation2.getConnection(Direction.SOUTH)));
 	}
 	
 	/**
@@ -264,6 +269,17 @@ public class LocationTest {
 		testLocation.addConnection(Direction.WEST, testLocation5);
 
 		assertEquals(4, testLocation.getConnections().size());
+	}
+	
+	/**
+	 * Tests the toString method for a Location
+	 */
+	@Test
+	public void testToString() {
+		Location testLocation = new Location("Test Location", "This is a test location", HazardType.NONE, false,
+				new ArrayList<>());
+
+		assertEquals("Test Location: This is a test location", testLocation.toString());
 	}
 	
 }

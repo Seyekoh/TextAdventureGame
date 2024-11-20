@@ -45,10 +45,18 @@ public class WorldTest {
 	@BeforeEach
 	public void setUp() {
         this.world = new World();
-        this.location1 = new Location("Cave", "A dark cave", HazardType.NONE, false, new ArrayList<>());
+        this.location1 = new Location("Cave", "A dark cave", HazardType.PIT, false, new ArrayList<>());
         this.location2 = new Location("Forest", "A dense forest", HazardType.NONE, false, new ArrayList<>());
         this.location3 = new Location("Mountain", "A tall mountain", HazardType.NONE, false, new ArrayList<>());
         this.location4 = new Location("Church", "A small church", HazardType.NONE, true, new ArrayList<>());
+	}
+	
+	/**
+	 * Tests the getStartLocation method
+	 */
+	@Test
+	public void testGetStartLocation() {
+		assertEquals("Start", this.world.getStartLocation().getName());
 	}
 	
 	/**
@@ -111,9 +119,19 @@ public class WorldTest {
 	 */
 	@Test
 	public void testCheckIfLocationIsHazardNotHazard() {
+		this.world.addLocation(this.location2);
+
+		assertFalse(this.world.checkIfLocationIsHazard(this.location2));
+	}
+	
+	/**
+	 * Tests the checkIfLocationIsHazard method with a location that is a hazard
+	 */
+	@Test
+	public void testCheckIfLocationIsHazardIsHazard() {
 		this.world.addLocation(this.location1);
 
-		assertFalse(this.world.checkIfLocationIsHazard(this.location1));
+		assertTrue(this.world.checkIfLocationIsHazard(this.location1));
 	}
 	
 	/**
@@ -181,6 +199,19 @@ public class WorldTest {
 			this.world.connectLocations(this.location2, Direction.EAST, this.location3);
 			this.world.connectLocations(this.location3, Direction.SOUTH, this.location4);
 			this.world.connectLocations(this.location4, Direction.WEST, this.location1);
+		});
+	}
+	
+	/**
+	 * Tests the getHazardDataForLocation method
+	 */
+	@Test
+	public void testGetHazardDataForLocation() {
+		this.world.addLocation(this.location1);
+
+		assertAll(() -> {
+			assertEquals(HazardType.PIT, this.location1.getHazardType());
+			assertEquals("80 A deep, dark pit with no visible bottom.", this.world.getHazardDataForLocation(this.location1).toString());
 		});
 	}
 

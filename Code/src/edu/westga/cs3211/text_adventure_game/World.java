@@ -1,5 +1,6 @@
 package edu.westga.cs3211.text_adventure_game;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,14 +14,26 @@ import edu.westga.cs3211.text_adventure_game.GlobalEnums.HazardType;
  * @version Fall 2024
  */
 public class World {
+	private HazardManager hazardManager;
 	private Map<String, Location> locations;
+	private Location startLocation = new Location("Start", "The start of your adventure.", HazardType.NONE, false, new ArrayList<>());
 	private Location goalLocation;
 	
 	/**
 	 * Creates a new World object
 	 */
 	public World() {
+		this.hazardManager = new HazardManager();
 		this.locations = new HashMap<>();
+	}
+	
+	/**
+	 * Gets the start location
+	 * 
+	 * @return the start location
+	 */
+	public Location getStartLocation() {
+		return this.startLocation;
 	}
 	
 	/**
@@ -33,6 +46,17 @@ public class World {
 		if (location.checkIfLocationIsGoal()) {
 			this.setGoalLocation(location);
 		}
+	}
+	
+	/**
+	 * Gets the hazard data for a location
+	 * 
+	 * @param location	the location to get the hazard data for
+	 * 
+	 * @return	    the hazard data for the location
+	 */
+	public HazardData getHazardDataForLocation(Location location) {
+		return this.hazardManager.getHazardData(location.getHazardType());
 	}
 	
 	/**
@@ -74,6 +98,7 @@ public class World {
 	 * Checks if a location is the goal
 	 * 
 	 * @param location the location to check
+	 * 
 	 * @return true if the location is the goal
 	 *         false otherwise
 	 */
@@ -92,27 +117,11 @@ public class World {
 		if (fromLocation.getConnection(direction) != null) {
 			throw new IllegalArgumentException(fromLocation.getName() + " already has a connection to the " + direction);
 		}
-		if (toLocation.getConnection(this.getOppositeDirection(direction)) != null) {
+		if (toLocation.getConnection(toLocation.getOppositeDirection(direction)) != null) {
 			throw new IllegalArgumentException(toLocation.getName() + " already has a connection to the " + direction);
 		}
 		
 		fromLocation.addConnection(direction, toLocation);
-		toLocation.addConnection(this.getOppositeDirection(direction), fromLocation);
-	}
-	
-	private Direction getOppositeDirection(Direction direction) {
-		switch (direction) {
-		case NORTH:
-			return Direction.SOUTH;
-		case SOUTH:
-			return Direction.NORTH;
-		case EAST:
-			return Direction.WEST;
-		case WEST:
-			return Direction.EAST;
-		default:
-			throw new IllegalArgumentException("Invalid direction");
-		}
 	}
 	
 	/**

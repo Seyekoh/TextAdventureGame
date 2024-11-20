@@ -26,11 +26,11 @@ public class Player {
 	}
 	
 	/**
-	 * Sets the player's health
+	 * Decreases the player's health
 	 * 
-	 * @param health the player's health
+	 * @param damage the amount of damage to take
 	 */
-	public void setHealth(int health) {
-		this.health = health;
-	}
+	public void takeDamage(int damage) {
+		this.health -= damage;
+    }
 }

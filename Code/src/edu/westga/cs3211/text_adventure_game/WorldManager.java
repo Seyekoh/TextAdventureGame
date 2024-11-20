@@ -15,8 +15,6 @@ import edu.westga.cs3211.text_adventure_game.GlobalEnums.HazardType;
 public class WorldManager {
 	
 	private World world;
-	
-	private Location startLocation = new Location("Start", "The start of your adventure.", HazardType.NONE, false, new ArrayList<>());
 
 	/**
 	 * The constructor for the WorldManager
@@ -44,7 +42,7 @@ public class WorldManager {
 		
 		ArrayList<Location> newLocations = new ArrayList<>();
 		
-		newLocations.add(this.startLocation);
+		newLocations.add(this.world.getStartLocation());
 		newLocations.add(forest);
 		newLocations.add(cave);
 		newLocations.add(oldChurch);
@@ -53,7 +51,7 @@ public class WorldManager {
 	}
 	
 	private void createWorldMap() {
-		this.world.connectLocations(this.startLocation, Direction.NORTH, this.world.getLocationByName("Forest"));
+		this.world.connectLocations(this.world.getStartLocation(), Direction.NORTH, this.world.getLocationByName("Forest"));
 		this.world.connectLocations(this.world.getLocationByName("Forest"), Direction.EAST, this.world.getLocationByName("Cave"));
 		this.world.connectLocations(this.world.getLocationByName("Cave"), Direction.NORTH, this.world.getLocationByName("Old Church"));
 	}
@@ -63,7 +61,7 @@ public class WorldManager {
 			List<Action> actions = new ArrayList<>();
 		
 			for (Direction direction : location.getConnections().keySet()) {
-				String actionDescription = "Move " + direction.toString();
+				String actionDescription = direction.toString();
 				actions.add(new Action(GlobalEnums.ActionType.MOVE.toString(), actionDescription, GlobalEnums.ActionType.MOVE));
 			}
 			

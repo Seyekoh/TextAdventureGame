@@ -14,4 +14,22 @@ public class GlobalEnums {
 	public enum ActionType {
 		MOVE
 	}
+	
+	/**
+	 * The direction the player can move
+	 */
+	public enum Direction {
+		NORTH,
+		SOUTH,
+		EAST,
+		WEST
+	}
+	
+	/**
+	 * The type of hazard at a location
+	 */
+	public enum HazardType {
+		NONE,
+		PIT
+	}
 }

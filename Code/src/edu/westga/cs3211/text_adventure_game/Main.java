@@ -2,6 +2,8 @@ package edu.westga.cs3211.text_adventure_game;
 
 import java.io.IOException;
 
+import edu.westga.cs3211.text_adventure_game.view.MainWindow;
+import edu.westga.cs3211.text_adventure_game.viewModel.ViewModel;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -10,7 +12,7 @@ import javafx.stage.Stage;
 
 /** Entry point for the program​
  *​
- * @author CS 3211​
+ * @author James Bridges​
  * @version Fall 2024​
  */
 public class Main extends Application {
@@ -27,11 +29,17 @@ public class Main extends Application {
 	  */
 	@Override
 	public void start(Stage primaryStage) throws IOException {
-		Parent parent = FXMLLoader.load(getClass().getResource(Main.GUI_RESOURCE));
-		Scene scene = new Scene(parent);
-		primaryStage.setTitle(Main.WINDOW_TITLE);
-		primaryStage.setScene(scene);
-		primaryStage.show();
+		ViewModel viewModel = new ViewModel();
+        
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(Main.GUI_RESOURCE));
+        Parent parent = loader.load();
+        MainWindow mainWindow = loader.getController();
+        mainWindow.setupView(viewModel);
+
+        Scene scene = new Scene(parent);
+        primaryStage.setTitle(Main.WINDOW_TITLE);
+        primaryStage.setScene(scene);
+        primaryStage.show();
 	}
 	
 	/** Primary Java entry point.​

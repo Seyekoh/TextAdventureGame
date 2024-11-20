@@ -1,6 +1,11 @@
 package edu.westga.cs3211.text_adventure_game;
 
-import java.util.ArrayList;
+import java.util.EnumMap;
+import java.util.List;
+import java.util.Map;
+
+import edu.westga.cs3211.text_adventure_game.GlobalEnums.Direction;
+import edu.westga.cs3211.text_adventure_game.GlobalEnums.HazardType;
 
 /**
  * The location in the game
@@ -9,24 +14,175 @@ import java.util.ArrayList;
  * @version Fall 2024
  */
 public class Location {
+	private String name;
 	private String description;
-	private int hazardDamage;
-	private Boolean isGoal;
-	private ArrayList<Action> actions;
+	
+	private HazardType hazardType;
+	
+	private boolean isGoal;
+	
+	private List<Action> actions;
+	
+	private EnumMap<Direction, Location> connections;
 	
 	/**
 	 * Creates a new Location object
 	 * 
+	 * @param name 			the location's name
 	 * @param description  	the location's description
-	 * @param hazardDamage 	the damage the location causes
-	 * 		        		0 if no hazard present
+	 * @param hazardType 	the type of hazard
 	 * @param isGoal 		if the location is the goal
 	 * @param actions 		the actions available at the location
 	 */
-	public Location(String description, int hazardDamage, Boolean isGoal, ArrayList<Action> actions) {
+	public Location(String name, String description, HazardType hazardType, boolean isGoal, List<Action> actions) {
+		if (name == null) {
+			throw new IllegalArgumentException("Name cannot be null");
+		}
+		if (name.isBlank()) {
+			throw new IllegalArgumentException("Name cannot be blank");
+		}
+		if (description == null) {
+			throw new IllegalArgumentException("Description cannot be null");
+		}
+		if (description.isBlank()) {
+			throw new IllegalArgumentException("Description cannot be blank");
+		}
+		if (hazardType == null) {
+			throw new IllegalArgumentException("Hazard Type cannot be null");
+		}
+		if (actions == null) {
+			throw new IllegalArgumentException("Actions cannot be null");
+		}
+		
+		this.name = name;
 		this.description = description;
-		this.hazardDamage = hazardDamage;
+		this.hazardType = hazardType;
 		this.isGoal = isGoal;
 		this.actions = actions;
+		
+		this.connections = new EnumMap<>(Direction.class);
+	}
+	
+	/**
+	 * Gets the location's name
+	 * 
+	 * @return the location's name
+	 */
+	public String getName() {
+		return this.name;
+	}
+	
+	/**
+	 * Gets the location's description
+	 * 
+	 * @return the location's description
+	 */
+	public String getDescription() {
+		return this.description;
+    }
+	
+	/**
+	 * Gets the location's hazard type
+	 * 
+	 * @return the location's hazard type
+	 */
+	public HazardType getHazardType() {
+		return this.hazardType;
+	}
+	
+	/**
+	 * Gets if the location is the goal
+	 * 
+	 * @return if the location is the goal
+	 */
+	public boolean checkIfLocationIsGoal() {
+		return this.isGoal;
+	}
+	
+	/**
+	 * Sets the location is the goal
+	 * 
+	 * @param isGoal if the location is the goal
+	 */
+	public void setIsGoal(boolean isGoal) {
+		this.isGoal = isGoal;
+	}
+	
+	/**
+	 * Gets the actions available at the location
+	 * 
+	 * @return the actions available at the location
+	 */
+	public List<Action> getActions() {
+		return this.actions;
+	}
+	
+	/**
+	 * Sets the actions available at the location
+	 * 
+	 * @param actions	the actions available at the location
+	 */
+	public void setActions(List<Action> actions) {
+		this.actions = actions;
+	}
+	
+	/**
+	 * Sets the connections from the location
+	 * 
+	 * @param direction the direction of the connection
+	 * @param otherLocation  the location to connect to
+	 */
+	public void addConnection(Direction direction, Location otherLocation) {
+		if (this.connections.containsKey(direction)) {
+			throw new IllegalArgumentException("Connection already exists in that direction");
+		}
+		this.connections.put(direction, otherLocation);
+		otherLocation.connections.put(this.getOppositeDirection(direction), this);
+	}
+	
+	/**
+	 * Gets the opposite direction of the given direction
+	 * 
+	 * @param direction	the direction to get the opposite direction
+	 * 
+	 * @return the opposite direction
+	 */
+	public Direction getOppositeDirection(Direction direction) {
+		switch (direction) {
+		case NORTH:
+			return Direction.SOUTH;
+		case SOUTH:
+			return Direction.NORTH;
+		case EAST:
+			return Direction.WEST;
+		case WEST:
+			return Direction.EAST;
+		default:
+			throw new IllegalArgumentException("Invalid direction");
+		}
+	}
+	
+	/**
+	 * Gets the location connected in the given direction
+	 * 
+	 * @param direction the direction to get the connected location
+	 * @return the connected location
+	 */
+	public Location getConnection(Direction direction) {
+		return this.connections.get(direction);
+	}
+	
+	/**
+	 * Gets all connections from the location
+	 * 
+	 * @return the connections from the location
+	 */
+	public Map<Direction, Location> getConnections() {
+		return this.connections;
+	}
+	
+	@Override
+	public String toString() {
+		return this.name + ": " + this.description;
 	}
 }

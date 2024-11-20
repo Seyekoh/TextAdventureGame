@@ -127,5 +127,14 @@ public class ActionTest {
 		Action action = new Action("Test", "Test Description", ActionType.MOVE);
 		assertTrue(action.getType().equals(ActionType.MOVE));
 	}
+	
+	/**
+	 * Tests the toString method of the Action class
+	 */
+	@Test
+	public void testToString() {
+		Action action = new Action("Test", "Test Description", ActionType.MOVE);
+		assertTrue(action.toString().equalsIgnoreCase("Test: Test Description"));
+	}
 
 }
