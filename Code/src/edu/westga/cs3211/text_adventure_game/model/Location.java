@@ -1,11 +1,11 @@
-package edu.westga.cs3211.text_adventure_game;
+package edu.westga.cs3211.text_adventure_game.model;
 
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 
-import edu.westga.cs3211.text_adventure_game.GlobalEnums.Direction;
-import edu.westga.cs3211.text_adventure_game.GlobalEnums.HazardType;
+import edu.westga.cs3211.text_adventure_game.model.GlobalEnums.Direction;
+import edu.westga.cs3211.text_adventure_game.model.GlobalEnums.HazardType;
 
 /**
  * The location in the game

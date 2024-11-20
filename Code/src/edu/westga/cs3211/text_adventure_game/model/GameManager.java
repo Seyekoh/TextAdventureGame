@@ -1,10 +1,10 @@
-package edu.westga.cs3211.text_adventure_game;
+package edu.westga.cs3211.text_adventure_game.model;
 
 import java.util.ArrayList;
 
-import edu.westga.cs3211.text_adventure_game.GlobalEnums.ActionType;
-import edu.westga.cs3211.text_adventure_game.GlobalEnums.Direction;
-import edu.westga.cs3211.text_adventure_game.GlobalEnums.HazardType;
+import edu.westga.cs3211.text_adventure_game.model.GlobalEnums.ActionType;
+import edu.westga.cs3211.text_adventure_game.model.GlobalEnums.Direction;
+import edu.westga.cs3211.text_adventure_game.model.GlobalEnums.HazardType;
 
 /**
  * The game manager

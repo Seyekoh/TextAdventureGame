@@ -1,4 +1,4 @@
-package edu.westga.cs3211.text_adventure_game;
+package edu.westga.cs3211.text_adventure_game.model;
 
 /**
  * Class to hold the data for a hazard

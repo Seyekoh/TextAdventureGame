@@ -1,6 +1,6 @@
-package edu.westga.cs3211.text_adventure_game;
+package edu.westga.cs3211.text_adventure_game.model;
 
-import edu.westga.cs3211.text_adventure_game.GlobalEnums.ActionType;
+import edu.westga.cs3211.text_adventure_game.model.GlobalEnums.ActionType;
 
 /**
  * An action in the game

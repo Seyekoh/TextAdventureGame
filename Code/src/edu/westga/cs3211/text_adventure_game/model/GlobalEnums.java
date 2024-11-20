@@ -1,4 +1,4 @@
-package edu.westga.cs3211.text_adventure_game;
+package edu.westga.cs3211.text_adventure_game.model;
 
 /**
  * This class serves as a container for various enums used throughout the program.
