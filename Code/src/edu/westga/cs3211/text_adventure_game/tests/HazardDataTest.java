@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
 
-import edu.westga.cs3211.text_adventure_game.HazardData;
+import edu.westga.cs3211.text_adventure_game.model.HazardData;
 
 /**
  * The test class for the HazardData class

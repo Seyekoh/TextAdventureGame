@@ -11,10 +11,10 @@ import java.util.ArrayList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import edu.westga.cs3211.text_adventure_game.GlobalEnums.Direction;
-import edu.westga.cs3211.text_adventure_game.GlobalEnums.HazardType;
-import edu.westga.cs3211.text_adventure_game.Location;
-import edu.westga.cs3211.text_adventure_game.World;
+import edu.westga.cs3211.text_adventure_game.model.Location;
+import edu.westga.cs3211.text_adventure_game.model.World;
+import edu.westga.cs3211.text_adventure_game.model.GlobalEnums.Direction;
+import edu.westga.cs3211.text_adventure_game.model.GlobalEnums.HazardType;
 
 /**
  * Tests the World class

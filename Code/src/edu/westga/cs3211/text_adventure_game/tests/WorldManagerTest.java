@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import org.junit.jupiter.api.Test;
 
-import edu.westga.cs3211.text_adventure_game.WorldManager;
+import edu.westga.cs3211.text_adventure_game.model.WorldManager;
 
 /**
  * Tests the WorldManager class

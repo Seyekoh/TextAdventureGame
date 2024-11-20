@@ -1,6 +1,6 @@
 package edu.westga.cs3211.text_adventure_game.viewModel;
 
-import edu.westga.cs3211.text_adventure_game.GameManager;
+import edu.westga.cs3211.text_adventure_game.model.GameManager;
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleStringProperty;

@@ -9,13 +9,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import edu.westga.cs3211.text_adventure_game.Action;
-import edu.westga.cs3211.text_adventure_game.GameManager;
-import edu.westga.cs3211.text_adventure_game.GlobalEnums.ActionType;
-import edu.westga.cs3211.text_adventure_game.GlobalEnums.Direction;
-import edu.westga.cs3211.text_adventure_game.GlobalEnums.HazardType;
-import edu.westga.cs3211.text_adventure_game.Location;
-import edu.westga.cs3211.text_adventure_game.Player;
+import edu.westga.cs3211.text_adventure_game.model.Action;
+import edu.westga.cs3211.text_adventure_game.model.GameManager;
+import edu.westga.cs3211.text_adventure_game.model.Location;
+import edu.westga.cs3211.text_adventure_game.model.Player;
+import edu.westga.cs3211.text_adventure_game.model.GlobalEnums.ActionType;
+import edu.westga.cs3211.text_adventure_game.model.GlobalEnums.Direction;
+import edu.westga.cs3211.text_adventure_game.model.GlobalEnums.HazardType;
 
 /**
  * The test class for the GameManager class

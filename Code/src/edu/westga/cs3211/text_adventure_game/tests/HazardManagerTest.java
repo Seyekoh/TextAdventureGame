@@ -5,8 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
-import edu.westga.cs3211.text_adventure_game.GlobalEnums.HazardType;
-import edu.westga.cs3211.text_adventure_game.HazardManager;
+import edu.westga.cs3211.text_adventure_game.model.HazardManager;
+import edu.westga.cs3211.text_adventure_game.model.GlobalEnums.HazardType;
 
 /**
  * Tests the HazardManager class

@@ -1,12 +1,12 @@
 package edu.westga.cs3211.text_adventure_game.tests;
 
-import edu.westga.cs3211.text_adventure_game.Player;
-
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import edu.westga.cs3211.text_adventure_game.model.Player;
 
 /**
  * Tests the Player class

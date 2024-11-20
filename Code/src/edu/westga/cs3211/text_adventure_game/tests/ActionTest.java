@@ -6,8 +6,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
-import edu.westga.cs3211.text_adventure_game.Action;
-import edu.westga.cs3211.text_adventure_game.GlobalEnums.ActionType;
+import edu.westga.cs3211.text_adventure_game.model.Action;
+import edu.westga.cs3211.text_adventure_game.model.GlobalEnums.ActionType;
 
 /**
  * The test class for the Action class

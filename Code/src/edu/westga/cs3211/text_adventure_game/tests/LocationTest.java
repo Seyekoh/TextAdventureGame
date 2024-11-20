@@ -9,10 +9,10 @@ import java.util.ArrayList;
 
 import org.junit.jupiter.api.Test;
 
-import edu.westga.cs3211.text_adventure_game.Action;
-import edu.westga.cs3211.text_adventure_game.GlobalEnums.Direction;
-import edu.westga.cs3211.text_adventure_game.GlobalEnums.HazardType;
-import edu.westga.cs3211.text_adventure_game.Location;
+import edu.westga.cs3211.text_adventure_game.model.Action;
+import edu.westga.cs3211.text_adventure_game.model.Location;
+import edu.westga.cs3211.text_adventure_game.model.GlobalEnums.Direction;
+import edu.westga.cs3211.text_adventure_game.model.GlobalEnums.HazardType;
 
 /**
  * The test class for the Location class
