@@ -1,0 +1,118 @@
+Use Case: Move to Different Locations
+Primary Actor: Player  
+Description: The player selects a new location to move to within the game.  
+Preconditions:
+- The current location allows movement to the target location.  
+- The player has the required access or items (if needed) for the new location.  
+
+Steps:
+1. The player selects a direction to move to a new location 
+2. The system verifies if the location is accessible.  
+3. If accessible, the player's position is updated to the new location.  
+4. A location description is displayed.  
+
+Extensions: 
+- If the location is locked, the system prompts for required actions or items.  
+- Hazards or NPCs at the new location trigger corresponding events.
+
+---
+
+Use Case: Check Stats
+Primary Actor: Player  
+Description: The player checks their current stats, such as health or inventory 
+Preconditions: None.  
+
+Steps:  
+1. The player accesses the stats menu.  
+2. The system retrieves and displays current stats.  
+
+---
+
+Use Case: Take Actions
+Primary Actor: Player  
+Description: The player performs an action in the current location.  
+Preconditions: The action is available in the current context (i.e. location)
+
+Steps:  
+1. The player selects an action from the available options.  
+2. The system processes the action and provides feedback or results.  
+
+Extensions:  
+- If the action requires items, the system verifies their presence in the inventory.
+
+---
+
+Use Case: Pick Up Items
+Primary Actor: Player  
+Description: The player collects an item from the current location.  
+Preconditions: 
+- The item is present in the location.  
+- The player has space in their inventory.  
+
+Steps:  
+1. The player selects the item to pick up.  
+2. The system verifies inventory space.  
+3. The item is added to the player’s inventory, and the location is updated to reflect the change.  
+
+---
+
+Use Case: Get a Location Description
+Primary Actor: System  
+Description: The system provides details about the player’s current location.  
+Preconditions: The player is in a valid location.  
+
+Steps:  
+1. Upon entering or requesting information, the system retrieves the description.  
+2. The description is displayed to the player.
+
+---
+
+Use Case: Use Item
+Primary Actor: Player  
+Description: The player uses an item from their inventory.  
+Preconditions: The item is in the inventory and usable in the current context.  
+
+Steps: 
+1. The player selects the item from the inventory.  
+2. The system verifies the item's usability.  
+3. The item’s effect is applied, and the inventory is updated.  
+
+---
+
+Use Case: Interact with NPCs
+Primary Actor: Player  
+Description: The player interacts with a non-player character (NPC).  
+Preconditions:  
+- An NPC is present in the location.  
+
+Steps:  
+1. The player initiates interaction with the NPC.  
+2. The system displays the NPC's dialogue or actions.  
+3. Based on the player's responses, the interaction progresses.  
+
+Extensions:  
+- The NPC offers quests with the player.
+- The NPC can potentially harm the player
+- The NPC can unlock a pathway
+
+---
+
+Use Case: Win the Game
+Primary Actor: Player  
+Description: The player completes all required objectives to win the game.  
+Preconditions: All objectives and prerequisites for winning are met.  
+
+Steps: 
+1. The system verifies the completion of all objectives.  
+2. A winning message is displayed, and the game ends.
+
+---
+
+Use Case: Lose the Game
+Primary Actor: Player  
+Description: The player fails the game due to health depletion. 
+Preconditions: Failure condition is met.  
+
+Steps:  
+1. The system identifies the failure condition.  
+2. A losing message is displayed, and the game ends.
