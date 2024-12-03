@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.westga.cs3211.text_adventure_game.model.GlobalEnums.Direction;
-import edu.westga.cs3211.text_adventure_game.model.GlobalEnums.HazardType;
 
 /**
  * The world manager
@@ -13,14 +12,17 @@ import edu.westga.cs3211.text_adventure_game.model.GlobalEnums.HazardType;
  * @version Fall 2024
  */
 public class WorldManager {
+	private static final String LOCATION_PATH = "src/locations.csv";
 	
 	private World world;
+	private LocationReader locationReader;
 
 	/**
 	 * The constructor for the WorldManager
 	 */
 	public WorldManager() {
 		this.world = new World();
+		this.locationReader = new LocationReader(LOCATION_PATH);
 		
 		this.initializeWorld();
 	}
@@ -36,16 +38,8 @@ public class WorldManager {
 	}
 	
 	private ArrayList<Location> createLocations() {
-		Location forest = new Location("Forest", "A dark and mysterious forest.", HazardType.NONE, false, new ArrayList<>());
-		Location cave = new Location("Cave", "A dark and damp cave.", HazardType.PIT, false, new ArrayList<>());
-		Location oldChurch = new Location("Old Church", "An old church.", HazardType.NONE, true, new ArrayList<>());
-		
-		ArrayList<Location> newLocations = new ArrayList<>();
-		
+		ArrayList<Location> newLocations = this.locationReader.importLocations();
 		newLocations.add(this.world.getStartLocation());
-		newLocations.add(forest);
-		newLocations.add(cave);
-		newLocations.add(oldChurch);
 		
 		return newLocations;
 	}
