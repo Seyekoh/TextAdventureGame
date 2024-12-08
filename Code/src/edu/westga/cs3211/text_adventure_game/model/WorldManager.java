@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.westga.cs3211.text_adventure_game.model.GlobalEnums.Direction;
+import edu.westga.cs3211.text_adventure_game.model.GlobalEnums.HazardType;
+import edu.westga.cs3211.text_adventure_game.model.GlobalEnums.LocationName;
 
 /**
  * The world manager
@@ -28,8 +30,8 @@ public class WorldManager {
 	}
 
 	private void initializeWorld() {
-		ArrayList<Location> createdLocations = this.createLocations();
-		for (Location location : createdLocations) {
+		this.createLocations();
+		for (Location location : this.world.getAllLocations().values()) {
             this.world.addLocation(location);
 		}
 		
@@ -37,17 +39,25 @@ public class WorldManager {
 		this.populateActionsForLocations();
 	}
 	
-	private ArrayList<Location> createLocations() {
+	private void createLocations() {
 		ArrayList<Location> newLocations = this.locationReader.importLocations();
-		newLocations.add(this.world.getStartLocation());
-		
-		return newLocations;
+		for (Location location : newLocations) {
+			System.out.println("Adding location: " + location.getName());
+			if (location.getName() == GlobalEnums.LocationName.ENTRANCEHALL) {
+                this.world.setStartLocation(location);
+			}
+			this.world.addLocation(location);
+		}
+		System.out.println("All locations added to the world: " + this.world.getAllLocations().keySet().toString());
 	}
 	
 	private void createWorldMap() {
-		this.world.connectLocations(this.world.getStartLocation(), Direction.NORTH, this.world.getLocationByName("Forest"));
-		this.world.connectLocations(this.world.getLocationByName("Forest"), Direction.EAST, this.world.getLocationByName("Cave"));
-		this.world.connectLocations(this.world.getLocationByName("Cave"), Direction.NORTH, this.world.getLocationByName("Old Church"));
+		this.world.connectLocations(this.world.getStartLocation(), Direction.NORTH, this.world.getLocationByName(GlobalEnums.LocationName.LIBRARY));
+		this.world.connectLocations(this.world.getLocationByName(GlobalEnums.LocationName.LIBRARY), Direction.EAST, this.world.getLocationByName(GlobalEnums.LocationName.KITCHEN));
+		this.world.connectLocations(this.world.getLocationByName(GlobalEnums.LocationName.LIBRARY), Direction.UP, this.world.getLocationByName(GlobalEnums.LocationName.ATTIC));
+		this.world.connectLocations(this.world.getLocationByName(GlobalEnums.LocationName.KITCHEN), Direction.NORTH, this.world.getLocationByName(GlobalEnums.LocationName.BALLROOM));
+		this.world.connectLocations(this.world.getLocationByName(GlobalEnums.LocationName.KITCHEN), Direction.DOWN, this.world.getLocationByName(GlobalEnums.LocationName.BASEMENT));
+		this.world.connectLocations(this.world.getLocationByName(GlobalEnums.LocationName.BALLROOM), Direction.EAST, this.world.getLocationByName(GlobalEnums.LocationName.EXIT));
 	}
 	
 	private void populateActionsForLocations() {
@@ -70,6 +80,16 @@ public class WorldManager {
 	 */
 	public World getWorld() {
 		return this.world;
+	}
+	
+	/**
+	 * Gets the hazard description for a location
+	 * 
+	 * @param location	the location to get the hazard description for
+	 * @return			the hazard description for the location
+     */
+	public String getHazardDescription(Location location) {
+		return this.world.getHazardDataForLocation(location).toString();
 	}
 
 }

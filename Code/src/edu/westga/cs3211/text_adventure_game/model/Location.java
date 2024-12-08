@@ -6,6 +6,7 @@ import java.util.Map;
 
 import edu.westga.cs3211.text_adventure_game.model.GlobalEnums.Direction;
 import edu.westga.cs3211.text_adventure_game.model.GlobalEnums.HazardType;
+import edu.westga.cs3211.text_adventure_game.model.GlobalEnums.LocationName;
 
 /**
  * The location in the game
@@ -14,7 +15,7 @@ import edu.westga.cs3211.text_adventure_game.model.GlobalEnums.HazardType;
  * @version Fall 2024
  */
 public class Location {
-	private String name;
+	private LocationName name;
 	private String description;
 	
 	private HazardType hazardType;
@@ -34,12 +35,9 @@ public class Location {
 	 * @param isGoal 		if the location is the goal
 	 * @param actions 		the actions available at the location
 	 */
-	public Location(String name, String description, HazardType hazardType, boolean isGoal, List<Action> actions) {
+	public Location(LocationName name, String description, HazardType hazardType, boolean isGoal, List<Action> actions) {
 		if (name == null) {
 			throw new IllegalArgumentException("Name cannot be null");
-		}
-		if (name.isBlank()) {
-			throw new IllegalArgumentException("Name cannot be blank");
 		}
 		if (description == null) {
 			throw new IllegalArgumentException("Description cannot be null");
@@ -68,7 +66,7 @@ public class Location {
 	 * 
 	 * @return the location's name
 	 */
-	public String getName() {
+	public LocationName getName() {
 		return this.name;
 	}
 	
@@ -88,6 +86,14 @@ public class Location {
 	 */
 	public HazardType getHazardType() {
 		return this.hazardType;
+	}
+	
+	/**
+	 * Sets the location's hazard type
+	 * @param hazardType the hazard type to set
+	 */
+	public void setHazardType(HazardType hazardType) {
+		this.hazardType = hazardType;
 	}
 	
 	/**
@@ -157,6 +163,10 @@ public class Location {
 			return Direction.WEST;
 		case WEST:
 			return Direction.EAST;
+		case UP:
+			return Direction.DOWN;
+		case DOWN:
+			return Direction.UP;
 		default:
 			throw new IllegalArgumentException("Invalid direction");
 		}
@@ -183,6 +193,6 @@ public class Location {
 	
 	@Override
 	public String toString() {
-		return this.name + ": " + this.description;
+		return this.name.toString() + ": " + this.description;
 	}
 }

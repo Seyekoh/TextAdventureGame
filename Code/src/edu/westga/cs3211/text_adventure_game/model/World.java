@@ -1,11 +1,11 @@
 package edu.westga.cs3211.text_adventure_game.model;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 import edu.westga.cs3211.text_adventure_game.model.GlobalEnums.Direction;
 import edu.westga.cs3211.text_adventure_game.model.GlobalEnums.HazardType;
+import edu.westga.cs3211.text_adventure_game.model.GlobalEnums.LocationName;
 
 /**
  * The world in the game
@@ -15,8 +15,8 @@ import edu.westga.cs3211.text_adventure_game.model.GlobalEnums.HazardType;
  */
 public class World {
 	private HazardManager hazardManager;
-	private Map<String, Location> locations;
-	private Location startLocation = new Location("Start", "The start of your adventure.", HazardType.NONE, false, new ArrayList<>());
+	private Map<LocationName, Location> locations;
+	private Location startLocation;
 	private Location goalLocation;
 	
 	/**
@@ -34,6 +34,14 @@ public class World {
 	 */
 	public Location getStartLocation() {
 		return this.startLocation;
+	}
+	
+	/**
+	 * Sets the start location of the world
+	 * @param startLocation the start location
+	 */
+	public void setStartLocation(Location startLocation) {
+		this.startLocation = startLocation;
 	}
 	
 	/**
@@ -60,17 +68,22 @@ public class World {
 	}
 	
 	/**
+	 * Sets the hazard type for a location
+	 * 
+	 * @param location the location to set the hazard type
+	 * @param hazardData the hazard data to set
+	 */
+	public void setHazardTypeForLocation(Location location, HazardData hazardData) {
+		location.setHazardType(this.hazardManager.getHazardTypeFromHazardData(hazardData));
+	}
+	
+	/**
 	 * Sets the goal location in the world. 
 	 * 
 	 * @param newGoalLocation the new goal location
 	 */
 	public void setGoalLocation(Location newGoalLocation) {
-		if (this.goalLocation == null) {
-			this.goalLocation = newGoalLocation;
-			newGoalLocation.setIsGoal(true);
-		} else {
-			throw new IllegalArgumentException("Goal location already set");
-		}
+		this.goalLocation = newGoalLocation;
 	}
 	
 	/**
@@ -79,9 +92,13 @@ public class World {
 	 * @param name the name of the location
 	 * @return the goal location
 	 */
-	public Location getLocationByName(String name) {
-		return this.locations.get(name);
-    }
+	public Location getLocationByName(LocationName name) {
+		Location location = this.locations.get(name);
+	    if (location == null) {
+	        throw new IllegalArgumentException("Location not found: " + name);
+	    }
+	    return location;
+	}
 	
 	/**
 	 * Checks if the location is a hazard.
@@ -129,7 +146,7 @@ public class World {
 	 * 
 	 * @return a map of the locations in the world
 	 */
-	public Map<String, Location> getAllLocations() {
+	public Map<LocationName, Location> getAllLocations() {
 		return this.locations;
     }
 }
