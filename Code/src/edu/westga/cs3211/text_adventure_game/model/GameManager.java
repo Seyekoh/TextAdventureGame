@@ -151,8 +151,9 @@ public class GameManager {
 		}
 		
 		if (this.isGameOverLose) {
-			this.gameOverMessage = "You have died in the " + this.currentLocation.getName()
-					+ " due to " + this.getDamageMessage() 
+			this.gameOverMessage = this.getDamageMessage() + " You have taken "
+					+ this.world.getHazardDataForLocation(this.currentLocation).getDamage() + " damage. "
+					+ "You have died in the " + this.currentLocation.getName()
 					+ ". Your journey is over and you have lost the game. Better luck next time.";
 		}
 	}
@@ -163,7 +164,7 @@ public class GameManager {
 	 * @return	the message for the cause of damage
 	 */
 	public String getDamageMessage() {
-		return this.world.getHazardDataForLocation(this.currentLocation).toString();
+		return this.world.getHazardDataForLocation(this.currentLocation).getDescription();
 	}
 	
 	private boolean checkIfPlayerIsAlive() {

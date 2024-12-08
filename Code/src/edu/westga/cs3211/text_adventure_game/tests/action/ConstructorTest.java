@@ -1,4 +1,4 @@
-package edu.westga.cs3211.text_adventure_game.tests;
+package edu.westga.cs3211.text_adventure_game.tests.action;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -10,13 +10,12 @@ import edu.westga.cs3211.text_adventure_game.model.Action;
 import edu.westga.cs3211.text_adventure_game.model.GlobalEnums.ActionType;
 
 /**
- * The test class for the Action class
+ * Tests the constructor of the Action class
  * 
  * @author James Bridges
  * @version Fall 2024
  */
-public class ActionTest {
-	
+public class ConstructorTest {
 	/**
 	 * Tests the constructor of the Action class for valid input
 	 */
@@ -66,15 +65,6 @@ public class ActionTest {
 	}
 	
 	/**
-	 * Tests the getName method of the Action class
-	 */
-	@Test
-	public void testGetName() {
-		Action action = new Action("Test", "Test Description", ActionType.MOVE);
-		assertTrue(action.getName().equals("Test"));
-	}	
-	
-	/**
 	 * Tests the constructor of the Action class for null description
 	 */
 	@Test
@@ -99,15 +89,6 @@ public class ActionTest {
 	}
 	
 	/**
-	 * Tests the getDescription method of the Action class
-	 */
-	@Test
-	public void testGetDescription() {
-		Action action = new Action("Test", "Test Description", ActionType.MOVE);
-		assertTrue(action.getDescription().equalsIgnoreCase("Test Description"));
-	}
-	
-	/**
 	 * Tests the constructor of the Action class for null type
 	 */
 	@Test
@@ -118,23 +99,4 @@ public class ActionTest {
 
 		assertTrue(exception.getMessage().equalsIgnoreCase("Type cannot be null"));
 	}
-	
-	/**
-	 * Tests the getType method of the Action class
-	 */
-	@Test
-	public void testGetType() {
-		Action action = new Action("Test", "Test Description", ActionType.MOVE);
-		assertTrue(action.getType().equals(ActionType.MOVE));
-	}
-	
-	/**
-	 * Tests the toString method of the Action class
-	 */
-	@Test
-	public void testToString() {
-		Action action = new Action("Test", "Test Description", ActionType.MOVE);
-		assertTrue(action.toString().equalsIgnoreCase("Test: Test Description"));
-	}
-
 }

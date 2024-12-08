@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
+import edu.westga.cs3211.text_adventure_game.model.GlobalEnums;
 import edu.westga.cs3211.text_adventure_game.model.Location;
 import edu.westga.cs3211.text_adventure_game.model.LocationReader;
 
@@ -40,13 +41,13 @@ public class ImportLocationsTest {
 	 */
 	@Test
 	public void testImportLocations() throws IOException {
-		this.createTestFile("Location1,Description1,NONE,true\n" + "Location2,Description2,NONE,false\n");
+		this.createTestFile("ATTIC,Description1,NONE,true\n" + "BASEMENT,Description2,NONE,false\n");
 
 		this.locationReader = new LocationReader(TEST_FILE_PATH);
 		ArrayList<Location> locations = this.locationReader.importLocations();
 
-		assertAll(() -> assertEquals(2, locations.size()), () -> assertEquals("Location1", locations.get(0).getName()),
-				() -> assertEquals("Location2", locations.get(1).getName()));
+		assertAll(() -> assertEquals(2, locations.size()), () -> assertEquals(GlobalEnums.LocationName.ATTIC, locations.get(0).getName()),
+				() -> assertEquals(GlobalEnums.LocationName.BASEMENT, locations.get(1).getName()));
 	}
 
 	/**
