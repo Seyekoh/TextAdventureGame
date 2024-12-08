@@ -1,4 +1,4 @@
-package edu.westga.cs3211.text_adventure_game.tests;
+package edu.westga.cs3211.text_adventure_game.tests.hazarddata;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -9,13 +9,13 @@ import org.junit.jupiter.api.Test;
 import edu.westga.cs3211.text_adventure_game.model.HazardData;
 
 /**
- * The test class for the HazardData class
+ * The test class for the HazardData class's constructor
  * 
  * @author James Bridges
  * @version Fall 2024
  */
-public class HazardDataTest {
-	
+public class ConstructorTest {
+
 	/**
 	 * Test the constructor of the HazardData class
 	 */
@@ -68,35 +68,5 @@ public class HazardDataTest {
 				() -> assertEquals("Description cannot be blank",
 						assertThrows(IllegalArgumentException.class, 
 								() -> new HazardData(10, "   ")).getMessage()));
-	}
-	
-	/**
-	 * Test the getDamage method of the HazardData class
-	 */
-	@Test
-	public void testGetDamage() {
-		HazardData testHazardData = new HazardData(10, "A test hazard");
-
-		assertEquals(10, testHazardData.getDamage());
-	}
-	
-	/**
-	 * Test the getDescription method of the HazardData class
-	 */
-	@Test
-	public void testGetDescription() {
-		HazardData testHazardData = new HazardData(10, "A test hazard");
-
-		assertEquals("A test hazard", testHazardData.getDescription());
-	}
-	
-	/**
-	 * Test the toString method of the HazardData class
-	 */
-	@Test
-	public void testToString() {
-		HazardData testHazardData = new HazardData(10, "A test hazard");
-
-		assertEquals("10 A test hazard", testHazardData.toString());
 	}
 }
