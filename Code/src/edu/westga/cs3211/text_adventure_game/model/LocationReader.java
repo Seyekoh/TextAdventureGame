@@ -49,23 +49,27 @@ public class LocationReader {
 					Location location = this.readLocation(line);
 					locations.add(location);
 				} catch (Exception exception) {
-					System.out.println("Line could not be parsed: " + line);
+					System.out.println("Line could not be parsed: " + line + exception.getMessage());
 				}
 			}
 		} catch (IOException exception) {
-			System.out.println("An error occurred while reading the file.");
+			System.out.println("An error occurred while reading the file." + exception.getMessage());
 		}
 		
 		return locations;
 	}
 	
 	private Location readLocation(String line) {
-		String[] fields = line.split(",");
-        String name = fields[0];
-        String description = fields[1];
-        HazardType hazard = HazardType.valueOf(fields[2]);
-        Boolean isGoal = Boolean.parseBoolean(fields[3]);
-        
+		String[] fields = line.split(",(?=([^\"]*\"[^\"]*\")*[^\"]*$)", -1);
+		if (fields.length != 4) {
+			throw new IllegalArgumentException("Line must have 4 fields");
+		}
+		
+        GlobalEnums.LocationName name = GlobalEnums.LocationName.valueOf(fields[0].trim().toUpperCase());
+        String description = fields[1].replaceAll("^\"|\"$", "").trim();
+        HazardType hazard = HazardType.valueOf(fields[2].trim());
+        Boolean isGoal = Boolean.parseBoolean(fields[3].trim());
+                
         return new Location(name, description, hazard, isGoal, new ArrayList<Action>());
 	}
 

@@ -22,7 +22,9 @@ public class GlobalEnums {
 		NORTH,
 		SOUTH,
 		EAST,
-		WEST
+		WEST,
+		UP,
+		DOWN
 	}
 	
 	/**
@@ -30,6 +32,23 @@ public class GlobalEnums {
 	 */
 	public enum HazardType {
 		NONE,
-		PIT
+		GHOSTLYAPPARITION,
+		CURSEDSTOVE,
+		ROTTINGCORPSE,
+		CREEPYDOLL,
+		DANCINGSHADOWS
+	}
+	
+	/**
+	 * The names of the locations in the game
+	 */
+	public enum LocationName {
+		ENTRANCEHALL,
+		LIBRARY,
+		KITCHEN,
+		BALLROOM,
+		BASEMENT,
+		ATTIC,
+		EXIT
 	}
 }

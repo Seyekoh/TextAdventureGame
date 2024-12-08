@@ -27,8 +27,20 @@ public class HazardManager {
 	private void initializeHazardData() {
 		for (HazardType type : HazardType.values()) {
 			switch (type) {
-				case PIT:
-					this.hazardDataMap.put(type, new HazardData(80, "A deep, dark pit with no visible bottom."));
+				case GHOSTLYAPPARITION:
+					this.hazardDataMap.put(type, new HazardData(10, "A ghastly apparition appears and attacks you!"));
+					break;
+				case CURSEDSTOVE:
+					this.hazardDataMap.put(type, new HazardData(15, "The stove is cursed and burns you!"));
+					break;
+				case ROTTINGCORPSE:
+					this.hazardDataMap.put(type, new HazardData(100, "You are attacked by a rotting corpse!"));
+					break;
+				case CREEPYDOLL:
+					this.hazardDataMap.put(type, new HazardData(10, "A creepy doll attacks you!"));
+					break;
+				case DANCINGSHADOWS:
+					this.hazardDataMap.put(type, new HazardData(18, "The shadows attack you!"));
 					break;
 				default:
 					this.hazardDataMap.put(type, new HazardData(0, "This area seems safe."));
@@ -46,5 +58,21 @@ public class HazardManager {
 	 */
 	public HazardData getHazardData(HazardType type) {
 		return this.hazardDataMap.get(type);
+	}
+	
+	/**
+	 * Gets the hazard type from the hazard data
+	 * 
+	 * @param hazardData the hazard data to get the type for
+	 * 
+	 * @return the hazard type for the hazard data
+	 */
+	public HazardType getHazardTypeFromHazardData(HazardData hazardData) {
+		for (Map.Entry<HazardType, HazardData> entry : this.hazardDataMap.entrySet()) {
+			if (entry.getValue().equals(hazardData)) {
+				return entry.getKey();
+			}
+		}
+		return null;
 	}
 }

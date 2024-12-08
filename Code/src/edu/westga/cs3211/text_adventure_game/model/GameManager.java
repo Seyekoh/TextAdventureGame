@@ -1,10 +1,9 @@
 package edu.westga.cs3211.text_adventure_game.model;
 
 import java.util.ArrayList;
+import java.util.List;
 
-import edu.westga.cs3211.text_adventure_game.model.GlobalEnums.ActionType;
 import edu.westga.cs3211.text_adventure_game.model.GlobalEnums.Direction;
-import edu.westga.cs3211.text_adventure_game.model.GlobalEnums.HazardType;
 
 /**
  * The game manager
@@ -20,6 +19,7 @@ public class GameManager {
 	private boolean isGameOverLose = false;
 	private boolean isGameOverWin = false;
 	private String gameOverMessage;
+	private String interactionInfo;
 	
 	/**
 	 * Constructor for the GameManager
@@ -73,8 +73,12 @@ public class GameManager {
 	 * @param action	the action to perform
 	 */
 	public void performAction(Action action) {
-		if (action.getName().equals(ActionType.MOVE.toString())) {
+		switch (action.getType()) {
+		case MOVE:
 			this.movePlayer(Direction.valueOf(action.getDescription()));
+			break;
+		default:
+			throw new IllegalArgumentException("Unknown action type." + action.getType());
 		}
 	}
 	
@@ -92,9 +96,11 @@ public class GameManager {
 		if (this.world.checkIfLocationIsHazard(nextLocation)) {
 			int damage = this.world.getHazardDataForLocation(nextLocation).getDamage();
 			this.player.takeDamage(damage);
+			this.setInteractionInfo(this.world.getHazardDataForLocation(nextLocation), damage);
 		}
 		
 		if (!this.checkIfPlayerIsAlive()) {
+			this.setInteractionInfo(this.world.getHazardDataForLocation(nextLocation), this.world.getHazardDataForLocation(nextLocation).getDamage());
 			this.onGameOverLose(nextLocation);
 		}
 		
@@ -107,16 +113,35 @@ public class GameManager {
 		this.currentLocation = nextLocation;
 	}
 	
+	private void setInteractionInfo(HazardData hazardData, int damage) {
+		this.interactionInfo = "You have taken " + damage + " damage due to: " + System.lineSeparator()
+								+ "\t" + hazardData.getDescription();
+	}
+	
+	private void setInteractionInfo(String interactionInfo) {
+		this.interactionInfo = interactionInfo;
+	}
+	
+	/**
+	 * Gets the interaction info
+	 * @return the interaction info
+	 */
+	public String getInteractionInfo() {
+		return this.interactionInfo;
+	}	
+	
 	private void onGameOverLose(Location newLocation) {
 		this.currentLocation = newLocation;
 		this.isGameOverLose = true;
 		this.setGameOverMessage();
+		this.setInteractionInfo(this.gameOverMessage);
 	}
 	
 	private void onGameOverWin(Location newLocation) {
         this.currentLocation = newLocation;
         this.isGameOverWin = true;
         this.setGameOverMessage();
+        this.setInteractionInfo(this.gameOverMessage);
 	}
 	
 	private void setGameOverMessage() {
@@ -138,14 +163,7 @@ public class GameManager {
 	 * @return	the message for the cause of damage
 	 */
 	public String getDamageMessage() {
-		HazardType causeOfDamage = this.currentLocation.getHazardType();
-		
-		switch (causeOfDamage) {
-			case PIT:
-				return "falling into a pit";
-			default:
-				return "unknown causes";
-		}
+		return this.world.getHazardDataForLocation(this.currentLocation).toString();
 	}
 	
 	private boolean checkIfPlayerIsAlive() {
@@ -164,5 +182,13 @@ public class GameManager {
 		ArrayList<Action> actions = new ArrayList<Action>();
 		actions.addAll(this.currentLocation.getActions());
 		return actions;
+	}
+	
+	/**
+	 * Gets the player's inventory
+	 * @return the player's inventory
+	 */
+	public List<String> getPlayerInventory() {
+		return this.player.getInventory();
 	}
 }
