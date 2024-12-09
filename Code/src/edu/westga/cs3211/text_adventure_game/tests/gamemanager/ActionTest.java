@@ -10,6 +10,7 @@ import edu.westga.cs3211.text_adventure_game.model.GameManager;
 import edu.westga.cs3211.text_adventure_game.model.GlobalEnums;
 import edu.westga.cs3211.text_adventure_game.model.GlobalEnums.ActionType;
 import edu.westga.cs3211.text_adventure_game.model.GlobalEnums.Direction;
+import edu.westga.cs3211.text_adventure_game.model.GlobalEnums.Item;
 
 /**
  * Tests the GameManager for action info
@@ -18,9 +19,9 @@ import edu.westga.cs3211.text_adventure_game.model.GlobalEnums.Direction;
  * @version Fall 2024
  */
 public class ActionTest {
-	
+
 	private GameManager gameManager;
-	
+
 	/**
 	 * Sets up the instance variables for the test class
 	 */
@@ -28,14 +29,14 @@ public class ActionTest {
 	public void setUp() {
 		this.gameManager = new GameManager();
 	}
-	
+
 	/**
-	 * Tests the performAction method with the player moving
+	 * Tests the performAction method
 	 */
 	@Test
 	public void testPerformActionWithPlayerMoving() {
 		Action action = new Action("MOVE", Direction.NORTH.toString(), ActionType.MOVE);
-		this.gameManager.performAction(action);
+		this.gameManager.performAction(action, Item.NONE);
 
 		assertAll(() -> assertEquals(GlobalEnums.LocationName.LIBRARY, this.gameManager.getCurrentLocation().getName()),
 				() -> assertEquals(90, this.gameManager.getPlayer().getHealth()));
@@ -48,17 +49,17 @@ public class ActionTest {
 	public void testGetAllAvailableActions() {
 		assertEquals(1, this.gameManager.getAllAvailableActions().size());
 	}
-	
+
 	/**
 	 * Tests the getInteractionInfo method
 	 */
 	@Test
 	public void testGetInteractionInfo() {
 		this.gameManager.movePlayer(Direction.NORTH);
-		
+
 		String expected = "You have taken 10 damage due to: A ghastly apparition appears and attacks you!";
-	    String actual = this.gameManager.getInteractionInfo().replaceAll("\\s+", " ").trim();
-	    assertEquals(expected, actual);
+		String actual = this.gameManager.getInteractionInfo().replaceAll("\\s+", " ").trim();
+		assertEquals(expected, actual);
 	}
-	
+
 }

@@ -5,8 +5,6 @@ import java.util.Collections;
 import java.util.List;
 
 import edu.westga.cs3211.text_adventure_game.model.GlobalEnums.Direction;
-import edu.westga.cs3211.text_adventure_game.model.GlobalEnums.HazardType;
-import edu.westga.cs3211.text_adventure_game.model.GlobalEnums.LocationName;
 
 /**
  * The world manager
@@ -16,7 +14,7 @@ import edu.westga.cs3211.text_adventure_game.model.GlobalEnums.LocationName;
  */
 public class WorldManager {
 	private static final String LOCATION_PATH = "src/locations.csv";
-	
+
 	private World world;
 	private LocationReader locationReader;
 
@@ -26,31 +24,31 @@ public class WorldManager {
 	public WorldManager() {
 		this.world = new World();
 		this.locationReader = new LocationReader(LOCATION_PATH);
-		
+
 		this.initializeWorld();
 	}
 
 	private void initializeWorld() {
 		this.createLocations();
 		for (Location location : this.world.getAllLocations().values()) {
-            this.world.addLocation(location);
+			this.world.addLocation(location);
 		}
-		
+
 		this.createWorldMap();
 		this.populateActionsForLocations();
 	}
-	
+
 	private void createLocations() {
 		ArrayList<Location> newLocations = this.locationReader.importLocations();
 		for (Location location : newLocations) {
 			
 			if (location.getName() == GlobalEnums.LocationName.ENTRANCEHALL) {
-                this.world.setStartLocation(location);
+				this.world.setStartLocation(location);
 			}
 			this.world.addLocation(location);
 		}
 	}
-	
+
 	private void createWorldMap() {
 		ArrayList<Location> remainingLocations = new ArrayList<>(this.world.getAllLocations().values());		
 		ArrayList<Location> fixedLocations = new ArrayList<>(this.connectFixedLocations());
@@ -106,35 +104,45 @@ public class WorldManager {
 		this.world.connectLocations(randomLocation2, Direction.NORTH, randomLocation1);
 		this.world.connectLocations(randomLocation2, Direction.WEST, randomLocation3);
 	}
-	
+
 	private void populateActionsForLocations() {
 		for (Location location : this.world.getAllLocations().values()) {
 			List<Action> actions = new ArrayList<>();
-		
+
 			for (Direction direction : location.getConnections().keySet()) {
 				String actionDescription = direction.toString();
-				actions.add(new Action(GlobalEnums.ActionType.MOVE.toString(), actionDescription, GlobalEnums.ActionType.MOVE));
+				actions.add(new Action(GlobalEnums.ActionType.MOVE.toString(), actionDescription,
+						GlobalEnums.ActionType.MOVE));
 			}
-			
+
+			actions.add(new Action(GlobalEnums.ActionType.SEARCH.toString(), "Search the location",
+					GlobalEnums.ActionType.SEARCH));
+
+			actions.add(new Action(GlobalEnums.ActionType.USE.toString(), "Use an item", GlobalEnums.ActionType.USE));
+			actions.add(
+					new Action(GlobalEnums.ActionType.DROP.toString(), "Drop an item", GlobalEnums.ActionType.DROP));
+			actions.add(new Action(GlobalEnums.ActionType.EXAMINE.toString(), "Examine an item",
+					GlobalEnums.ActionType.EXAMINE));
+
 			location.setActions(actions);
 		}
 	}
-	
+
 	/**
 	 * Gets the world object
 	 * 
-	 * @return	the world object
+	 * @return the world object
 	 */
 	public World getWorld() {
 		return this.world;
 	}
-	
+
 	/**
 	 * Gets the hazard description for a location
 	 * 
-	 * @param location	the location to get the hazard description for
-	 * @return			the hazard description for the location
-     */
+	 * @param location the location to get the hazard description for
+	 * @return the hazard description for the location
+	 */
 	public String getHazardDescription(Location location) {
 		return this.world.getHazardDataForLocation(location).toString();
 	}
