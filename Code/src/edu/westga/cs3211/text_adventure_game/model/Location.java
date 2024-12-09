@@ -98,9 +98,11 @@ public class Location {
 
 	/**
 	 * Sets the location as searched.
+	 * 
+	 * @param isSearched sets whether or not the location has been searched.
 	 */
-	public void setSearched() {
-		this.isSearched = true;
+	public void setSearched(boolean isSearched) {
+		this.isSearched = isSearched;
 	}
 
 	/**
@@ -110,15 +112,6 @@ public class Location {
 	 */
 	public Item getStartingItem() {
 		return this.startingItem;
-	}
-
-	/**
-	 * Gets if the starting item has been found
-	 * 
-	 * @return true if the starting item has been found, false otherwise
-	 */
-	public boolean hasStartingItemBeenFound() {
-		return this.items.contains(this.startingItem);
 	}
 
 	/**
@@ -213,11 +206,14 @@ public class Location {
 	 * Removes all take actions from the location
 	 */
 	public void removeTakeActions() {
-		for (int idx = 0; idx < this.actions.size(); idx++) {
-			if (this.actions.get(idx).getType() == ActionType.TAKE) {
-				this.actions.remove(idx);
+		ArrayList<Action> newActionSet = new ArrayList<>();
+		for (Action action : this.actions) {
+			if (action.getType() != ActionType.TAKE) {
+				newActionSet.add(action);
 			}
 		}
+
+		this.actions = newActionSet;
 	}
 
 	/**

@@ -22,7 +22,7 @@ import javafx.collections.ObservableList;
 public class ViewModel {
 
 	private final GameManager gameManager;
-	private Item selectedItem;
+	private Item selectedInventoryItem;
 
 	private StringProperty currentLocationDescription;
 	private StringProperty interactionDisplayProperty;
@@ -104,21 +104,26 @@ public class ViewModel {
 	 * @param selectedAction the selected action to be handled
 	 */
 	public void handleActionButtonPressed(String selectedAction) {
-		this.gameManager.getAllAvailableActions().stream().filter(action -> action.toString().equals(selectedAction))
-				.findFirst().ifPresent(action -> {
-					this.clearInteractionDisplay();
-					if (this.selectedItem == null) {
-						if (action.getType() == ActionType.TAKE) {
-							String[] takeItem = selectedAction.split(" ");
-							Item item = Item.valueOf(takeItem[1]);
-							this.gameManager.performAction(action, item);
-						} else {
-							this.gameManager.performAction(action, Item.NONE);
-						}
-					} else {
-						this.gameManager.performAction(action, this.selectedItem);
-					}
-				});
+		String[] actionDetails = selectedAction.split(": ");
+		Action action = null;
+		for (Action currentAction : this.gameManager.getAllAvailableActions()) {
+			if (currentAction.toString().equalsIgnoreCase(selectedAction)) {
+				action = currentAction;
+				break;
+			}
+		}
+
+		if (action == null) {
+			System.out.println("Action not found: " + actionDetails[0]);
+		} else {
+			if (action.getType() == ActionType.TAKE) {
+				this.gameManager.performAction(action, Item.valueOf(actionDetails[1]));
+			} else if (this.selectedInventoryItem != null) {
+				this.gameManager.performAction(action, this.selectedInventoryItem);
+			} else {
+				this.gameManager.performAction(action, Item.NONE);
+			}
+		}
 
 		this.updateProperties();
 	}
@@ -192,7 +197,6 @@ public class ViewModel {
 	 * @param item the selected item
 	 */
 	public void setItem(Item item) {
-		this.selectedItem = item;
-		System.out.println("Selected item: " + item);
+		this.selectedInventoryItem = item;
 	}
 }

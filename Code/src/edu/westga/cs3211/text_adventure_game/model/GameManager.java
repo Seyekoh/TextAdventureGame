@@ -129,7 +129,12 @@ public class GameManager {
 		}
 	}
 
-	private void movePlayer(Direction direction) {
+	/**
+	 * Moves the player in the given direction
+	 * 
+	 * @param direction the direction to move the player.
+	 */
+	public void movePlayer(Direction direction) {
 		Location nextLocation = this.currentLocation.getConnection(direction);
 		if (nextLocation == null) {
 			throw new IllegalArgumentException("There is no location in that direction.");
@@ -154,43 +159,75 @@ public class GameManager {
 		}
 
 		this.currentLocation = nextLocation;
-		this.currentLocationDescription = this.currentLocation.getDescription();
+		this.setCurrentLocationDescription(this.currentLocation.getDescription() + "\n\nLocation Items:\n");
+		this.updateAvailableActions();
 	}
 
 	private void search() {
 		if (!this.currentLocation.isSearched()) {
 			this.setCurrentLocationDescription(this.currentLocation.getDescription() + "\n\nLocation Items:\n");
 			this.setInteractionInfo("You have searched the location and found an item.\n\n");
-			this.currentLocation.setSearched();
-			this.currentLocation.addItem(this.currentLocation.getStartingItem());
+			this.setInteractionInfo(
+					this.interactionInfo + this.currentLocation.getStartingItem().getDescription() + "\n");
 
-			this.currentLocation.removeTakeActions();
-
-			for (Item item : this.currentLocation.getItems()) {
-				this.currentLocation.addAction(new Action(GlobalEnums.ActionType.TAKE.toString(), item.toString(),
-						GlobalEnums.ActionType.TAKE));
-				this.setInteractionInfo(this.interactionInfo + item.getDescription() + "\n");
-				this.setCurrentLocationDescription(this.currentLocationDescription + item + "\n");
+			this.currentLocation.setSearched(true);
+			if (!this.currentLocation.getItems().contains(this.currentLocation.getStartingItem())) {
+				this.currentLocation.addItem(this.currentLocation.getStartingItem());
 			}
+
+			this.updateAvailableActions();
 		} else {
 			this.setInteractionInfo("You search the location and find nothing of interest.");
 		}
 	}
 
 	private void takeItem(Item item) {
-		if (!this.currentLocation.getItems().isEmpty()) {
+		if (this.currentLocation.getItems().contains(item)) {
 			this.currentLocation.removeItem(item);
 			this.player.addItemToInventory(item);
 
 			this.setInteractionInfo("You have taken the item: " + item);
 			this.setCurrentLocationDescription(this.currentLocation.getDescription() + "\n\nLocation Items:\n");
-			this.currentLocation.removeTakeActions();
-			System.out.println(this.currentLocation.getActions());
-			for (Item currItem : this.currentLocation.getItems()) {
-				this.setCurrentLocationDescription(this.currentLocationDescription + currItem + "\n");
-			}
+
+			this.updateAvailableActions();
 		} else {
 			this.setInteractionInfo("There is no item to take.");
+		}
+	}
+
+	private void dropItem(Item item) {
+		if (this.player.getInventory().isEmpty()) {
+			this.setInteractionInfo("You have no items to drop.");
+			return;
+		}
+
+		if (this.player.getInventory().contains(item)) {
+			this.player.getInventory().remove(item);
+			this.currentLocation.addItem(item);
+
+			this.setInteractionInfo("You have dropped the item: " + item);
+			this.setCurrentLocationDescription(this.currentLocation.getDescription() + "\n\nLocation Items:\n");
+
+			this.updateAvailableActions();
+		} else {
+			this.setInteractionInfo("You must select an item to drop it.");
+		}
+	}
+
+	private void examineItem(Item item) {
+		if (item == Item.NONE) {
+			this.setInteractionInfo("You must select an item to examine it.");
+		} else {
+			this.setInteractionInfo("You examine the item:\n" + item.getDescription());
+		}
+	}
+
+	private void updateAvailableActions() {
+		this.currentLocation.removeTakeActions();
+		for (Item item : this.currentLocation.getItems()) {
+			this.currentLocation.addAction(
+					new Action(GlobalEnums.ActionType.TAKE.toString(), item.toString(), GlobalEnums.ActionType.TAKE));
+			this.setCurrentLocationDescription(this.currentLocationDescription + item + "\n");
 		}
 	}
 
@@ -284,38 +321,6 @@ public class GameManager {
 		}
 
 		this.player.getInventory().remove(item);
-	}
-
-	private void dropItem(Item item) {
-		if (this.player.getInventory().isEmpty()) {
-			this.setInteractionInfo("You have no items to drop.");
-			return;
-		}
-
-		if (this.player.getInventory().contains(item)) {
-			this.player.getInventory().remove(item);
-			this.currentLocation.addItem(item);
-
-			this.setInteractionInfo("You have dropped the item: " + item);
-			this.setCurrentLocationDescription(this.currentLocation.getDescription() + "\n\nLocation Items:\n");
-
-			this.currentLocation.removeTakeActions();
-			for (Item currItem : this.currentLocation.getItems()) {
-				this.currentLocation.addAction(new Action(GlobalEnums.ActionType.TAKE.toString(), currItem.toString(),
-						GlobalEnums.ActionType.TAKE));
-				this.setCurrentLocationDescription(this.currentLocationDescription + currItem.getDescription() + "\n");
-			}
-		} else {
-			this.setInteractionInfo("You must select an item to drop it.");
-		}
-	}
-
-	private void examineItem(Item item) {
-		if (item == Item.NONE) {
-			this.setInteractionInfo("You must select an item to examine it.");
-		} else {
-			this.setInteractionInfo("You examine the item:\n" + item.getDescription());
-		}
 	}
 
 	private void setInteractionInfo(HazardData hazardData, int damage) {

@@ -12,6 +12,7 @@ import edu.westga.cs3211.text_adventure_game.model.Location;
 import edu.westga.cs3211.text_adventure_game.model.GlobalEnums;
 import edu.westga.cs3211.text_adventure_game.model.GlobalEnums.Direction;
 import edu.westga.cs3211.text_adventure_game.model.GlobalEnums.HazardType;
+import edu.westga.cs3211.text_adventure_game.model.GlobalEnums.Item;
 
 /**
  * Tests connections in the Location class
@@ -27,9 +28,9 @@ public class ConnectionTest {
 	@Test
 	public void testAddConnectionForLocationWithNoConnections() {
 		Location testLocation = new Location(GlobalEnums.LocationName.LIBRARY, "This is a test location", HazardType.NONE, false,
-				new ArrayList<>());
+				new ArrayList<>(), Item.NONE);
 		Location testLocation2 = new Location(GlobalEnums.LocationName.ATTIC, "This is a test location2", HazardType.NONE, false,
-				new ArrayList<>());
+				new ArrayList<>(), Item.NONE);
 		testLocation.addConnection(Direction.DOWN, testLocation2);
 
 		assertEquals(testLocation2, testLocation.getConnection(Direction.DOWN));
@@ -42,11 +43,11 @@ public class ConnectionTest {
 	@Test
 	public void testAddConnectionForLocationWithExistingConnection() {
 		Location testLocation = new Location(GlobalEnums.LocationName.BALLROOM, "This is a test location", HazardType.NONE, false,
-				new ArrayList<>());
+				new ArrayList<>(), Item.NONE);
 		Location testLocation2 = new Location(GlobalEnums.LocationName.ENTRANCEHALL, "This is a test location2", HazardType.NONE, false,
-				new ArrayList<>());
+				new ArrayList<>(), Item.NONE);
 		Location testLocation3 = new Location(GlobalEnums.LocationName.KITCHEN, "This is a test location3", HazardType.NONE, false,
-				new ArrayList<>());
+				new ArrayList<>(), Item.DIARY);
 		testLocation.addConnection(Direction.NORTH, testLocation2);
 		testLocation.addConnection(Direction.EAST, testLocation3);
 
@@ -60,11 +61,11 @@ public class ConnectionTest {
 	@Test
 	public void testAddConnectionForLocationWithExistingConnectionInSameDirection() {
 		Location testLocation = new Location(GlobalEnums.LocationName.BALLROOM, "This is a test location", HazardType.NONE, false,
-				new ArrayList<>());
+				new ArrayList<>(), Item.NONE);
 		Location testLocation2 = new Location(GlobalEnums.LocationName.ENTRANCEHALL, "This is a test location2", HazardType.NONE, false,
-				new ArrayList<>());
+				new ArrayList<>(), Item.MUSICBOX);
 		Location testLocation3 = new Location(GlobalEnums.LocationName.KITCHEN, "This is a test location3", HazardType.NONE, false,
-				new ArrayList<>());
+				new ArrayList<>(), Item.DRESS);
 		testLocation.addConnection(Direction.NORTH, testLocation2);
 
 		IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
@@ -80,7 +81,7 @@ public class ConnectionTest {
 	@Test
 	public void testGetConnectionsForLocationWithNoConnections() {
 		Location testLocation = new Location(GlobalEnums.LocationName.BASEMENT, "This is a test location", HazardType.NONE, false,
-				new ArrayList<>());
+				new ArrayList<>(), Item.NONE);
 
 		assertEquals(0, testLocation.getConnections().size());
 	}
@@ -91,9 +92,9 @@ public class ConnectionTest {
 	@Test
 	public void testGetConnectionsForLocationWithOneConnection() {
 		Location testLocation = new Location(GlobalEnums.LocationName.BASEMENT, "This is a test location", HazardType.NONE, false,
-				new ArrayList<>());
+				new ArrayList<>(), Item.NONE);
 		Location testLocation2 = new Location(GlobalEnums.LocationName.KITCHEN, "This is a test location2", HazardType.NONE, false,
-				new ArrayList<>());
+				new ArrayList<>(), Item.NONE);
 		testLocation.addConnection(Direction.UP, testLocation2);
 
 		assertAll(() -> assertEquals(1, testLocation.getConnections().size()),
@@ -107,15 +108,15 @@ public class ConnectionTest {
 	@Test
 	public void testGetConnectionsForLocationWithFourConnections() {
 		Location testLocation = new Location(GlobalEnums.LocationName.BALLROOM, "This is a test location", HazardType.NONE, false,
-				new ArrayList<>());
+				new ArrayList<>(), Item.RING);
 		Location testLocation2 = new Location(GlobalEnums.LocationName.ENTRANCEHALL, "This is a test location2", HazardType.NONE, false,
-				new ArrayList<>());
+				new ArrayList<>(), Item.DIARY);
 		Location testLocation3 = new Location(GlobalEnums.LocationName.KITCHEN, "This is a test location3", HazardType.NONE, false,
-				new ArrayList<>());
+				new ArrayList<>(), Item.DRESS);
 		Location testLocation4 = new Location(GlobalEnums.LocationName.LIBRARY, "This is a test location4", HazardType.NONE, false,
-				new ArrayList<>());
+				new ArrayList<>(), Item.POTION);
 		Location testLocation5 = new Location(GlobalEnums.LocationName.EXIT, "This is a test location5", HazardType.NONE, false,
-				new ArrayList<>());
+				new ArrayList<>(), Item.MUSICBOX);
 		testLocation.addConnection(Direction.NORTH, testLocation2);
 		testLocation.addConnection(Direction.EAST, testLocation3);
 		testLocation.addConnection(Direction.SOUTH, testLocation4);

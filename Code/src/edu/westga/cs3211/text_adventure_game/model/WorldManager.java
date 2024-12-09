@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.westga.cs3211.text_adventure_game.model.GlobalEnums.Direction;
-import edu.westga.cs3211.text_adventure_game.model.GlobalEnums.HazardType;
-import edu.westga.cs3211.text_adventure_game.model.GlobalEnums.Item;
-import edu.westga.cs3211.text_adventure_game.model.GlobalEnums.LocationName;
 
 /**
  * The world manager
@@ -79,7 +76,7 @@ public class WorldManager {
 
 			actions.add(new Action(GlobalEnums.ActionType.SEARCH.toString(), "Search the location",
 					GlobalEnums.ActionType.SEARCH));
-			
+
 			actions.add(new Action(GlobalEnums.ActionType.USE.toString(), "Use an item", GlobalEnums.ActionType.USE));
 			actions.add(
 					new Action(GlobalEnums.ActionType.DROP.toString(), "Drop an item", GlobalEnums.ActionType.DROP));

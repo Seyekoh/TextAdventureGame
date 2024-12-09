@@ -11,6 +11,7 @@ import edu.westga.cs3211.text_adventure_game.model.Action;
 import edu.westga.cs3211.text_adventure_game.model.GlobalEnums;
 import edu.westga.cs3211.text_adventure_game.model.GlobalEnums.ActionType;
 import edu.westga.cs3211.text_adventure_game.model.GlobalEnums.HazardType;
+import edu.westga.cs3211.text_adventure_game.model.GlobalEnums.Item;
 import edu.westga.cs3211.text_adventure_game.model.Location;
 
 /**
@@ -26,7 +27,7 @@ public class SetterTest {
 	 */
 	@Test
 	public void testSetHazardType() {
-		Location testLocation = new Location(GlobalEnums.LocationName.ATTIC, "This is a test location", HazardType.NONE, false, new ArrayList<>());
+		Location testLocation = new Location(GlobalEnums.LocationName.ATTIC, "This is a test location", HazardType.NONE, false, new ArrayList<>(), Item.NONE);
 		testLocation.setHazardType(HazardType.CURSEDSTOVE);
 		
 		assertTrue(testLocation.getHazardType() == HazardType.CURSEDSTOVE);
@@ -38,7 +39,7 @@ public class SetterTest {
 	@Test
 	public void testSetIsGoal() {
 		Location testLocation = new Location(GlobalEnums.LocationName.ATTIC, "This is a test location", HazardType.NONE,
-				false, new ArrayList<>());
+				false, new ArrayList<>(), Item.NONE);
 		testLocation.setIsGoal(true);
 
 		assertTrue(testLocation.checkIfLocationIsGoal());
@@ -50,7 +51,7 @@ public class SetterTest {
 	@Test
 	public void testSetActions() {
 		Location testLocation = new Location(GlobalEnums.LocationName.ATTIC, "This is a test location", HazardType.NONE,
-				false, new ArrayList<>());
+				false, new ArrayList<>(), Item.NONE);
 		Action action = new Action("Test", "Test Description", ActionType.MOVE);
 		List<Action> actions = new ArrayList<>();
 		actions.add(action);

@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import edu.westga.cs3211.text_adventure_game.model.GlobalEnums;
 import edu.westga.cs3211.text_adventure_game.model.Location;
 import edu.westga.cs3211.text_adventure_game.model.GlobalEnums.HazardType;
+import edu.westga.cs3211.text_adventure_game.model.GlobalEnums.Item;
 
 /**
  * Tests the constructor of the Location class
@@ -26,7 +27,7 @@ public class ConstructorTest {
 	 */
 	@Test
 	public void testConstructorForValidLocation() {
-		Location testLocation = new Location(GlobalEnums.LocationName.ATTIC, "This is a test location", HazardType.NONE, false, new ArrayList<>());
+		Location testLocation = new Location(GlobalEnums.LocationName.ATTIC, "This is a test location", HazardType.NONE, false, new ArrayList<>(), Item.NONE);
 
 	    assertAll(
 	        () -> assertEquals(GlobalEnums.LocationName.ATTIC, testLocation.getName()),
@@ -43,7 +44,7 @@ public class ConstructorTest {
 	@Test
 	public void testConstructorWithNullName() {
 		IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-			new Location(null, "This is a test location", HazardType.NONE, false, new ArrayList<>());
+			new Location(null, "This is a test location", HazardType.NONE, false, new ArrayList<>(), Item.NONE);
 		});
 		
 		assertTrue(exception.getMessage().equalsIgnoreCase("Name cannot be null"));
@@ -55,7 +56,7 @@ public class ConstructorTest {
 	@Test
 	public void testConstructorWithNullDescription() {
 		IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-			new Location(GlobalEnums.LocationName.ATTIC, null, HazardType.NONE, false, new ArrayList<>());
+			new Location(GlobalEnums.LocationName.ATTIC, null, HazardType.NONE, false, new ArrayList<>(), Item.NONE);
 		});
 
 		assertTrue(exception.getMessage().equalsIgnoreCase("Description cannot be null"));
@@ -67,7 +68,7 @@ public class ConstructorTest {
 	@Test
 	public void testConstructorWithBlankDescription() {
 		IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-			new Location(GlobalEnums.LocationName.ATTIC, "", HazardType.NONE, false, new ArrayList<>());
+			new Location(GlobalEnums.LocationName.ATTIC, "", HazardType.NONE, false, new ArrayList<>(), Item.NONE);
 		});
 
 		assertTrue(exception.getMessage().equalsIgnoreCase("Description cannot be blank"));
@@ -79,7 +80,7 @@ public class ConstructorTest {
 	@Test
 	public void testConstructorWithNullHazardType() {
 		IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-			new Location(GlobalEnums.LocationName.ATTIC, "This is a test location", null, false, new ArrayList<>());
+			new Location(GlobalEnums.LocationName.ATTIC, "This is a test location", null, false, new ArrayList<>(), Item.NONE);
 		});
 
 		assertTrue(exception.getMessage().equalsIgnoreCase("Hazard Type cannot be null"));
@@ -91,9 +92,22 @@ public class ConstructorTest {
 	@Test
 	public void testConstructorWithNullActions() {
 		IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-			new Location(GlobalEnums.LocationName.ATTIC, "This is a test location", HazardType.NONE, false, null);
+			new Location(GlobalEnums.LocationName.ATTIC, "This is a test location", HazardType.NONE, false, null, Item.NONE);
 		});
 
 		assertTrue(exception.getMessage().equalsIgnoreCase("Actions cannot be null"));
+	}
+	
+	/**
+	 * Tests the constructor of the Location class with a null item
+	 */
+	@Test
+	public void testConstructorWithNullItem() {
+		IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+			new Location(GlobalEnums.LocationName.ATTIC, "This is a test location", HazardType.NONE, false,
+					new ArrayList<>(), null);
+		});
+		
+		assertTrue(exception.getMessage().equalsIgnoreCase("Item cannot be null"));
 	}
 }
