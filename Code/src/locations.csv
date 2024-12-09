@@ -1,7 +1,7 @@
-EntranceHall,"A grand hall with dusty chandeliers and an eerie silence.",NONE,FALSE
-Library,"Books line every wall. A strange, cold draft chills the air.",GHOSTLYAPPARITION,FALSE
-Kitchen,"The smell of rotting food fills the air. Pots and pans are scattered everywhere.",CURSEDSTOVE,FALSE
-Ballroom,"A vast room with a beautiful but cracked dance floor. Shadows seem to dance by themselves.",DANCINGSHADOWS,FALSE
-Basement,"A dark, damp place with the sound of dripping water echoing in the distance.",ROTTINGCORPSE,FALSE
-Attic,"A cramped space filled with cobwebs and forgotten relics.",CREEPYDOLL,FALSE
-Exit,"A heavy wooden door with light streaming through the cracks. This is your way out.",NONE,TRUE
+EntranceHall,"A grand hall with dusty chandeliers and an eerie silence.",NONE,FALSE,RING
+Library,"Books line every wall. A strange, cold draft chills the air.",GHOSTLYAPPARITION,FALSE,DIARY
+Kitchen,"The smell of rotting food fills the air. Pots and pans are scattered everywhere.",CURSEDSTOVE,FALSE,POTION
+Ballroom,"A vast room with a beautiful but cracked dance floor. Shadows seem to dance by themselves.",DANCINGSHADOWS,FALSE,MUSICBOX
+Basement,"A dark, damp place with the sound of dripping water echoing in the distance.",ROTTINGCORPSE,FALSE,NONE
+Attic,"A cramped space filled with cobwebs and forgotten relics.",CREEPYDOLL,FALSE,DRESS
+Exit,"A heavy wooden door with light streaming through the cracks. This is your way out.",NONE,TRUE,NONE

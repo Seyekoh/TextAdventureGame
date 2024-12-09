@@ -62,8 +62,6 @@ public class LocationTests {
 	 */
 	@Test
 	public void testMovePlayerToInvalidLocation() {
-		Location startLocation = this.gameManager.getCurrentLocation();
-
 		assertThrows(IllegalArgumentException.class, () -> {
 			this.gameManager.movePlayer(Direction.SOUTH);
 		});

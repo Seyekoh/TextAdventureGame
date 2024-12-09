@@ -20,7 +20,7 @@ public class TakeDamageTest {
 	@Test
 	public void testTakeDamage() {
 		Player player = new Player();
-		player.takeDamage(10);
+		player.applyDamage(10);
 		assertTrue(player.getHealth() == 90);
 	}
 
