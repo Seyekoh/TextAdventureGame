@@ -2,7 +2,6 @@
 ## Java
 ##############################
 .mtj.tmp/
-*.class
 *.jar
 *.war
 *.ear
@@ -88,3 +87,6 @@ nb-configuration.xml
 ## Miscellaneous
 ##############################
 *.log
+
+!Code/src/
+!Code/src/**

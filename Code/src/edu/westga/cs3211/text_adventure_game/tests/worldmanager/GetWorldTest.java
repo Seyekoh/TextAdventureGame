@@ -1,4 +1,4 @@
-package edu.westga.cs3211.text_adventure_game.tests;
+package edu.westga.cs3211.text_adventure_game.tests.worldmanager;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -7,21 +7,12 @@ import org.junit.jupiter.api.Test;
 import edu.westga.cs3211.text_adventure_game.model.WorldManager;
 
 /**
- * Tests the WorldManager class
+ * Tests the getWorld method
  * 
  * @author James Bridges
  * @version Fall 2024
  */
-public class WorldManagerTest {
-	
-	/**
-	 * Tests the constructor
-	 */
-	@Test
-	public void testConstructor() {
-		WorldManager manager = new WorldManager();
-		assertNotNull(manager);
-	}
+public class GetWorldTest {
 	
 	/**
 	 * Tests the getWorld method
@@ -31,4 +22,5 @@ public class WorldManagerTest {
 		WorldManager manager = new WorldManager();
 		assertNotNull(manager.getWorld());
 	}
+
 }
