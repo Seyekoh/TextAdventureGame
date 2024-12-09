@@ -3,6 +3,8 @@ package edu.westga.cs3211.text_adventure_game.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.westga.cs3211.text_adventure_game.model.GlobalEnums.Item;
+
 /**
  * The player in the game
  * 
@@ -11,7 +13,7 @@ import java.util.List;
  */
 public class Player {
 	private int health;
-	private List<String> inventory;
+	private List<Item> inventory;
 	
 	/**
 	 * Creates a new Player object
@@ -35,15 +37,18 @@ public class Player {
 	 * 
 	 * @param damage the amount of damage to take
 	 */
-	public void takeDamage(int damage) {
+	public void applyDamage(int damage) {
 		this.health -= damage;
+		if (this.health < 0) {
+			this.health = 0;
+		}
     }
 	
 	/**
 	 * Gets the player's inventory
 	 * @return inventory the player's inventory
 	 */
-	public List<String> getInventory() {
+	public List<Item> getInventory() {
 		return this.inventory;
 	}
 	
@@ -51,8 +56,8 @@ public class Player {
 	 * Adds an item to the player's inventory
 	 * @param item the item to add
 	 */
-	public void addItemToInventory(String item) {
-		if (item == null || item.isBlank()) {
+	public void addItemToInventory(Item item) {
+		if (item == null) {
 			throw new IllegalArgumentException("Item cannot be null or blank");
 		}
 		this.inventory.add(item);
@@ -63,7 +68,7 @@ public class Player {
 	 * @param item the item to remove
 	 * @return true if the item was removed, false otherwise
 	 */
-	public boolean removeItemFromInventory(String item) {
+	public boolean removeItemFromInventory(Item item) {
 		return this.inventory.remove(item);
 	}
 	

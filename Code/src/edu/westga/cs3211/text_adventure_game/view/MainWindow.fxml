@@ -7,20 +7,20 @@
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane minHeight="296.0" minWidth="573.0" prefHeight="366.0" prefWidth="751.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.westga.cs3211.text_adventure_game.view.MainWindow">
+<AnchorPane minHeight="296.0" minWidth="573.0" prefHeight="366.0" prefWidth="752.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.westga.cs3211.text_adventure_game.view.MainWindow">
    <children>
-      <TextArea fx:id="currentLocationDescriptionTextArea" layoutX="3.0" layoutY="32.0" prefHeight="136.0" prefWidth="350.0" />
+      <TextArea fx:id="currentLocationDescriptionTextArea" editable="false" layoutX="3.0" layoutY="32.0" prefHeight="96.0" prefWidth="350.0" wrapText="true" />
       <Label fx:id="currentLocationDescriptionsLabel" layoutX="109.0" layoutY="14.0" text="Current Location Description" />
       <Label fx:id="availableActionDescriptionsLabel" layoutX="384.0" layoutY="14.0" text="Available Action Descriptions" />
-      <Label fx:id="actionsComboBoxLabel" layoutX="122.0" layoutY="290.0" text="Actions" />
-      <ComboBox fx:id="actionsComboBox" layoutX="66.0" layoutY="311.0" prefWidth="150.0" />
-      <Button fx:id="takeActionButton" layoutX="226.0" layoutY="311.0" mnemonicParsing="false" onAction="#onTakeActionButtonClicked" text="Take Action" />
-      <TextArea fx:id="playerStatusTextArea" layoutX="573.0" layoutY="32.0" prefHeight="65.0" prefWidth="174.0" />
-      <Label fx:id="playerStatusLabel" layoutX="626.0" layoutY="14.0" text="Player Status" />
-      <TextArea fx:id="interactionDisplayTextArea" layoutX="3.0" layoutY="194.0" prefHeight="87.0" prefWidth="350.0" />
-      <Label layoutX="128.0" layoutY="174.0" text="Interaction Display" />
+      <Label fx:id="actionsComboBoxLabel" layoutX="122.0" layoutY="297.0" text="Actions" />
+      <ComboBox fx:id="actionsComboBox" layoutX="66.0" layoutY="314.0" prefWidth="150.0" />
+      <Button fx:id="takeActionButton" layoutX="226.0" layoutY="314.0" mnemonicParsing="false" onAction="#onTakeActionButtonClicked" text="Take Action" />
+      <TextArea fx:id="playerStatusTextArea" editable="false" layoutX="573.0" layoutY="32.0" prefHeight="65.0" prefWidth="166.0" />
+      <Label fx:id="playerStatusLabel" layoutX="622.0" layoutY="14.0" text="Player Status" />
+      <TextArea fx:id="interactionDisplayTextArea" editable="false" layoutX="3.0" layoutY="158.0" prefHeight="139.0" prefWidth="350.0" wrapText="true" />
+      <Label layoutX="129.0" layoutY="138.0" text="Interaction Display" />
       <ListView fx:id="availableActionDescriptionsListView" layoutX="361.0" layoutY="32.0" prefHeight="306.0" prefWidth="200.0" />
-      <ListView fx:id="inventoryListView" layoutX="572.0" layoutY="138.0" prefHeight="200.0" prefWidth="166.0" />
+      <ListView fx:id="inventoryListView" editable="true" layoutX="572.0" layoutY="138.0" prefHeight="200.0" prefWidth="166.0" />
       <Label layoutX="630.0" layoutY="120.0" text="Inventory" />
    </children>
 </AnchorPane>

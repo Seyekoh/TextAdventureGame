@@ -1,5 +1,6 @@
 package edu.westga.cs3211.text_adventure_game.view;
 
+import edu.westga.cs3211.text_adventure_game.model.GlobalEnums.Item;
 import edu.westga.cs3211.text_adventure_game.viewModel.ViewModel;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -28,7 +29,7 @@ public class MainWindow {
 	private TextArea playerStatusTextArea;
 	
 	@FXML
-	private ListView<String> inventoryListView;
+	private ListView<Item> inventoryListView;
 	
 	@FXML
 	private ComboBox<String> actionsComboBox;
@@ -55,8 +56,7 @@ public class MainWindow {
 		this.bindTextAreaProperties();
 		this.bindListViewProperties();
 		this.bindComboBoxProperties();		
-		this.addChangeListenerToComboBox();		
-		this.enableWordWrap();
+		this.addChangeListeners();
 		this.bindButtonDisableProperty();
 	}
 	
@@ -75,7 +75,7 @@ public class MainWindow {
 		this.actionsComboBox.itemsProperty().bind(this.viewModel.availableActionsProperty());
 	}
 	
-	private void addChangeListenerToComboBox() {
+	private void addChangeListeners() {
 		javafx.application.Platform.runLater(() -> {
 			if (!this.actionsComboBox.getItems().isEmpty()) {
                 this.actionsComboBox.getSelectionModel().select(0);
@@ -87,11 +87,12 @@ public class MainWindow {
 				this.actionsComboBox.getSelectionModel().select(0);
 			}
 		});
-	}
-	
-	private void enableWordWrap() {
-		this.currentLocationDescriptionTextArea.setWrapText(true);
-		this.interactionDisplayTextArea.setWrapText(true);
+		
+		this.inventoryListView.getSelectionModel().selectedItemProperty().addListener((obs, oldValue, newValue) -> {
+            if (newValue != null) {
+            	this.viewModel.setItem(newValue);
+            }
+		});
 	}
 	
 	private void bindButtonDisableProperty() {
