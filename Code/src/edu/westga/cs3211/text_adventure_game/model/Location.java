@@ -5,6 +5,7 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 
+import edu.westga.cs3211.text_adventure_game.model.GlobalEnums.ActionType;
 import edu.westga.cs3211.text_adventure_game.model.GlobalEnums.Direction;
 import edu.westga.cs3211.text_adventure_game.model.GlobalEnums.HazardType;
 import edu.westga.cs3211.text_adventure_game.model.GlobalEnums.LocationName;
@@ -99,19 +100,16 @@ public class Location {
 	 * Sets the location as searched.
 	 */
 	public void setSearched() {
-		if (!this.isSearched || this.startingItem != Item.NONE) {
-			this.items.add(this.startingItem);
-		}
 		this.isSearched = true;
 	}
-	
+
 	/**
-	 * Gets the starting item. 
+	 * Gets the starting item.
 	 * 
 	 * @return the starting item
 	 */
 	public Item getStartingItem() {
-        return this.startingItem;
+		return this.startingItem;
 	}
 
 	/**
@@ -212,6 +210,17 @@ public class Location {
 	}
 
 	/**
+	 * Removes all take actions from the location
+	 */
+	public void removeTakeActions() {
+		for (int idx = 0; idx < this.actions.size(); idx++) {
+			if (this.actions.get(idx).getType() == ActionType.TAKE) {
+				this.actions.remove(idx);
+			}
+		}
+	}
+
+	/**
 	 * Gets the items at the location
 	 * 
 	 * @return the items at the location
@@ -243,7 +252,7 @@ public class Location {
 		if (item == null) {
 			throw new IllegalArgumentException("Item cannot be null");
 		}
-		
+
 		this.items.remove(item);
 	}
 

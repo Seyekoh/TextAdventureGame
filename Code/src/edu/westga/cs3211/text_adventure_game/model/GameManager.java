@@ -162,10 +162,13 @@ public class GameManager {
 			this.setCurrentLocationDescription(this.currentLocation.getDescription() + "\n\nLocation Items:\n");
 			this.setInteractionInfo("You have searched the location and found an item.\n\n");
 			this.currentLocation.setSearched();
-			this.currentLocation.addAction(new Action(GlobalEnums.ActionType.TAKE.toString(),
-					this.currentLocation.getStartingItem().toString(), GlobalEnums.ActionType.TAKE));
+			this.currentLocation.addItem(this.currentLocation.getStartingItem());
+
+			this.currentLocation.removeTakeActions();
 
 			for (Item item : this.currentLocation.getItems()) {
+				this.currentLocation.addAction(new Action(GlobalEnums.ActionType.TAKE.toString(), item.toString(),
+						GlobalEnums.ActionType.TAKE));
 				this.setInteractionInfo(this.interactionInfo + item.getDescription() + "\n");
 				this.setCurrentLocationDescription(this.currentLocationDescription + item + "\n");
 			}
@@ -180,8 +183,9 @@ public class GameManager {
 			this.player.addItemToInventory(item);
 
 			this.setInteractionInfo("You have taken the item: " + item);
-			this.setCurrentLocationDescription("THIS IS WORKING");
 			this.setCurrentLocationDescription(this.currentLocation.getDescription() + "\n\nLocation Items:\n");
+			this.currentLocation.removeTakeActions();
+			System.out.println(this.currentLocation.getActions());
 			for (Item currItem : this.currentLocation.getItems()) {
 				this.setCurrentLocationDescription(this.currentLocationDescription + currItem + "\n");
 			}
@@ -284,22 +288,25 @@ public class GameManager {
 
 	private void dropItem(Item item) {
 		if (this.player.getInventory().isEmpty()) {
-			this.setInteractionInfo("You have no items to use.");
+			this.setInteractionInfo("You have no items to drop.");
 			return;
 		}
 
 		if (this.player.getInventory().contains(item)) {
 			this.player.getInventory().remove(item);
 			this.currentLocation.addItem(item);
-			this.currentLocation.addAction(
-					new Action(GlobalEnums.ActionType.TAKE.toString(), item.toString(), GlobalEnums.ActionType.TAKE));
+
 			this.setInteractionInfo("You have dropped the item: " + item);
 			this.setCurrentLocationDescription(this.currentLocation.getDescription() + "\n\nLocation Items:\n");
+
+			this.currentLocation.removeTakeActions();
 			for (Item currItem : this.currentLocation.getItems()) {
+				this.currentLocation.addAction(new Action(GlobalEnums.ActionType.TAKE.toString(), currItem.toString(),
+						GlobalEnums.ActionType.TAKE));
 				this.setCurrentLocationDescription(this.currentLocationDescription + currItem.getDescription() + "\n");
 			}
 		} else {
-			this.setInteractionInfo("You do not have that item in your inventory.");
+			this.setInteractionInfo("You must select an item to drop it.");
 		}
 	}
 
