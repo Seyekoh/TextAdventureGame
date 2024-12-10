@@ -17,25 +17,28 @@ import edu.westga.cs3211.text_adventure_game.model.GlobalEnums.LocationName;
 public class Location {
 	private LocationName name;
 	private String description;
-	
+
 	private HazardType hazardType;
-	
+
 	private boolean isGoal;
-	
+
 	private List<Action> actions;
-	
+
 	private EnumMap<Direction, Location> connections;
-	
+
+	private NPC npc;
+
 	/**
 	 * Creates a new Location object
 	 * 
-	 * @param name 			the location's name
-	 * @param description  	the location's description
-	 * @param hazardType 	the type of hazard
-	 * @param isGoal 		if the location is the goal
-	 * @param actions 		the actions available at the location
+	 * @param name        the location's name
+	 * @param description the location's description
+	 * @param hazardType  the type of hazard
+	 * @param isGoal      if the location is the goal
+	 * @param actions     the actions available at the location
 	 */
-	public Location(LocationName name, String description, HazardType hazardType, boolean isGoal, List<Action> actions) {
+	public Location(LocationName name, String description, HazardType hazardType, boolean isGoal,
+			List<Action> actions) {
 		if (name == null) {
 			throw new IllegalArgumentException("Name cannot be null");
 		}
@@ -51,16 +54,16 @@ public class Location {
 		if (actions == null) {
 			throw new IllegalArgumentException("Actions cannot be null");
 		}
-		
+
 		this.name = name;
 		this.description = description;
 		this.hazardType = hazardType;
 		this.isGoal = isGoal;
 		this.actions = actions;
-		
+
 		this.connections = new EnumMap<>(Direction.class);
 	}
-	
+
 	/**
 	 * Gets the location's name
 	 * 
@@ -69,16 +72,21 @@ public class Location {
 	public LocationName getName() {
 		return this.name;
 	}
-	
+
 	/**
 	 * Gets the location's description
 	 * 
 	 * @return the location's description
 	 */
 	public String getDescription() {
-		return this.description;
-    }
-	
+		if (!this.isNPCPresent()) {
+			return this.description;
+		} else {
+			return this.description.concat(" " + this.npc.getDescription());
+		}
+
+	}
+
 	/**
 	 * Gets the location's hazard type
 	 * 
@@ -87,15 +95,16 @@ public class Location {
 	public HazardType getHazardType() {
 		return this.hazardType;
 	}
-	
+
 	/**
 	 * Sets the location's hazard type
+	 * 
 	 * @param hazardType the hazard type to set
 	 */
 	public void setHazardType(HazardType hazardType) {
 		this.hazardType = hazardType;
 	}
-	
+
 	/**
 	 * Gets if the location is the goal
 	 * 
@@ -104,7 +113,7 @@ public class Location {
 	public boolean checkIfLocationIsGoal() {
 		return this.isGoal;
 	}
-	
+
 	/**
 	 * Sets the location is the goal
 	 * 
@@ -113,7 +122,7 @@ public class Location {
 	public void setIsGoal(boolean isGoal) {
 		this.isGoal = isGoal;
 	}
-	
+
 	/**
 	 * Gets the actions available at the location
 	 * 
@@ -122,21 +131,21 @@ public class Location {
 	public List<Action> getActions() {
 		return this.actions;
 	}
-	
+
 	/**
 	 * Sets the actions available at the location
 	 * 
-	 * @param actions	the actions available at the location
+	 * @param actions the actions available at the location
 	 */
 	public void setActions(List<Action> actions) {
 		this.actions = actions;
 	}
-	
+
 	/**
 	 * Sets the connections from the location
 	 * 
-	 * @param direction the direction of the connection
-	 * @param otherLocation  the location to connect to
+	 * @param direction     the direction of the connection
+	 * @param otherLocation the location to connect to
 	 */
 	public void addConnection(Direction direction, Location otherLocation) {
 		if (this.connections.containsKey(direction)) {
@@ -145,11 +154,11 @@ public class Location {
 		this.connections.put(direction, otherLocation);
 		otherLocation.connections.put(this.getOppositeDirection(direction), this);
 	}
-	
+
 	/**
 	 * Gets the opposite direction of the given direction
 	 * 
-	 * @param direction	the direction to get the opposite direction
+	 * @param direction the direction to get the opposite direction
 	 * 
 	 * @return the opposite direction
 	 */
@@ -171,7 +180,7 @@ public class Location {
 			throw new IllegalArgumentException("Invalid direction");
 		}
 	}
-	
+
 	/**
 	 * Gets the location connected in the given direction
 	 * 
@@ -181,7 +190,7 @@ public class Location {
 	public Location getConnection(Direction direction) {
 		return this.connections.get(direction);
 	}
-	
+
 	/**
 	 * Gets all connections from the location
 	 * 
@@ -190,7 +199,33 @@ public class Location {
 	public Map<Direction, Location> getConnections() {
 		return this.connections;
 	}
-	
+
+	/**
+	 * Places an npc to the location.
+	 * 
+	 * @param npc the npc to set.
+	 */
+	public void setNPC(NPC npc) {
+		this.npc = npc;
+	}
+
+	/**
+	 * Removes the npc from the location.
+	 * 
+	 */
+	public void removeNPC() {
+		this.npc = null;
+	}
+
+	/**
+	 * Checks if an npc is present in the location
+	 * 
+	 * @return true if present.
+	 */
+	public boolean isNPCPresent() {
+		return this.npc != null;
+	}
+
 	@Override
 	public String toString() {
 		return this.name.toString() + ": " + this.description;

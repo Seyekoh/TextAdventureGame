@@ -18,6 +18,7 @@ public class World {
 	private Map<LocationName, Location> locations;
 	private Location startLocation;
 	private Location goalLocation;
+	private NPC npc;
 	
 	/**
 	 * Creates a new World object
@@ -149,4 +150,23 @@ public class World {
 	public Map<LocationName, Location> getAllLocations() {
 		return this.locations;
     }
+	
+	/**
+	 * Adds the npc to the world.
+	 * 
+	 * @param npc the npc to add
+	 */
+	public void addNPC(NPC npc) {
+		this.npc = npc;
+	}
+	
+	/**
+	 * Moves the npc to the destination
+	 * 
+	 * @param npc the npc to move
+	 * @param destination the location that should contain the npc
+	 */
+	public void moveNPCToLocation(NPC npc, Location destination) {
+		destination.setNPC(npc);
+	}
 }

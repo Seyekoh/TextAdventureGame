@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.westga.cs3211.text_adventure_game.model.GlobalEnums.Direction;
+import edu.westga.cs3211.text_adventure_game.model.GlobalEnums.LocationName;
 
 /**
  * The world manager
@@ -35,6 +36,7 @@ public class WorldManager {
 		
 		this.createWorldMap();
 		this.populateActionsForLocations();
+		this.placeNPCAtStartingLocation();
 	}
 	
 	private void createLocations() {
@@ -69,6 +71,12 @@ public class WorldManager {
 			
 			location.setActions(actions);
 		}
+	}
+	
+	private void placeNPCAtStartingLocation() {
+		NPC npc = new NPC("A ghostly figure is sitting wistfully by the window.");
+		this.world.addNPC(npc);
+		this.world.moveNPCToLocation(npc, this.world.getLocationByName(LocationName.ATTIC));
 	}
 	
 	/**
