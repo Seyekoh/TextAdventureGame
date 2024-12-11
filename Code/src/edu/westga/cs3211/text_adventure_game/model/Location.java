@@ -24,7 +24,7 @@ public class Location {
 	private HazardType hazardType;
 
 	private boolean isGoal;
-
+  
 	private boolean isSearched;
 
 	private List<Action> actions;
@@ -34,6 +34,8 @@ public class Location {
 	private EnumMap<Direction, Location> connections;
 
 	private Item startingItem;
+
+	private NPC npc;
 
 	/**
 	 * Creates a new Location object
@@ -62,11 +64,10 @@ public class Location {
 		if (actions == null) {
 			throw new IllegalArgumentException("Actions cannot be null");
 		}
-
 		if (item == null) {
 			throw new IllegalArgumentException("Item cannot be null");
 		}
-
+    
 		this.name = name;
 		this.description = description;
 		this.hazardType = hazardType;
@@ -113,7 +114,7 @@ public class Location {
 	public Item getStartingItem() {
 		return this.startingItem;
 	}
-
+  
 	/**
 	 * Gets the location's description
 	 * 
@@ -130,6 +131,11 @@ public class Location {
 	 */
 	public void setDescription(String description) {
 		this.description = description;
+		if (!this.isNPCPresent()) {
+			return this.description;
+		} else {
+			return this.description.concat(" " + this.npc.getDescription());
+		}
 	}
 
 	/**
@@ -311,6 +317,34 @@ public class Location {
 		return this.connections;
 	}
 
+	/**
+	 * Places an npc to the location and adds an action to talk to them.
+	 * 
+	 * @param npc the npc to set.
+	 */
+	public void setNPC(NPC npc) {
+		this.npc = npc;
+		this.actions.add(new Action(ActionType.TALK.toString(), "Talk to ghostly figure.", ActionType.TALK));
+	}
+
+	/**
+	 * Removes the npc from the location as well as the ability to talk to them.
+	 * 
+	 */
+	public void removeNPC() {
+		this.npc = null;
+		this.actions.removeIf(action -> action.getType() == ActionType.TALK);
+	}
+
+	/**
+	 * Checks if an npc is present in the location
+	 * 
+	 * @return true if present.
+	 */
+	public boolean isNPCPresent() {
+		return this.npc != null;
+	}
+  
 	@Override
 	public String toString() {
 		return this.name.toString() + ": " + this.description;
