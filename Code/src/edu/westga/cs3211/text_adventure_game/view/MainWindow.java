@@ -37,14 +37,6 @@ public class MainWindow {
 	@FXML
 	private Button takeActionButton;
 	
-	@FXML
-	private void onTakeActionButtonClicked() {
-        String selectedAction = this.actionsComboBox.getSelectionModel().getSelectedItem();
-        if (selectedAction != null) {
-            this.viewModel.handleActionButtonPressed(selectedAction);
-        }
-	}
-	
 	/**
 	 * Sets the ViewModel and instantiates the bindings
 	 * 
@@ -58,6 +50,15 @@ public class MainWindow {
 		this.bindComboBoxProperties();		
 		this.addChangeListeners();
 		this.bindButtonDisableProperty();
+	}
+	
+	@FXML
+	private void onTakeActionButtonClicked() {
+        String selectedAction = this.actionsComboBox.getSelectionModel().getSelectedItem();
+        if (selectedAction != null) {
+            this.viewModel.handleActionButtonPressed(selectedAction);
+            this.inventoryListView.getSelectionModel().clearSelection();
+        }
 	}
 	
 	private void bindTextAreaProperties() {

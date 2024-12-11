@@ -69,7 +69,7 @@ public class ActionTest {
 	public void testTalkAction() {
 		Action action = new Action("TALK", "Test talking", ActionType.TALK);
 		
-		this.gameManager.performAction(action);
+		this.gameManager.performAction(action, Item.NONE);
 		assertEquals("Hey I have no clue what this dude is suppossed to say, but he is gonna move to the entrance now and wait for an item.", this.gameManager.getInteractionInfo());
 	}
 	

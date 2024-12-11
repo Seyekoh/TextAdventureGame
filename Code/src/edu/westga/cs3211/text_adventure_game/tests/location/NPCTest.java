@@ -12,6 +12,7 @@ import edu.westga.cs3211.text_adventure_game.model.GlobalEnums;
 import edu.westga.cs3211.text_adventure_game.model.Location;
 import edu.westga.cs3211.text_adventure_game.model.NPC;
 import edu.westga.cs3211.text_adventure_game.model.GlobalEnums.HazardType;
+import edu.westga.cs3211.text_adventure_game.model.GlobalEnums.Item;
 
 /**
  * Tests the Location class while it contains an NPC.
@@ -26,7 +27,7 @@ public class NPCTest {
 	 */
 	@Test
 	public void testDescriptionWhenNpcPresent() {
-		Location testLocation = new Location(GlobalEnums.LocationName.ATTIC, "This is a test location", HazardType.NONE, false, new ArrayList<>());
+		Location testLocation = new Location(GlobalEnums.LocationName.ATTIC, "This is a test location", HazardType.NONE, false, new ArrayList<>(), Item.NONE);
 		testLocation.setNPC(new NPC("This is a test NPC."));
 		
 		assertEquals("This is a test location This is a test NPC.", testLocation.getDescription());
@@ -37,7 +38,7 @@ public class NPCTest {
 	 */
 	@Test
 	public void testIsNPCPresentWhenNeverSet() {
-		Location testLocation = new Location(GlobalEnums.LocationName.ATTIC, "This is a test location", HazardType.NONE, false, new ArrayList<>());
+		Location testLocation = new Location(GlobalEnums.LocationName.ATTIC, "This is a test location", HazardType.NONE, false, new ArrayList<>(), Item.NONE);
 		assertFalse(testLocation.isNPCPresent());
 	}
 	
@@ -46,7 +47,7 @@ public class NPCTest {
 	 */
 	@Test
 	public void testRemoveNPC() {
-		Location testLocation = new Location(GlobalEnums.LocationName.ATTIC, "This is a test location", HazardType.NONE, false, new ArrayList<>());
+		Location testLocation = new Location(GlobalEnums.LocationName.ATTIC, "This is a test location", HazardType.NONE, false, new ArrayList<>(), Item.NONE);
 		testLocation.setNPC(new NPC("This is a test NPC."));
 		assertTrue(testLocation.isNPCPresent());
 		

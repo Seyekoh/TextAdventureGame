@@ -124,6 +124,7 @@ public class GameManager {
 			break;
 		case EXAMINE:
 			this.examineItem(item);
+			break;
 		case TALK:
 			this.talkToNPC();
 			break;
@@ -221,6 +222,12 @@ public class GameManager {
 		if (this.player.getInventory().contains(item)) {
 			this.player.getInventory().remove(item);
 			this.currentLocation.addItem(item);
+			
+			if (item == Item.RING) {
+				this.isRingOnFinger = false;
+			} else if (item == Item.DRESS) {
+				this.isDressWorn = false;
+			}
 
 			this.setInteractionInfo("You have dropped the item: " + item);
 			this.setCurrentLocationDescription(this.currentLocation.getDescription() + "\n\nLocation Items:\n");
@@ -316,7 +323,7 @@ public class GameManager {
 		}
 		if (this.isDiaryFound) {
 			this.setInteractionInfo(this.interactionInfo + System.lineSeparator()
-					+ " The music box's song is familiar. You remember the diary's mention of the haunting melody. Could this be the same music box?");
+					+ "The music box's song is familiar. You remember the diary's mention of the haunting melody. Could this be the same music box?");
 		}
 	}
 

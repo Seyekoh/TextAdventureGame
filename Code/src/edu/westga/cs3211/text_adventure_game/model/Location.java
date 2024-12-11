@@ -121,6 +121,10 @@ public class Location {
 	 * @return the location's description
 	 */
 	public String getDescription() {
+		if (this.isNPCPresent()) {
+			return this.description + " " + this.npc.getDescription();
+		}
+		
 		return this.description;
 	}
 
@@ -131,11 +135,6 @@ public class Location {
 	 */
 	public void setDescription(String description) {
 		this.description = description;
-		if (!this.isNPCPresent()) {
-			return this.description;
-		} else {
-			return this.description.concat(" " + this.npc.getDescription());
-		}
 	}
 
 	/**
