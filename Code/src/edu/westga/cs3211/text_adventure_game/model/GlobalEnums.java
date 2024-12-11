@@ -12,7 +12,8 @@ public class GlobalEnums {
 	 * The type of action that can be performed
 	 */
 	public enum ActionType {
-		MOVE
+		MOVE,
+		TALK
 	}
 	
 	/**

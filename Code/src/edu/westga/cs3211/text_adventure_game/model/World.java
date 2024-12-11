@@ -38,6 +38,15 @@ public class World {
 	}
 	
 	/**
+	 * Gets the npc
+	 * 
+	 * @return the npc
+	 */
+	public NPC getNPC() {
+		return this.npc;
+	}
+	
+	/**
 	 * Sets the start location of the world
 	 * @param startLocation the start location
 	 */

@@ -61,4 +61,15 @@ public class ActionTest {
 	    assertEquals(expected, actual);
 	}
 	
+	/**
+	 * Tests the performAction method when action is talk.
+	 */
+	@Test
+	public void testTalkAction() {
+		Action action = new Action("TALK", "Test talking", ActionType.TALK);
+		
+		this.gameManager.performAction(action);
+		assertEquals("Hey I have no clue what this dude is suppossed to say, but he is gonna move to the entrance now and wait for an item.", this.gameManager.getInteractionInfo());
+	}
+	
 }

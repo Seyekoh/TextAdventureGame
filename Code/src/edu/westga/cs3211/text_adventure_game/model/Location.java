@@ -4,6 +4,7 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 
+import edu.westga.cs3211.text_adventure_game.model.GlobalEnums.ActionType;
 import edu.westga.cs3211.text_adventure_game.model.GlobalEnums.Direction;
 import edu.westga.cs3211.text_adventure_game.model.GlobalEnums.HazardType;
 import edu.westga.cs3211.text_adventure_game.model.GlobalEnums.LocationName;
@@ -201,20 +202,22 @@ public class Location {
 	}
 
 	/**
-	 * Places an npc to the location.
+	 * Places an npc to the location and adds an action to talk to them.
 	 * 
 	 * @param npc the npc to set.
 	 */
 	public void setNPC(NPC npc) {
 		this.npc = npc;
+		this.actions.add(new Action(ActionType.TALK.toString(), "Talk to ghostly figure.", ActionType.TALK));
 	}
 
 	/**
-	 * Removes the npc from the location.
+	 * Removes the npc from the location as well as the ability to talk to them.
 	 * 
 	 */
 	public void removeNPC() {
 		this.npc = null;
+		this.actions.removeIf(action -> action.getType() == ActionType.TALK);
 	}
 
 	/**

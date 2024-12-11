@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.westga.cs3211.text_adventure_game.model.GlobalEnums.Direction;
+import edu.westga.cs3211.text_adventure_game.model.GlobalEnums.LocationName;
 
 /**
  * The game manager
@@ -77,9 +78,26 @@ public class GameManager {
 		case MOVE:
 			this.movePlayer(Direction.valueOf(action.getDescription()));
 			break;
+		case TALK:
+			this.talkToNPC();
+			break;
 		default:
 			throw new IllegalArgumentException("Unknown action type." + action.getType());
 		}
+	}
+
+	private void talkToNPC() {
+		NPC npc = this.world.getNPC();
+		Location attic = this.world.getLocationByName(LocationName.ATTIC);
+		Location entrance = this.world.getLocationByName(LocationName.ENTRANCEHALL);
+		
+		this.setInteractionInfo(npc.getDialogue());
+		
+		this.world.moveNPCToLocation(npc, entrance);
+		attic.removeNPC();
+		
+		npc.setDialogue("The dialogue after moving to entrance hall.");
+		npc.setDescription("The ghost from before is staring at you.");
 	}
 	
 	/**
