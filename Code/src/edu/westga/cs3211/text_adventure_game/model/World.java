@@ -38,6 +38,15 @@ public class World {
 	}
 	
 	/**
+	 * Gets the goal location
+	 * 
+	 * @return the goal location
+	 */
+	public Location getGoalLocation() {
+		return this.goalLocation;
+	}
+	
+	/**
 	 * Gets the npc
 	 * 
 	 * @return the npc

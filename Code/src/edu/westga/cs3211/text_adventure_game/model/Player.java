@@ -45,11 +45,23 @@ public class Player {
     }
 	
 	/**
+	 * Checks whether a player has a specific item
+	 * 
+	 * @param item the item to check for
+	 * @return true if the player has the item, false otherwise
+	 */
+	public boolean doesPlayerHaveItem(Item item) {
+		return this.inventory.contains(item);
+	}
+	
+	/**
 	 * Gets the player's inventory
 	 * @return inventory the player's inventory
 	 */
 	public List<Item> getInventory() {
-		return this.inventory;
+		ArrayList<Item> inventory = new ArrayList<Item>();
+		inventory.addAll(this.inventory);
+		return inventory;
 	}
 	
 	/**

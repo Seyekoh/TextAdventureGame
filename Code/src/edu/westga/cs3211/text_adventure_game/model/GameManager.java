@@ -2,12 +2,7 @@ package edu.westga.cs3211.text_adventure_game.model;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
-
-import edu.westga.cs3211.text_adventure_game.model.GlobalEnums.ActionType;
-import edu.westga.cs3211.text_adventure_game.model.GlobalEnums.Direction;
 import edu.westga.cs3211.text_adventure_game.model.GlobalEnums.Item;
-import edu.westga.cs3211.text_adventure_game.model.GlobalEnums.LocationName;
 
 /**
  * The game manager
@@ -23,13 +18,16 @@ public class GameManager {
 	private boolean isGameOverLose = false;
 	private boolean isGameOverWin = false;
 
-	private boolean isDiaryFound = false;
+	private boolean isDiaryRead = false;
 	private boolean isRingOnFinger = false;
 	private boolean isDressWorn = false;
+	private boolean isMusicBoxUsed = false;
 
 	private String gameOverMessage;
 	private String interactionInfo;
 	private String currentLocationDescription;
+
+	private ActionHandler actionHandler;
 
 	/**
 	 * Constructor for the GameManager
@@ -39,6 +37,7 @@ public class GameManager {
 		this.world = this.worldManager.getWorld();
 		this.player = new Player();
 		this.currentLocation = this.world.getStartLocation();
+		this.actionHandler = new ActionHandler(this);
 		this.currentLocationDescription = this.currentLocation.getDescription();
 	}
 
@@ -79,6 +78,81 @@ public class GameManager {
 	}
 
 	/**
+	 * Gets if the player is currently wearing the ring
+	 * 
+	 * @return true if the player is wearing the ring, false otherwise
+	 */
+	public boolean getIsRingOnFinger() {
+		return this.isRingOnFinger;
+	}
+
+	/**
+	 * Gets if the player is currently wearing the dress
+	 * 
+	 * @return true if the player is wearing the dress, false otherwise
+	 */
+	public boolean getIsDressWorn() {
+		return this.isDressWorn;
+	}
+
+	/**
+	 * Gets if the diary is read
+	 * 
+	 * @return true if the diary is read, false otherwise
+	 */
+	public boolean getIsDiaryRead() {
+		return this.isDiaryRead;
+	}
+
+	/**
+	 * Gets if the music box is used
+	 * 
+	 * @return true if the music box is used, false otherwise
+	 */
+	public boolean getIsMusicBoxUsed() {
+		return this.isMusicBoxUsed;
+	}
+
+	/**
+	 * Gets the interaction info
+	 * 
+	 * @return the interaction info
+	 */
+	public String getInteractionInfo() {
+		return this.interactionInfo;
+	}
+
+	/**
+	 * Gets the world.
+	 * 
+	 * @return the world
+	 */
+	public World getWorld() {
+		return this.world;
+	}
+
+	/**
+	 * Gets all available actions from the current Location and the player
+	 * 
+	 * 
+	 * @return the available actions
+	 */
+	public ArrayList<Action> getAllAvailableActions() {
+		ArrayList<Action> actions = new ArrayList<Action>();
+		actions.addAll(this.currentLocation.getActions());
+		return actions;
+	}
+
+	/**
+	 * Gets the player's inventory
+	 * 
+	 * @return the player's inventory
+	 */
+	public List<Item> getPlayerInventory() {
+		return this.player.getInventory();
+	}
+
+	/**
 	 * Sets the current location description.
 	 * 
 	 * @param description the description to set.
@@ -89,6 +163,93 @@ public class GameManager {
 		}
 
 		this.currentLocationDescription = description;
+	}
+
+	/**
+	 * Sets the interaction info
+	 * 
+	 * @param hazardData the hazard data
+	 * @param damage     the damage
+	 */
+	public void setInteractionInfo(HazardData hazardData, int damage) {
+		this.interactionInfo = "You have taken " + damage + " damage due to: " + System.lineSeparator() + "\t"
+				+ hazardData.getDescription();
+	}
+
+	/**
+	 * Sets the interaction info
+	 * 
+	 * @param interactionInfo the interaction information
+	 */
+	public void setInteractionInfo(String interactionInfo) {
+		this.interactionInfo = interactionInfo;
+	}
+
+	/**
+	 * Sets the current location
+	 * 
+	 * @param location the location to set
+	 */
+	public void setCurrentLocation(Location location) {
+		if (location == null) {
+			throw new IllegalArgumentException("Location cannot be null");
+		}
+		this.currentLocation = location;
+	}
+
+	/**
+	 * Sets if the game is won
+	 * 
+	 * @param isGameWon true if the game is won, false otherwise
+	 */
+	public void setIsGameWon(boolean isGameWon) {
+		this.isGameOverWin = isGameWon;
+	}
+
+	/**
+	 * Sets if the game is lost
+	 * 
+	 * @param isGameLost true if the game is lost, false otherwise
+	 */
+	public void setIsGameLost(boolean isGameLost) {
+		this.isGameOverLose = isGameLost;
+	}
+
+	/**
+	 * Sets if the diary is read
+	 * 
+	 * @param isDiaryRead true if the diary is read, false otherwise
+	 */
+	public void setIsDiaryRead(boolean isDiaryRead) {
+		this.isDiaryRead = isDiaryRead;
+	}
+
+	/**
+	 * Sets if the music box is used
+	 * 
+	 * @param isMusicBoxUsed true if the music box is used, false otherwise
+	 */
+	public void setIsMusicBoxUsed(boolean isMusicBoxUsed) {
+		this.isMusicBoxUsed = isMusicBoxUsed;
+	}
+
+	/**
+	 * Sets if player is weating the ring
+	 * 
+	 * @param isRingOnFinger true if the player is wearing the ring, false otherwise
+	 */
+	public void setIsRingOnFinger(boolean isRingOnFinger) {
+		this.isRingOnFinger = isRingOnFinger;
+
+	}
+
+	/**
+	 * Sets if player is wearing the dress
+	 * 
+	 * @param isDressWorn true if the player is wearing the dress, false otherwise
+	 */
+	public void setIsDressWorn(boolean isDressWorn) {
+		this.isDressWorn = isDressWorn;
 	}
 
 	/**
@@ -107,216 +268,16 @@ public class GameManager {
 	 * @param item   the item to use
 	 */
 	public void performAction(Action action, Item item) {
-		switch (action.getType()) {
-		case MOVE:
-			this.movePlayer(Direction.valueOf(action.getDescription()));
-			break;
-		case SEARCH:
-			this.search();
-			break;
-		case TAKE:
-			this.takeItem(item);
-			break;
-		case USE:
-			this.useItem(item);
-			break;
-		case DROP:
-			this.dropItem(item);
-			break;
-		case EXAMINE:
-			this.examineItem(item);
-			break;
-		case TALK:
-			this.talkToNPC();
-			break;
-		case GIVE:
-			this.giveItem(item);
-			break;
-		default:
-			throw new IllegalArgumentException("Unknown action type." + action.getType());
-		}
-	}
-
-	private void giveItem(Item item) {
-		switch (item) {
-		case POTION:
-			this.givePotion();
-			break;
-		case RING:
-		case DRESS:
-			this.giveWifeItem();
-			break;
-		case DIARY:
-			this.giveDiary();
-			break;
-		case MUSICBOX:
-			this.giveMusicBox();
-			break;
-		case NONE:
-			this.setInteractionInfo("There is nothing selected to give.");
-			break;
-		default:
-			throw new IllegalArgumentException("Unknown item: " + item);
-		}
-	}
-
-	private void givePotion() {
-		this.setInteractionInfo(
-				"Ghost: Could it be my favorite drink... chocolate milk? I'm not sure how long its been sitting out though.");
-	}
-
-	private void giveWifeItem() {
-		this.setInteractionInfo("Ghost: That wasn't what I was looking for. Please put that back where you found it.");
-	}
-
-	private void giveDiary() {
-		this.setInteractionInfo(
-				"Ghost: Oh hey. I haven't seen that in over 6000 years. That's pretty cool. Still not gonna let you out though.");
-	}
-
-	private void giveMusicBox() {
-		this.setInteractionInfo(
-				"Ghost: Yes! That's it. That's what I was missing. Thank you for your assistance. Let me open the door for you. Goodbye.");
-		this.player.removeItemFromInventory(Item.MUSICBOX);
-		this.world.connectLocations(this.currentLocation, Direction.SOUTH,
-				this.world.getLocationByName(GlobalEnums.LocationName.EXIT));
-		this.currentLocation.addAction(new Action(GlobalEnums.ActionType.MOVE.toString(), Direction.SOUTH.toString(),
-				GlobalEnums.ActionType.MOVE));
-	}
-
-	private void talkToNPC() {
-		if (this.isDressWorn || this.isRingOnFinger) {
-			this.inflictGhostWrathOnPlayer();
-		} else {
-			NPC npc = this.world.getNPC();
-			Location attic = this.world.getLocationByName(LocationName.ATTIC);
-			Location entrance = this.world.getLocationByName(LocationName.ENTRANCEHALL);
-
-			this.setInteractionInfo(npc.getDialogue());
-
-			if (attic.isNPCPresent()) {
-				this.world.moveNPCToLocation(npc, entrance);
-				attic.removeNPC();
-
-				npc.setDialogue(
-						"Ghost: Yes I remember now. Bring me the heirloom from my marriage and I shall grant you freedom from this mansion.");
-				npc.setDescription("The ghost from before is staring at you.");
-			} else if (entrance.isNPCPresent()) {
-				this.world.getLocationByName(LocationName.ENTRANCEHALL)
-						.addAction(new Action(ActionType.GIVE.toString(), "item to ghost", ActionType.GIVE));
-			}
-		}
-	}
-
-	private void inflictGhostWrathOnPlayer() {
-		HazardData ghostWrath = new HazardData(25, "The ghost gives you an icy chill stare.");
-		this.setInteractionInfo(ghostWrath, 25);
-		this.player.applyDamage(25);
-		this.interactionInfo = this.interactionInfo.concat(" Ghost: You shouldn't be wearing that!!!");
-		
-		if (!this.checkIfPlayerIsAlive()) {
-			this.isGameOverLose = true;
-			this.interactionInfo = this.interactionInfo.concat(" You are frozen completely. Your journey is over and you have lost the game. Better luck next time.");
-		}
-	}
-
-	/**
-	 * Moves the player in the given direction
-	 * 
-	 * @param direction the direction to move the player.
-	 */
-	public void movePlayer(Direction direction) {
-		Location nextLocation = this.currentLocation.getConnection(direction);
-		if (nextLocation == null) {
-			throw new IllegalArgumentException("There is no location in that direction.");
+		if (action == null) {
+			throw new IllegalArgumentException("Action cannot be null");
 		}
 
-		if (this.world.checkIfLocationIsHazard(nextLocation)) {
-			int damage = this.world.getHazardDataForLocation(nextLocation).getDamage();
-			this.player.applyDamage(damage);
-			this.setInteractionInfo(this.world.getHazardDataForLocation(nextLocation), damage);
+		if (item == null) {
+			throw new IllegalArgumentException("Item cannot be null");
 		}
 
-		if (!this.checkIfPlayerIsAlive()) {
-			this.setInteractionInfo(this.world.getHazardDataForLocation(nextLocation),
-					this.world.getHazardDataForLocation(nextLocation).getDamage());
-			this.onGameOverLose(nextLocation);
-		}
-
-		if (this.world.checkIfLocationIsGoal(nextLocation)) {
-			this.currentLocation = nextLocation;
-			this.isGameOverWin = true;
-			this.onGameOverWin(nextLocation);
-		}
-
-		this.currentLocation = nextLocation;
-		this.setCurrentLocationDescription(this.currentLocation.getDescription() + "\n\nLocation Items:\n");
+		this.actionHandler.handleAction(action, item);
 		this.updateAvailableActions();
-	}
-
-	private void search() {
-		if (!this.currentLocation.isSearched()) {
-			this.setCurrentLocationDescription(this.currentLocation.getDescription() + "\n\nLocation Items:\n");
-			this.setInteractionInfo("You have searched the location and found an item.\n\n");
-			this.setInteractionInfo(
-					this.interactionInfo + this.currentLocation.getStartingItem().getDescription() + "\n");
-
-			this.currentLocation.setSearched(true);
-			if (!this.currentLocation.getItems().contains(this.currentLocation.getStartingItem())) {
-				this.currentLocation.addItem(this.currentLocation.getStartingItem());
-			}
-
-			this.updateAvailableActions();
-		} else {
-			this.setInteractionInfo("You search the location and find nothing of interest.");
-		}
-	}
-
-	private void takeItem(Item item) {
-		if (this.currentLocation.getItems().contains(item)) {
-			this.currentLocation.removeItem(item);
-			this.player.addItemToInventory(item);
-
-			this.setInteractionInfo("You have taken the item: " + item);
-			this.setCurrentLocationDescription(this.currentLocation.getDescription() + "\n\nLocation Items:\n");
-
-			this.updateAvailableActions();
-		} else {
-			this.setInteractionInfo("There is no item to take.");
-		}
-	}
-
-	private void dropItem(Item item) {
-		if (this.player.getInventory().isEmpty()) {
-			this.setInteractionInfo("You have no items to drop.");
-			return;
-		}
-
-		if (this.player.getInventory().contains(item)) {
-			this.player.getInventory().remove(item);
-			this.currentLocation.addItem(item);
-
-			if (item == Item.RING) {
-				this.isRingOnFinger = false;
-			} else if (item == Item.DRESS) {
-				this.isDressWorn = false;
-			}
-
-			this.setInteractionInfo("You have dropped the item: " + item);
-			this.setCurrentLocationDescription(this.currentLocation.getDescription() + "\n\nLocation Items:\n");
-
-			this.updateAvailableActions();
-		} else {
-			this.setInteractionInfo("You must select an item to drop it.");
-		}
-	}
-
-	private void examineItem(Item item) {
-		if (item == Item.NONE) {
-			this.setInteractionInfo("You must select an item to examine it.");
-		} else {
-			this.setInteractionInfo("You examine the item:\n" + item.getDescription());
-		}
 	}
 
 	private void updateAvailableActions() {
@@ -328,125 +289,25 @@ public class GameManager {
 		}
 	}
 
-	private void useItem(Item item) {
-		if (this.player.getInventory().isEmpty()) {
-			this.setInteractionInfo("You have no items to use.");
-			return;
-		}
-
-		switch (item) {
-		case POTION:
-			this.usePotion(item);
-			break;
-		case RING:
-			this.useRing();
-			break;
-		case DIARY:
-			this.useDiary();
-			break;
-		case MUSICBOX:
-			this.useMusicBox();
-			break;
-		case DRESS:
-			this.useDress();
-			break;
-		default:
-			this.setInteractionInfo("You must select an item to use.");
-		}
-	}
-
-	private void useDiary() {
-		this.setInteractionInfo(
-				"You open the diary and read the faded ink. The journal is filled with heartfelt entries from a grieving man, recounting cherished moments with his late wife. Her favorite song, a haunting melody from an old music box, is mentioned time and time again, a symbol of their undying bond.");
-		this.isDiaryFound = true;
-
-		if (this.player.getInventory().contains(GlobalEnums.Item.MUSICBOX)) {
-			this.setInteractionInfo(this.interactionInfo + System.lineSeparator() + System.lineSeparator()
-					+ "The diary's mention of the haunting melody catches your attention. You remember the music box in your inventory. Perhaps the two are connected.");
-		}
-	}
-
-	private void useRing() {
-		if (this.isRingOnFinger) {
-			this.setInteractionInfo("You already have the ring on your finger.");
-		} else {
-			this.setInteractionInfo("You slip the ring onto your finger. Oddly enough, it's a perfect fit.");
-			this.isRingOnFinger = true;
-		}
-	}
-
-	private void useDress() {
-		if (this.isDressWorn) {
-			this.setInteractionInfo("You are already wearing the dress.");
-		} else {
-			this.setInteractionInfo(
-					"You put on the dress. The fabric is soft and cool against your skin, and the color is a deep, rich crimson. It's a beautiful garment, fit for a grand ball.");
-			this.isDressWorn = true;
-		}
-	}
-
-	private void useMusicBox() {
-		this.setInteractionInfo(
-				"You turn the crank on the music box. The haunting melody fills the room, echoing off the walls. The sound is both beautiful and eerie, sending shivers down your spine.");
-		if (this.currentLocation == this.world.getLocationByName(GlobalEnums.LocationName.BALLROOM)) {
-			this.setInteractionInfo(this.interactionInfo + System.lineSeparator()
-					+ "The shadows in the room seem to dance to the music, swirling and twirling in time with the melody. It's a mesmerizing sight, and watching it soothes your soul."
-					+ System.lineSeparator() + "\tYou regain 5 health.");
-			this.player.applyDamage(-5);
-		}
-		if (this.isDiaryFound) {
-			this.setInteractionInfo(this.interactionInfo + System.lineSeparator()
-					+ "The music box's song is familiar. You remember the diary's mention of the haunting melody. Could this be the same music box?");
-		}
-	}
-
-	private void usePotion(Item item) {
-		this.setInteractionInfo("You use the potion and drink it. Its contents taste incredibly bitter.");
-		Random random = new Random();
-		int damage = random.nextInt(-10, 10);
-		this.player.applyDamage(damage);
-		if (damage > 0) {
-			this.setInteractionInfo(this.interactionInfo + System.lineSeparator()
-					+ "Your stomach gurgles uncomfortably. You probably shouldn't have done that."
-					+ System.lineSeparator() + "\tYou have taken " + damage + " damage.");
-		} else if (damage == 0) {
-			this.setInteractionInfo(
-					this.interactionInfo + System.lineSeparator() + "You can't tell if it did anything.");
-		} else {
-			this.setInteractionInfo(this.interactionInfo + System.lineSeparator() + "Surprisingly, you feel better."
-					+ System.lineSeparator() + "\tYou have gained " + -damage + " health.");
-		}
-
-		this.player.getInventory().remove(item);
-	}
-
-	private void setInteractionInfo(HazardData hazardData, int damage) {
-		this.interactionInfo = "You have taken " + damage + " damage due to: " + System.lineSeparator() + "\t"
-				+ hazardData.getDescription();
-	}
-
-	private void setInteractionInfo(String interactionInfo) {
-		this.interactionInfo = interactionInfo;
-	}
-
 	/**
-	 * Gets the interaction info
+	 * Triggers game over lose
 	 * 
-	 * @return the interaction info
+	 * @param location the location where the player died
 	 */
-	public String getInteractionInfo() {
-		return this.interactionInfo;
-	}
-
-	private void onGameOverLose(Location newLocation) {
-		this.currentLocation = newLocation;
+	public void onGameOverLose(Location location) {
+		this.currentLocation = location;
 		this.isGameOverLose = true;
 		this.setGameOverMessage();
 		this.setInteractionInfo(this.gameOverMessage);
 	}
 
-	private void onGameOverWin(Location newLocation) {
-		this.currentLocation = newLocation;
+	/**
+	 * Triggers game over win
+	 * 
+	 * @param location the winning location
+	 */
+	public void onGameOverWin(Location location) {
+		this.currentLocation = location;
 		this.isGameOverWin = true;
 		this.setGameOverMessage();
 		this.setInteractionInfo(this.gameOverMessage);
@@ -475,30 +336,12 @@ public class GameManager {
 		return this.world.getHazardDataForLocation(this.currentLocation).getDescription();
 	}
 
-	private boolean checkIfPlayerIsAlive() {
+	/**
+	 * Checks if the player is alive
+	 * 
+	 * @return true if the player is alive, false otherwise
+	 */
+	public boolean checkIfPlayerIsAlive() {
 		return this.player.getHealth() > 0;
-	}
-
-	/**
-	 * Gets all available actions from the current Location and the player
-	 * 
-	 * !!! This method does not have full functionality yet !!! !!! More will be
-	 * added when player actions are implemented !!!
-	 * 
-	 * @return the available actions
-	 */
-	public ArrayList<Action> getAllAvailableActions() {
-		ArrayList<Action> actions = new ArrayList<Action>();
-		actions.addAll(this.currentLocation.getActions());
-		return actions;
-	}
-
-	/**
-	 * Gets the player's inventory
-	 * 
-	 * @return the player's inventory
-	 */
-	public List<Item> getPlayerInventory() {
-		return this.player.getInventory();
 	}
 }
