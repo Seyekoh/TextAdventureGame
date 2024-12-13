@@ -1,0 +1,17 @@
+Use Case: Move to Different Locations
+Primary Actor: Player  
+Description: The player selects a new location to move to within the game.  
+Preconditions:
+- The current location allows movement to the target location.  
+- The player has the required access or items (if needed) for the new location.  
+
+Steps:
+1. The player selects a direction to move to a new location 
+2. The system verifies if the location is accessible.  
+3. If accessible, the player's position is updated to the new location.  
+4. A location description is displayed.  
+
+Extensions: 
+- If the location is locked, the system prompts for required actions or items.  
+- Hazards or NPCs at the new location trigger corresponding events.
+

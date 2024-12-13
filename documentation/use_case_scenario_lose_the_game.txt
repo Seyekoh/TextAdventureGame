@@ -1,0 +1,8 @@
+Use Case: Lose the Game
+Primary Actor: Player  
+Description: The player fails the game due to health depletion. 
+Preconditions: Failure condition is met.  
+
+Steps:  
+1. The system identifies the failure condition.  
+2. A losing message is displayed, and the game ends.

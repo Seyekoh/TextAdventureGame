@@ -1,0 +1,9 @@
+Use Case: Check Stats
+Primary Actor: Player  
+Description: The player checks their current stats, such as health or inventory 
+Preconditions: None.  
+
+Steps:  
+1. The player accesses the stats menu.  
+2. The system retrieves and displays current stats.  
+

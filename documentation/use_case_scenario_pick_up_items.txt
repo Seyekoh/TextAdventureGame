@@ -1,0 +1,11 @@
+Use Case: Pick Up Items
+Primary Actor: Player  
+Description: The player collects an item from the current location.  
+Preconditions: 
+- The item is present in the location.  
+- The player has space in their inventory.  
+
+Steps:  
+1. The player selects the item to pick up.  
+2. The system verifies inventory space.  
+3. The item is added to the player’s inventory, and the location is updated to reflect the change.  

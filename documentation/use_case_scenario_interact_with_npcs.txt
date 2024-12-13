@@ -1,0 +1,16 @@
+Use Case: Interact with NPCs
+Primary Actor: Player  
+Description: The player interacts with a non-player character (NPC).  
+Preconditions:  
+- An NPC is present in the location.  
+
+Steps:  
+1. The player initiates interaction with the NPC.  
+2. The system displays the NPC's dialogue or actions.  
+3. Based on the player's responses, the interaction progresses.  
+
+Extensions:  
+- The NPC offers quests with the player.
+- The NPC can potentially harm the player
+- The NPC can unlock a pathway
+

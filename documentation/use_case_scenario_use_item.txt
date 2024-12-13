@@ -1,0 +1,10 @@
+Use Case: Use Item
+Primary Actor: Player  
+Description: The player uses an item from their inventory.  
+Preconditions: The item is in the inventory and usable in the current context.  
+
+Steps: 
+1. The player selects the item from the inventory.  
+2. The system verifies the item's usability.  
+3. The item’s effect is applied, and the inventory is updated.  
+

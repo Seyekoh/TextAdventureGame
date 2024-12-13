@@ -1,0 +1,9 @@
+Use Case: Win the Game
+Primary Actor: Player  
+Description: The player completes all required objectives to win the game.  
+Preconditions: All objectives and prerequisites for winning are met.  
+
+Steps: 
+1. The system verifies the completion of all objectives.  
+2. A winning message is displayed, and the game ends.
+

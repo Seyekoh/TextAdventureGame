@@ -1,0 +1,9 @@
+Use Case: Get a Location Description
+Primary Actor: System  
+Description: The system provides details about the player’s current location.  
+Preconditions: The player is in a valid location.  
+
+Steps:  
+1. Upon entering or requesting information, the system retrieves the description.  
+2. The description is displayed to the player.
+

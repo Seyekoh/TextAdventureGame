@@ -1,0 +1,12 @@
+Use Case: Take Actions
+Primary Actor: Player  
+Description: The player performs an action in the current location.  
+Preconditions: The action is available in the current context (i.e. location)
+
+Steps:  
+1. The player selects an action from the available options.  
+2. The system processes the action and provides feedback or results.  
+
+Extensions:  
+- If the action requires items, the system verifies their presence in the inventory.
+
