@@ -66,7 +66,6 @@ public class ActionHandler {
 			this.giveItemToNPC(item);
 			break;
 		default:
-			System.out.println("Action:" + action.getType() + " Item:" + item);
 			throw new IllegalArgumentException("Unknown action type: " + action.getType());
 		}
 	}
@@ -249,14 +248,13 @@ public class ActionHandler {
 	private void useMusicBox() {
 		this.gameManager.setInteractionInfo(
 				"You turn the crank on the music box. The haunting melody fills the room, echoing off the walls. The sound is both beautiful and eerie, sending shivers down your spine.");
-		if (this.gameManager.getCurrentLocation() == this.gameManager.getWorld()
-				.getLocationByName(GlobalEnums.LocationName.BALLROOM)) {
+		if (this.gameManager.getCurrentLocation().getName() == LocationName.BALLROOM) {
 			this.gameManager.setInteractionInfo(this.gameManager.getInteractionInfo() + System.lineSeparator()
 					+ "The shadows in the room seem to dance to the music, swirling and twirling in time with the melody. It's a mesmerizing sight, and watching it soothes your soul.");
 			if (!this.gameManager.getIsMusicBoxUsed()) {
 				this.player.applyDamage(-10);
 				this.gameManager.setInteractionInfo(
-						this.gameManager.getInteractionInfo() + System.lineSeparator() + "\tYou regain 5 health.");
+						this.gameManager.getInteractionInfo() + System.lineSeparator() + "\tYou regain 10 health.");
 				this.gameManager.setIsMusicBoxUsed(true);
 			}
 		}

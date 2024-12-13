@@ -153,6 +153,24 @@ public class GameManager {
 	}
 
 	/**
+	 * Gets if player has won and the game is over
+	 * 
+	 * @return true if the game is over and the player has won, false otherwise
+	 */
+	public boolean getIsGameOverWin() {
+		return this.isGameOverWin;
+	}
+
+	/**
+	 * Gets if the player has lost and the game is over
+	 * 
+	 * @return true if the game is over and the player has lost, false otherwise
+	 */
+	public boolean getIsGameOverLose() {
+		return this.isGameOverLose;
+	}
+
+	/**
 	 * Sets the current location description.
 	 * 
 	 * @param description the description to set.
