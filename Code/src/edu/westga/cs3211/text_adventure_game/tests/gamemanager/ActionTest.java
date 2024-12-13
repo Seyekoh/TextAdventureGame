@@ -120,7 +120,7 @@ public class ActionTest {
 				.filter(action -> action.getType() == ActionType.TAKE).count();
 		assertEquals(0, takeActionsCount);
 		
-		String expectedDescription = "A grand hall with dusty chandeliers and an eerie silence.";
+		String expectedDescription = "Books line every wall. A strange, cold draft chills the air.\n\n" + "Location Items:\n";
 		assertEquals(expectedDescription, this.gameManager.getCurrentLocationDescription());
 	}
 	
@@ -142,7 +142,7 @@ public class ActionTest {
 				.filter(action -> action.getType() == ActionType.TAKE).count();
 		assertEquals(1, takeActionsCount);
 
-		String expectedDescription = "A grand hall with dusty chandeliers and an eerie silence." + Item.DIARY + "\n";
+		String expectedDescription = "Books line every wall. A strange, cold draft chills the air.\n\n" + "Location Items:\n" + Item.DIARY + "\n";
 		assertEquals(expectedDescription, this.gameManager.getCurrentLocationDescription());
 	}
 	
