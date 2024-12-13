@@ -1,5 +1,6 @@
 package edu.westga.cs3211.text_adventure_game.tests.gamemanager;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -63,6 +64,18 @@ public class GameOverTest {
         this.gameManager.performAction(action, Item.NONE);
 		
         assertTrue(this.gameManager.checkIfGameOver());
+	}
+	
+	/**
+	 * Tests the onGameOverLose(String) method
+	 */
+	@Test
+	public void testOnGameOverLose() {
+		String interactionInfo = "Test";
+		this.gameManager.setInteractionInfo(interactionInfo);
+		this.gameManager.onGameOverLose("Test");
+		
+		assertEquals("Test" + System.lineSeparator() + "Test", this.gameManager.getInteractionInfo());
 	}
 }
 

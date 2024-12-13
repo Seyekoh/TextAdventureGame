@@ -112,4 +112,14 @@ public class LocationTests {
 								+ " alive. Your journey is complete and you have won the game. Rest well adventurer.",
 						this.gameManager.getGameOverMessage()));
 	}
+	
+	/**
+	 * Tests the setCurrentLocation method with null location
+	 */
+	@Test
+	public void testSetCurrentLocationNull() {
+		assertThrows(IllegalArgumentException.class, () -> {
+			this.gameManager.setCurrentLocation(null);
+		});
+	}
 }

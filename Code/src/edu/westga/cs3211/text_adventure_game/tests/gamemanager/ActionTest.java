@@ -1,6 +1,8 @@
 package edu.westga.cs3211.text_adventure_game.tests.gamemanager;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -80,6 +82,68 @@ public class ActionTest {
 				+ "Ghost: I take it you wish to escape, yes? There is something I am missing, something I am looking for. Find it, and I shall set you free. I will be waiting for you by the entrance."
 				+ System.lineSeparator() + System.lineSeparator()
 				+ "Before you can say anything, the ghost fades away, leaving you alone.", this.gameManager.getInteractionInfo());
+	}
+	
+	/**
+	 * Tests the performAction method with null action
+	 */
+	@Test
+	public void testPerformActionWithNullAction() {
+		assertThrows(IllegalArgumentException.class, () -> {
+            this.gameManager.performAction(null, Item.NONE);
+        });
+	}
+	
+	/**
+	 * Tests the performAction method with null item
+	 */
+	@Test
+	public void testPerformActionWithNullItem() {
+		assertThrows(IllegalArgumentException.class, () -> {
+			this.gameManager.performAction(new Action("MOVE", Direction.UP.toString(), ActionType.MOVE), null);
+		});
+	}
+	
+	/**
+	 * Tests updateAvailableActions when no items are present in the current location.
+	 */
+	@Test
+	public void testUpdateAvailableActionsWithNoItems() {
+		World world = this.gameManager.getWorld();
+		this.gameManager.setCurrentLocation(world.getLocationByName(GlobalEnums.LocationName.LIBRARY));
+		assertEquals(0, this.gameManager.getCurrentLocation().getItems().size());
+		
+		Action dummyAction = new Action("DUMMY", "DUMMY", ActionType.USE);
+		this.gameManager.performAction(dummyAction, Item.NONE);
+		
+		long takeActionsCount = this.gameManager.getCurrentLocation().getActions().stream()
+				.filter(action -> action.getType() == ActionType.TAKE).count();
+		assertEquals(0, takeActionsCount);
+		
+		String expectedDescription = "A grand hall with dusty chandeliers and an eerie silence.";
+		assertEquals(expectedDescription, this.gameManager.getCurrentLocationDescription());
+	}
+	
+	/**
+	 * Tests updateAvailableActions when items are present in the current location.
+	 */
+	@Test
+	public void testUpdateAvailableActionsWithItems() {
+		World world = this.gameManager.getWorld();
+		this.gameManager.setCurrentLocation(world.getLocationByName(GlobalEnums.LocationName.LIBRARY));
+		assertEquals(0, this.gameManager.getCurrentLocation().getItems().size());
+		
+		this.gameManager.getCurrentLocation().addItem(Item.DIARY);
+
+		Action dummyAction = new Action("DUMMY", "DUMMY", ActionType.USE);
+		this.gameManager.performAction(dummyAction, Item.NONE);
+
+		long takeActionsCount = this.gameManager.getCurrentLocation().getActions().stream()
+				.filter(action -> action.getType() == ActionType.TAKE).count();
+		assertEquals(1, takeActionsCount);
+
+		String expectedDescription = "A grand hall with dusty chandeliers and an eerie silence." + Item.DIARY + "\n";
+		assertEquals(expectedDescription, this.gameManager.getCurrentLocationDescription());
 	}
 	
 }
