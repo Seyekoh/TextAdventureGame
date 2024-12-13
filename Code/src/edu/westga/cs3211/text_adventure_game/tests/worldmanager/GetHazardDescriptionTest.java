@@ -18,7 +18,7 @@ import edu.westga.cs3211.text_adventure_game.model.GlobalEnums.Item;
  * @author James Bridges
  * @version Fall 2024
  */
-public class GetHazardDescription {
+public class GetHazardDescriptionTest {
 
 	/**
 	 * Tests the getHazardDescription method
