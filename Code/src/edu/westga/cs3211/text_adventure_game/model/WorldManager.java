@@ -67,10 +67,6 @@ public class WorldManager {
 	private ArrayList<Location> connectFixedLocations() {
 		ArrayList<Location> fixedLocations = new ArrayList<>();
 		
-		this.world.connectLocations(this.world.getStartLocation(), Direction.SOUTH, this.world.getLocationByName(GlobalEnums.LocationName.EXIT));
-		fixedLocations.add(this.world.getLocationByName(GlobalEnums.LocationName.ENTRANCEHALL));
-		fixedLocations.add(this.world.getLocationByName(GlobalEnums.LocationName.EXIT));
-		
 		this.world.connectLocations(this.world.getLocationByName(GlobalEnums.LocationName.LIBRARY), Direction.UP, this.world.getLocationByName(GlobalEnums.LocationName.ATTIC));
 		fixedLocations.add(this.world.getLocationByName(GlobalEnums.LocationName.LIBRARY));
 		fixedLocations.add(this.world.getLocationByName(GlobalEnums.LocationName.ATTIC));

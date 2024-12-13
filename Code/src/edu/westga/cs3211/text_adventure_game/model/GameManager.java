@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import edu.westga.cs3211.text_adventure_game.model.GlobalEnums.ActionType;
 import edu.westga.cs3211.text_adventure_game.model.GlobalEnums.Direction;
 import edu.westga.cs3211.text_adventure_game.model.GlobalEnums.Item;
 import edu.westga.cs3211.text_adventure_game.model.GlobalEnums.LocationName;
@@ -128,25 +129,97 @@ public class GameManager {
 		case TALK:
 			this.talkToNPC();
 			break;
+		case GIVE:
+			this.giveItem(item);
+			break;
 		default:
 			throw new IllegalArgumentException("Unknown action type." + action.getType());
 		}
 	}
 
-	private void talkToNPC() {
-		NPC npc = this.world.getNPC();
-		Location attic = this.world.getLocationByName(LocationName.ATTIC);
-		Location entrance = this.world.getLocationByName(LocationName.ENTRANCEHALL);
-		
-		this.setInteractionInfo(npc.getDialogue());
-		
-		this.world.moveNPCToLocation(npc, entrance);
-		attic.removeNPC();
-		
-		npc.setDialogue("The dialogue after moving to entrance hall.");
-		npc.setDescription("The ghost from before is staring at you.");
+	private void giveItem(Item item) {
+		switch (item) {
+		case POTION:
+			this.givePotion();
+			break;
+		case RING:
+		case DRESS:
+			this.giveWifeItem();
+			break;
+		case DIARY:
+			this.giveDiary();
+			break;
+		case MUSICBOX:
+			this.giveMusicBox();
+			break;
+		case NONE:
+			this.setInteractionInfo("There is nothing selected to give.");
+			break;
+		default:
+			throw new IllegalArgumentException("Unknown item: " + item);
+		}
 	}
-	
+
+	private void givePotion() {
+		this.setInteractionInfo(
+				"Ghost: Could it be my favorite drink... chocolate milk? I'm not sure how long its been sitting out though.");
+	}
+
+	private void giveWifeItem() {
+		this.setInteractionInfo("Ghost: That wasn't what I was looking for. Please put that back where you found it.");
+	}
+
+	private void giveDiary() {
+		this.setInteractionInfo(
+				"Ghost: Oh hey. I haven't seen that in over 6000 years. That's pretty cool. Still not gonna let you out though.");
+	}
+
+	private void giveMusicBox() {
+		this.setInteractionInfo(
+				"Ghost: Yes! That's it. That's what I was missing. Thank you for your assistance. Let me open the door for you. Goodbye.");
+		this.player.removeItemFromInventory(Item.MUSICBOX);
+		this.world.connectLocations(this.currentLocation, Direction.SOUTH,
+				this.world.getLocationByName(GlobalEnums.LocationName.EXIT));
+		this.currentLocation.addAction(new Action(GlobalEnums.ActionType.MOVE.toString(), Direction.SOUTH.toString(),
+				GlobalEnums.ActionType.MOVE));
+	}
+
+	private void talkToNPC() {
+		if (this.isDressWorn || this.isRingOnFinger) {
+			this.inflictGhostWrathOnPlayer();
+		} else {
+			NPC npc = this.world.getNPC();
+			Location attic = this.world.getLocationByName(LocationName.ATTIC);
+			Location entrance = this.world.getLocationByName(LocationName.ENTRANCEHALL);
+
+			this.setInteractionInfo(npc.getDialogue());
+
+			if (attic.isNPCPresent()) {
+				this.world.moveNPCToLocation(npc, entrance);
+				attic.removeNPC();
+
+				npc.setDialogue(
+						"Ghost: Yes I remember now. Bring me the heirloom from my marriage and I shall grant you freedom from this mansion.");
+				npc.setDescription("The ghost from before is staring at you.");
+			} else if (entrance.isNPCPresent()) {
+				this.world.getLocationByName(LocationName.ENTRANCEHALL)
+						.addAction(new Action(ActionType.GIVE.toString(), "item to ghost", ActionType.GIVE));
+			}
+		}
+	}
+
+	private void inflictGhostWrathOnPlayer() {
+		HazardData ghostWrath = new HazardData(25, "The ghost gives you an icy chill stare.");
+		this.setInteractionInfo(ghostWrath, 25);
+		this.player.applyDamage(25);
+		this.interactionInfo = this.interactionInfo.concat(" Ghost: You shouldn't be wearing that!!!");
+		
+		if (!this.checkIfPlayerIsAlive()) {
+			this.isGameOverLose = true;
+			this.interactionInfo = this.interactionInfo.concat(" You are frozen completely. Your journey is over and you have lost the game. Better luck next time.");
+		}
+	}
+
 	/**
 	 * Moves the player in the given direction
 	 * 
@@ -222,7 +295,7 @@ public class GameManager {
 		if (this.player.getInventory().contains(item)) {
 			this.player.getInventory().remove(item);
 			this.currentLocation.addItem(item);
-			
+
 			if (item == Item.RING) {
 				this.isRingOnFinger = false;
 			} else if (item == Item.DRESS) {
