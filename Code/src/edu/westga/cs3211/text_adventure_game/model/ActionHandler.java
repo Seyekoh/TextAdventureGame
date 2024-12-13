@@ -2,8 +2,10 @@ package edu.westga.cs3211.text_adventure_game.model;
 
 import java.util.Random;
 
+import edu.westga.cs3211.text_adventure_game.model.GlobalEnums.ActionType;
 import edu.westga.cs3211.text_adventure_game.model.GlobalEnums.Direction;
 import edu.westga.cs3211.text_adventure_game.model.GlobalEnums.Item;
+import edu.westga.cs3211.text_adventure_game.model.GlobalEnums.LocationName;
 
 /**
  * The ActionHandler class. Used to handle player actions.
@@ -14,6 +16,7 @@ import edu.westga.cs3211.text_adventure_game.model.GlobalEnums.Item;
 public class ActionHandler {
 	private GameManager gameManager;
 	private Player player;
+	private World world;
 
 	/**
 	 * Creates a new ActionHandler object.
@@ -27,6 +30,7 @@ public class ActionHandler {
 
 		this.gameManager = gameManager;
 		this.player = this.gameManager.getPlayer();
+		this.world = this.gameManager.getWorld();
 	}
 
 	/**
@@ -55,7 +59,14 @@ public class ActionHandler {
 		case EXAMINE:
 			this.examineItem(item);
 			break;
+		case TALK:
+			this.talkToNPC();
+			break;
+		case GIVE:
+			this.giveItemToNPC(item);
+			break;
 		default:
+			System.out.println("Action:" + action.getType() + " Item:" + item);
 			throw new IllegalArgumentException("Unknown action type: " + action.getType());
 		}
 	}
@@ -78,14 +89,14 @@ public class ActionHandler {
 
 		if (this.player.getHealth() <= 0) {
 			this.gameManager.setInteractionInfo("You have died.");
-			this.gameManager.setCurrentLocation(nextLocation);
-			this.gameManager.checkIfGameOver();
+			this.gameManager.onGameOverLose(currentLocation);
 			return;
 		}
 
 		if (this.gameManager.getWorld().checkIfLocationIsGoal(nextLocation)) {
-			this.gameManager.setCurrentLocation(nextLocation);
-			this.gameManager.checkIfGameOver();
+			this.gameManager.setInteractionInfo("You escaped the haunted house! Congratulations!");
+			this.gameManager.onGameOverWin(currentLocation);
+			return;
 		}
 
 		this.gameManager.setCurrentLocation(nextLocation);
@@ -263,5 +274,100 @@ public class ActionHandler {
 					"You put on the dress. The fabric is soft and cool against your skin, and the color is a deep, rich crimson. It's a beautiful garment, fit for a grand ball.");
 			this.gameManager.setIsDressWorn(true);
 		}
+	}
+
+	private void talkToNPC() {
+		if (this.gameManager.getIsDressWorn() || this.gameManager.getIsRingOnFinger()) {
+			this.inflictGhostWrathOnPlayer();
+		} else {
+			NPC npc = this.world.getNPC();
+			Location attic = this.world.getLocationByName(LocationName.ATTIC);
+			Location entrance = this.world.getLocationByName(LocationName.ENTRANCEHALL);
+
+			this.gameManager.setInteractionInfo(npc.getDialogue());
+
+			if (attic.isNPCPresent()) {
+				this.world.moveNPCToLocation(npc, entrance);
+				attic.removeNPC();
+
+				npc.setDialogue(
+						"Ghost: I'm not quite sure what it was I was looking for... I vaguely recall writing about it. I just can't remember. Maybe you could help me remember?");
+				npc.setDescription("The ghost from before is staring at you.");
+			} else if (entrance.isNPCPresent()) {
+				this.world.getLocationByName(LocationName.ENTRANCEHALL)
+						.addAction(new Action(ActionType.GIVE.toString(), "item to ghost", ActionType.GIVE));
+			}
+		}
+	}
+
+	private void inflictGhostWrathOnPlayer() {
+		HazardData ghostWrath = new HazardData(25,
+				"The ghost gives you an icy chill stare. You can feel your body freezing.");
+		this.gameManager.setInteractionInfo(ghostWrath, 25);
+		this.player.applyDamage(25);
+		if (this.gameManager.getIsDressWorn()) {
+			this.gameManager.setInteractionInfo(this.gameManager.getInteractionInfo() + System.lineSeparator()
+					+ " Ghost: That dress is NOT yours to wear. Take it off immediately.");
+		} else if (this.gameManager.getIsRingOnFinger()) {
+			this.gameManager.setInteractionInfo(this.gameManager.getInteractionInfo() + System.lineSeparator()
+					+ " Ghost: That ring is NOT yours to wear. Take it off immediately.");
+		}
+
+		if (!this.gameManager.checkIfPlayerIsAlive()) {
+			this.gameManager.setIsGameLost(true);
+			this.gameManager.setInteractionInfo(this.gameManager.getInteractionInfo() + System.lineSeparator()
+					+ " You are frozen completely. Your journey is over and you have lost the game. Maybe next time you will be more careful.");
+		}
+	}
+
+	private void giveItemToNPC(Item item) {
+		switch (item) {
+		case POTION:
+			this.givePotion();
+			break;
+		case RING:
+			this.giveWifeItem();
+			break;
+		case DRESS:
+			this.giveWifeItem();
+			break;
+		case DIARY:
+			this.giveDiary();
+			break;
+		case MUSICBOX:
+			this.giveMusicBox();
+			break;
+		case NONE:
+			this.gameManager.setInteractionInfo("You must select an item to give to the ghost.");
+			break;
+		default:
+			throw new IllegalArgumentException("Unknown item: " + item);
+		}
+	}
+
+	private void givePotion() {
+		this.gameManager.setInteractionInfo(
+				"Ghost: Could it be my favorite drink... chocolate milk? I'm not sure how long its been sitting out though. I'll pass.");
+	}
+
+	private void giveWifeItem() {
+		this.gameManager.setInteractionInfo(
+				"Ghost: That wasn't what I was looking for. Please put that back where you found it.");
+	}
+
+	private void giveDiary() {
+		this.gameManager.setInteractionInfo(
+				"Ghost: My diary... I have not seen it in over 6000 years. It is not what I am looking for, but perhaps it can provide you some insight. I for one cannot bear to read it.");
+	}
+
+	private void giveMusicBox() {
+		Location currentLocation = this.gameManager.getCurrentLocation();
+		this.gameManager.setInteractionInfo(
+				"Ghost: Yes! That's it. That's what I was missing. Thank you for your assistance. Let me open the door for you. Goodbye.");
+		this.player.removeItemFromInventory(Item.MUSICBOX);
+		this.world.connectLocations(currentLocation, Direction.SOUTH,
+				this.world.getLocationByName(GlobalEnums.LocationName.EXIT));
+		currentLocation.addAction(new Action(GlobalEnums.ActionType.MOVE.toString(), Direction.SOUTH.toString(),
+				GlobalEnums.ActionType.MOVE));
 	}
 }

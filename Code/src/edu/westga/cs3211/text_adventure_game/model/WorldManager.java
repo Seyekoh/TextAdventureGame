@@ -43,61 +43,68 @@ public class WorldManager {
 	private void createLocations() {
 		ArrayList<Location> newLocations = this.locationReader.importLocations();
 		for (Location location : newLocations) {
-			
+
 			if (location.getName() == GlobalEnums.LocationName.ENTRANCEHALL) {
 				this.world.setStartLocation(location);
 			}
+			
+			if (location.getName() == GlobalEnums.LocationName.EXIT) {
+                this.world.setGoalLocation(location);
+			}
+			
 			this.world.addLocation(location);
 		}
 	}
 
 	private void createWorldMap() {
-		ArrayList<Location> remainingLocations = new ArrayList<>(this.world.getAllLocations().values());		
+		ArrayList<Location> remainingLocations = new ArrayList<>(this.world.getAllLocations().values());
 		ArrayList<Location> fixedLocations = new ArrayList<>(this.connectFixedLocations());
-		
+
 		this.removeStartLocationFromRemainingLocations(remainingLocations);
 		this.removeExitLocationFromRemainingLocations(remainingLocations);
 		this.keepMainFloorLocationsInRemainingLocations(remainingLocations);
-		
+
 		System.out.println(remainingLocations);
-				
-		this.connectRandomLocations(remainingLocations, fixedLocations);		
+
+		this.connectRandomLocations(remainingLocations, fixedLocations);
 	}
-	
+
 	private ArrayList<Location> connectFixedLocations() {
 		ArrayList<Location> fixedLocations = new ArrayList<>();
-		
-		this.world.connectLocations(this.world.getLocationByName(GlobalEnums.LocationName.LIBRARY), Direction.UP, this.world.getLocationByName(GlobalEnums.LocationName.ATTIC));
+
+		this.world.connectLocations(this.world.getLocationByName(GlobalEnums.LocationName.LIBRARY), Direction.UP,
+				this.world.getLocationByName(GlobalEnums.LocationName.ATTIC));
 		fixedLocations.add(this.world.getLocationByName(GlobalEnums.LocationName.LIBRARY));
 		fixedLocations.add(this.world.getLocationByName(GlobalEnums.LocationName.ATTIC));
-		
-		this.world.connectLocations(this.world.getLocationByName(GlobalEnums.LocationName.KITCHEN), Direction.DOWN, this.world.getLocationByName(GlobalEnums.LocationName.BASEMENT));
+
+		this.world.connectLocations(this.world.getLocationByName(GlobalEnums.LocationName.KITCHEN), Direction.DOWN,
+				this.world.getLocationByName(GlobalEnums.LocationName.BASEMENT));
 		fixedLocations.add(this.world.getLocationByName(GlobalEnums.LocationName.KITCHEN));
 		fixedLocations.add(this.world.getLocationByName(GlobalEnums.LocationName.BASEMENT));
-		
+
 		return fixedLocations;
 	}
-	
+
 	private void removeStartLocationFromRemainingLocations(ArrayList<Location> remainingLocations) {
 		remainingLocations.remove(this.world.getStartLocation());
 	}
-	
+
 	private void removeExitLocationFromRemainingLocations(ArrayList<Location> remainingLocations) {
 		remainingLocations.remove(this.world.getLocationByName(GlobalEnums.LocationName.EXIT));
 	}
-	
+
 	private void keepMainFloorLocationsInRemainingLocations(ArrayList<Location> remainingLocations) {
 		remainingLocations.remove(this.world.getLocationByName(GlobalEnums.LocationName.ATTIC));
 		remainingLocations.remove(this.world.getLocationByName(GlobalEnums.LocationName.BASEMENT));
 	}
-	
+
 	private void connectRandomLocations(ArrayList<Location> remainingLocations, ArrayList<Location> fixedLocations) {
 		Collections.shuffle(remainingLocations);
-		
+
 		Location randomLocation1 = remainingLocations.get(0);
 		Location randomLocation2 = remainingLocations.get(1);
 		Location randomLocation3 = remainingLocations.get(2);
-		
+
 		this.world.connectLocations(this.world.getStartLocation(), Direction.NORTH, randomLocation2);
 		this.world.connectLocations(randomLocation2, Direction.NORTH, randomLocation1);
 		this.world.connectLocations(randomLocation2, Direction.WEST, randomLocation3);
@@ -131,7 +138,7 @@ public class WorldManager {
 		this.world.addNPC(npc);
 		this.world.moveNPCToLocation(npc, this.world.getLocationByName(LocationName.ATTIC));
 	}
-	
+
 	/**
 	 * Gets the world object
 	 * 

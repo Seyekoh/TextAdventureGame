@@ -28,19 +28,19 @@ public class HazardManager {
 		for (HazardType type : HazardType.values()) {
 			switch (type) {
 				case GHOSTLYAPPARITION:
-					this.hazardDataMap.put(type, new HazardData(10, "A ghastly apparition appears and attacks you!"));
+					this.hazardDataMap.put(type, new HazardData(5, "A ghastly apparition appears and attacks you!"));
 					break;
 				case CURSEDSTOVE:
-					this.hazardDataMap.put(type, new HazardData(15, "The stove is cursed and burns you!"));
+					this.hazardDataMap.put(type, new HazardData(7, "The stove is cursed and burns you!"));
 					break;
 				case ROTTINGCORPSE:
 					this.hazardDataMap.put(type, new HazardData(100, "You are attacked by a rotting corpse!"));
 					break;
 				case CREEPYDOLL:
-					this.hazardDataMap.put(type, new HazardData(10, "A creepy doll attacks you!"));
+					this.hazardDataMap.put(type, new HazardData(3, "A creepy doll attacks you!"));
 					break;
 				case DANCINGSHADOWS:
-					this.hazardDataMap.put(type, new HazardData(18, "The shadows attack you!"));
+					this.hazardDataMap.put(type, new HazardData(10, "The shadows attack you!"));
 					break;
 				default:
 					this.hazardDataMap.put(type, new HazardData(0, "This area seems safe."));
