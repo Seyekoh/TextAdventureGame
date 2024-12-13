@@ -119,6 +119,7 @@ public class ViewModel {
 			if (action.getType() == ActionType.TAKE) {
 				this.gameManager.performAction(action, Item.valueOf(actionDetails[1]));
 			} else if (this.selectedInventoryItem != null) {
+				System.out.println("Performing action: " + action + " with item: " + this.selectedInventoryItem);
 				this.gameManager.performAction(action, this.selectedInventoryItem);
 			} else {
 				this.gameManager.performAction(action, Item.NONE);

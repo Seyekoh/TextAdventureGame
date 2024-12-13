@@ -62,4 +62,19 @@ public class ActionTest {
 		assertEquals(expected, actual);
 	}
 
+	/**
+	 * Tests the performAction method when action is talk.
+	 */
+	@Test
+	public void testTalkAction() {
+		Action action = new Action("TALK", "Test talking", ActionType.TALK);
+		
+		this.gameManager.performAction(action, Item.NONE);
+		assertEquals("The ghost gives you a cold stare, seemingly looking through you. "
+				+ "As you're about to step away, the ghost speaks to you." + System.lineSeparator() + System.lineSeparator()
+				+ "Ghost: I feel as though I am missing something. I take it you wish to escape, yes? There is something I am missing, something I am looking for. Find it, and I shall set you free. I will be waiting for you by the entrance."
+				+ System.lineSeparator() + System.lineSeparator()
+				+ "Before you can say anything, the ghost fades away, leaving you alone.", this.gameManager.getInteractionInfo());
+	}
+	
 }
