@@ -72,6 +72,7 @@ public class Location {
 		this.description = description;
 		this.hazardType = hazardType;
 		this.isGoal = isGoal;
+		this.isSearched = false;
 		this.actions = actions;
 		this.startingItem = item;
 
@@ -113,6 +114,15 @@ public class Location {
 	 */
 	public Item getStartingItem() {
 		return this.startingItem;
+	}
+	
+	/**
+	 * Sets the starting item.
+	 * 
+	 * @param item	the item to set as the starting item
+	 */
+	public void setStartingItem(Item item) {
+        this.startingItem = item;
 	}
   
 	/**

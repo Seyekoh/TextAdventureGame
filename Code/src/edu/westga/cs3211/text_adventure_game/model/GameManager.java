@@ -179,7 +179,6 @@ public class GameManager {
 		if (description == null) {
 			throw new IllegalArgumentException("Description cannot be null");
 		}
-
 		this.currentLocationDescription = description;
 	}
 
@@ -300,11 +299,14 @@ public class GameManager {
 
 	private void updateAvailableActions() {
 		this.currentLocation.removeTakeActions();
-		for (Item item : this.currentLocation.getItems()) {
-			this.currentLocation.addAction(
-					new Action(GlobalEnums.ActionType.TAKE.toString(), item.toString(), GlobalEnums.ActionType.TAKE));
-			this.setCurrentLocationDescription(this.currentLocationDescription + item + "\n");
+		
+		StringBuilder updatedDescription = new StringBuilder(this.currentLocation.getDescription() + "\n\nLocation Items:\n");
+		
+		for (Item currentItem : this.currentLocation.getItems()) {
+			this.currentLocation.addAction(new Action(GlobalEnums.ActionType.TAKE.toString(), currentItem.toString(), GlobalEnums.ActionType.TAKE));
+			updatedDescription.append(currentItem.toString() + "\n");
 		}
+		this.setCurrentLocationDescription(updatedDescription.toString());
 	}
 
 	/**

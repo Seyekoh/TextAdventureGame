@@ -112,8 +112,7 @@ public class ActionHandler {
 			currentLocation.setSearched(true);
 			this.gameManager.setCurrentLocationDescription(currentLocation.getDescription() + "\n\nLocation Items:\n");
 			this.gameManager.setInteractionInfo("You have searched the location and found an item.\n\n");
-			this.gameManager.setInteractionInfo(
-					this.gameManager.getInteractionInfo() + currentLocation.getStartingItem().getDescription() + "\n");
+			this.gameManager.setInteractionInfo(this.gameManager.getInteractionInfo() + currentLocation.getStartingItem().getDescription() + "\n");
             currentLocation.addItem(currentLocation.getStartingItem());
 		} else {
 			this.gameManager.setInteractionInfo("You search the location and find nothing of interest.");
