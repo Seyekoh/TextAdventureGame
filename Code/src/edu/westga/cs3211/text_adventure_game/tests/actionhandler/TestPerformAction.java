@@ -25,7 +25,13 @@ import edu.westga.cs3211.text_adventure_game.model.NPC;
 import edu.westga.cs3211.text_adventure_game.model.Player;
 import edu.westga.cs3211.text_adventure_game.model.World;
 
-class ActionHandlerTest {
+/**
+ * Tests the ActionHandler class
+ * 
+ * @author James Bridges
+ * @version Fall 2024
+ */
+public class TestPerformAction {
 
 	private GameManager gameManager;
 	private Player player;
@@ -33,6 +39,9 @@ class ActionHandlerTest {
 	private Location location;
 	private ActionHandler actionHandler;
 	
+	/**
+	 * A fake random class to ensure that the random number generated is always the same
+	 */
 	public class FakeRandom extends Random {
 		/**
 		 * Unusued constant
@@ -40,10 +49,21 @@ class ActionHandlerTest {
 		private static final long serialVersionUID = 1L;
 		private  int bound;
 		
+		/**
+		 * Creates a new instance of the FakeRandom class
+		 * 
+		 * @param bound the bound to return
+		 */
 		public FakeRandom(int bound) {
 			this.bound = bound;
 		}
 		
+		/**
+		 * Returns the bound
+		 * 
+		 * @param bound the bound to return
+		 * @return the bound
+		 */
 		public int nextInt(int bound) {
 			return this.bound;
 		}
@@ -126,9 +146,20 @@ class ActionHandlerTest {
 	void testHandleActionSearch() {
 		Action searchAction = new Action(ActionType.SEARCH.toString(), "Search the location", ActionType.SEARCH);
 		this.actionHandler.handleAction(searchAction, null);
+		
+		System.out.println("Items at location: " + this.location.getItems());
 
 		assertTrue(this.location.isSearched());
 		assertTrue(this.location.getItems().contains(Item.RING));
+	}
+	
+	@Test
+	void testHandleActionSearchLocationAlreadySearched() {
+		Action searchAction = new Action(ActionType.SEARCH.toString(), "Search the location", ActionType.SEARCH);
+		this.actionHandler.handleAction(searchAction, null);
+		
+		this.actionHandler.handleAction(searchAction, null);
+		assertEquals("You search the location and find nothing of interest.", this.gameManager.getInteractionInfo());
 	}
 
 	@Test
@@ -141,6 +172,14 @@ class ActionHandlerTest {
 		assertFalse(this.location.getItems().contains(Item.POTION));
 		assertTrue(this.player.doesPlayerHaveItem(Item.POTION));
 	}
+	
+	@Test
+	void testHandleActionTakeItemWhenLocationHasNoItems() {
+		Action takeAction = new Action(ActionType.TAKE.toString(), "Take item", ActionType.TAKE);
+		this.actionHandler.handleAction(takeAction, Item.POTION);
+
+		assertEquals("There is no item to take.", this.gameManager.getInteractionInfo());
+	}
 
 	@Test
 	void testHandleActionDropItem() {
@@ -152,6 +191,44 @@ class ActionHandlerTest {
 		assertFalse(this.player.doesPlayerHaveItem(Item.RING));
 		assertTrue(this.location.getItems().contains(Item.RING));
 	}
+	
+	@Test
+	void testHandleActionDropItemWhenPlayerHasNoItems() {
+		Action dropAction = new Action(ActionType.DROP.toString(), "Drop an item", ActionType.DROP);
+		this.actionHandler.handleAction(dropAction, Item.RING);
+
+		assertEquals("You don't have any items to drop.", this.gameManager.getInteractionInfo());
+	}
+	
+	@Test
+	void testHandleActionDropItemWhenPlayerDoesNotHaveItem() {
+		Action dropAction = new Action(ActionType.DROP.toString(), "Drop an item", ActionType.DROP);
+		this.player.addItemToInventory(Item.RING);
+		this.actionHandler.handleAction(dropAction, Item.DRESS);
+
+		assertEquals("You don't have this item to drop.", this.gameManager.getInteractionInfo());
+	}
+	
+	@Test
+	void testHandleActionDropDress() {
+		this.player.addItemToInventory(Item.DRESS);
+
+		Action dropAction = new Action(ActionType.DROP.toString(), "Drop an item", ActionType.DROP);
+		this.actionHandler.handleAction(dropAction, Item.DRESS);
+
+		assertFalse(this.player.doesPlayerHaveItem(Item.DRESS));
+		assertTrue(this.location.getItems().contains(Item.DRESS));
+	}
+	
+	@Test
+	void testHandleActionDropItemNotRingOrDress() {
+		this.player.addItemToInventory(Item.POTION);
+
+		Action dropAction = new Action(ActionType.DROP.toString(), "Drop an item", ActionType.DROP);
+		this.actionHandler.handleAction(dropAction, Item.POTION);
+
+		assertEquals("You dropped the item: " + Item.POTION, this.gameManager.getInteractionInfo());
+	}
 
 	@Test
 	void testHandleActionExamineItem() {
@@ -160,13 +237,62 @@ class ActionHandlerTest {
 
 		assertEquals("You examine the item:\n" + Item.POTION.getDescription(), this.gameManager.getInteractionInfo());
 	}
+	
+	@Test
+	void testHandleActionExaminItemItemIsNull() {
+		Action examineAction = new Action(ActionType.EXAMINE.toString(), "Examine an item", ActionType.EXAMINE);
+		this.actionHandler.handleAction(examineAction, Item.NONE);
+
+		assertEquals("You must select an item to examine.", this.gameManager.getInteractionInfo());
+	}
+	
+	@Test
+	void testHandleActionExamineItemItemIsNone() {
+		Action examineAction = new Action(ActionType.EXAMINE.toString(), "Examine an item", ActionType.EXAMINE);
+		this.actionHandler.handleAction(examineAction, Item.NONE);
+
+		assertEquals("You must select an item to examine.", this.gameManager.getInteractionInfo());
+	}
 
 	@Test
 	void testHandleActionUseItemPotionDealDamage() {
 		this.player.addItemToInventory(Item.POTION);
 
 		Action useAction = new Action(ActionType.USE.toString(), "Use potion", ActionType.USE);
+		this.player.applyDamage(99);
 		this.actionHandler.handleAction(useAction, Item.POTION);
+		this.player.addItemToInventory(Item.POTION);
+        this.actionHandler.handleAction(useAction, Item.POTION);
+        this.player.addItemToInventory(Item.POTION);
+        this.actionHandler.handleAction(useAction, Item.POTION);
+        this.player.addItemToInventory(Item.POTION);
+        this.actionHandler.handleAction(useAction, Item.POTION);
+        this.player.addItemToInventory(Item.POTION);
+        this.actionHandler.handleAction(useAction, Item.POTION);
+        this.player.addItemToInventory(Item.POTION);
+        this.actionHandler.handleAction(useAction, Item.POTION);
+        this.player.addItemToInventory(Item.POTION);
+        this.actionHandler.handleAction(useAction, Item.POTION);
+        this.player.addItemToInventory(Item.POTION);
+        this.actionHandler.handleAction(useAction, Item.POTION);
+        this.player.addItemToInventory(Item.POTION);
+        this.actionHandler.handleAction(useAction, Item.POTION);
+        this.player.addItemToInventory(Item.POTION);
+        this.actionHandler.handleAction(useAction, Item.POTION);
+        this.player.addItemToInventory(Item.POTION);
+        this.actionHandler.handleAction(useAction, Item.POTION);
+        this.player.addItemToInventory(Item.POTION);
+        this.actionHandler.handleAction(useAction, Item.POTION);
+        this.player.addItemToInventory(Item.POTION);
+        this.actionHandler.handleAction(useAction, Item.POTION);
+        this.player.addItemToInventory(Item.POTION);
+        this.actionHandler.handleAction(useAction, Item.POTION);
+        this.player.addItemToInventory(Item.POTION);
+        this.actionHandler.handleAction(useAction, Item.POTION);
+        this.player.addItemToInventory(Item.POTION);
+        this.actionHandler.handleAction(useAction, Item.POTION);
+        this.player.addItemToInventory(Item.POTION);
+        this.actionHandler.handleAction(useAction, Item.POTION);
 
 		assertFalse(this.player.doesPlayerHaveItem(Item.POTION));
 	}
@@ -181,6 +307,31 @@ class ActionHandlerTest {
 		this.actionHandler.handleAction(useAction, Item.MUSICBOX);
 
 		assertTrue(this.gameManager.getIsMusicBoxUsed());
+	}
+	
+	@Test
+	void testHandleActionUseItemMusicBoxWhenNotInBallroom() {
+		this.player.addItemToInventory(Item.MUSICBOX);
+		this.gameManager.setCurrentLocation(new Location(GlobalEnums.LocationName.ENTRANCEHALL, "Entrance hall",
+				HazardType.NONE, false, new ArrayList<>(), Item.MUSICBOX));
+
+		Action useAction = new Action(ActionType.USE.toString(), "Use Music Box", ActionType.USE);
+		this.actionHandler.handleAction(useAction, Item.MUSICBOX);
+
+		assertEquals("You turn the crank on the music box. The haunting melody fills the room, echoing off the walls. The sound is both beautiful and eerie, sending shivers down your spine.", this.gameManager.getInteractionInfo());
+	}
+	
+	@Test
+	void testHandleActionsUseItemMusicBoxAfterUsingMusicBoxWhenInBallroom() {
+		this.player.addItemToInventory(Item.MUSICBOX);
+		this.gameManager.setCurrentLocation(new Location(GlobalEnums.LocationName.BALLROOM, "A ballroom",
+				HazardType.DANCINGSHADOWS, false, new ArrayList<>(), Item.MUSICBOX));
+		this.gameManager.setIsMusicBoxUsed(true);
+		Action useAction = new Action(ActionType.USE.toString(), "Use Music Box", ActionType.USE);
+		this.actionHandler.handleAction(useAction, Item.MUSICBOX);
+
+		assertEquals("You turn the crank on the music box. The haunting melody fills the room, echoing off the walls. The sound is both beautiful and eerie, sending shivers down your spine.\r\n"
+				+ "The shadows in the room seem to dance to the music, swirling and twirling in time with the melody. It's a mesmerizing sight, and watching it soothes your soul.", this.gameManager.getInteractionInfo());
 	}
 	
 	@Test
@@ -249,6 +400,14 @@ class ActionHandlerTest {
 				+ "The diary's mention of the haunting melody catches your attention. You remember the music box in your inventory. Perhaps the two are connected.",
 				this.gameManager.getInteractionInfo());
 	}
+	
+	@Test
+	void testHandleActionUseItemPlayerDoesntHaveItem() {
+		Action useAction = new Action(ActionType.USE.toString(), "Use Diary", ActionType.USE);
+		this.actionHandler.handleAction(useAction, Item.DIARY);
+
+		assertEquals("You have no items to use.", this.gameManager.getInteractionInfo());
+	}
 
 	@Test
 	void testHandleActionTalkToNPC() {
@@ -312,8 +471,29 @@ class ActionHandlerTest {
 	void testHandleActionTalkToNPCWhenNPCIsByEntrance() {
 		NPC npc = new NPC("Test NPC");
 		this.world.addNPC(npc);
-		this.world.moveNPCToLocation(npc, this.location);
-		this.location.setIsGoal(true);
+		this.world.moveNPCToLocation(npc, this.world.getStartLocation());
+
+		Action talkAction = new Action(ActionType.TALK.toString(), "Talk to NPC", ActionType.TALK);
+		this.location.addAction(talkAction);
+		this.actionHandler.handleAction(talkAction, Item.NONE);
+
+		assertEquals(
+				"The ghost gives you a cold stare, seemingly looking through you. As you're about to step away, the ghost speaks to you.\r\n"
+						+ "\r\n"
+						+ "Ghost: I take it you wish to escape, yes? There is something I am missing, something I am looking for. Find it, and I shall set you free. I will be waiting for you by the entrance.\r\n"
+						+ "\r\n" + "Before you can say anything, the ghost fades away, leaving you alone.",
+				this.gameManager.getInteractionInfo());
+		
+		this.actionHandler.handleAction(talkAction, null);
+	}
+	
+	@Test
+	void testhandleActionTalkToNPCAtEntranceWithGiveActionAtLocation() {
+		NPC npc = new NPC("Test NPC");
+		this.world.addNPC(npc);
+		this.world.moveNPCToLocation(npc, this.world.getStartLocation());
+		this.gameManager.setCurrentLocation(this.world.getStartLocation());
+		this.gameManager.getCurrentLocation().addAction(new Action(ActionType.GIVE.toString(), "Give item to NPC", ActionType.GIVE));
 
 		Action talkAction = new Action(ActionType.TALK.toString(), "Talk to NPC", ActionType.TALK);
 		this.actionHandler.handleAction(talkAction, null);
@@ -324,8 +504,6 @@ class ActionHandlerTest {
 						+ "Ghost: I take it you wish to escape, yes? There is something I am missing, something I am looking for. Find it, and I shall set you free. I will be waiting for you by the entrance.\r\n"
 						+ "\r\n" + "Before you can say anything, the ghost fades away, leaving you alone.",
 				this.gameManager.getInteractionInfo());
-		
-		this.actionHandler.handleAction(talkAction, null);
 	}
 
 	@Test

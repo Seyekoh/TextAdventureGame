@@ -31,7 +31,7 @@ public class ActionHandler {
 		this.gameManager = gameManager;
 		this.player = this.gameManager.getPlayer();
 		this.world = this.gameManager.getWorld();
-	}
+	}	
 
 	/**
 	 * Handles the player's action.
@@ -114,10 +114,7 @@ public class ActionHandler {
 			this.gameManager.setInteractionInfo("You have searched the location and found an item.\n\n");
 			this.gameManager.setInteractionInfo(
 					this.gameManager.getInteractionInfo() + currentLocation.getStartingItem().getDescription() + "\n");
-
-			if (!currentLocation.getItems().contains(currentLocation.getStartingItem())) {
-				currentLocation.addItem(currentLocation.getStartingItem());
-			}
+            currentLocation.addItem(currentLocation.getStartingItem());
 		} else {
 			this.gameManager.setInteractionInfo("You search the location and find nothing of interest.");
 		}
@@ -310,7 +307,7 @@ public class ActionHandler {
 		if (this.gameManager.getIsDressWorn()) {
 			this.gameManager.setInteractionInfo(this.gameManager.getInteractionInfo() + System.lineSeparator()
 					+ " Ghost: That dress is NOT yours to wear. Take it off immediately.");
-		} else if (this.gameManager.getIsRingOnFinger()) {
+		} else {
 			this.gameManager.setInteractionInfo(this.gameManager.getInteractionInfo() + System.lineSeparator()
 					+ " Ghost: That ring is NOT yours to wear. Take it off immediately.");
 		}
