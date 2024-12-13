@@ -8,11 +8,9 @@ import java.util.ArrayList;
 
 import org.junit.jupiter.api.Test;
 
-import edu.westga.cs3211.text_adventure_game.model.Action;
 import edu.westga.cs3211.text_adventure_game.model.GlobalEnums;
 import edu.westga.cs3211.text_adventure_game.model.Location;
 import edu.westga.cs3211.text_adventure_game.model.NPC;
-import edu.westga.cs3211.text_adventure_game.model.GlobalEnums.ActionType;
 import edu.westga.cs3211.text_adventure_game.model.GlobalEnums.HazardType;
 import edu.westga.cs3211.text_adventure_game.model.GlobalEnums.Item;
 

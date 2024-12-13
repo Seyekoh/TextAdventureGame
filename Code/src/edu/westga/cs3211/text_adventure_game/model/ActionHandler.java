@@ -86,21 +86,23 @@ public class ActionHandler {
 			this.gameManager
 					.setInteractionInfo("You have taken " + damage + " damage due to: " + hazardData.getDescription());
 		}
-
+		
+		this.gameManager.setCurrentLocationDescription(nextLocation.getDescription());
+		
 		if (this.player.getHealth() <= 0) {
 			this.gameManager.setInteractionInfo("You have died.");
-			this.gameManager.onGameOverLose(currentLocation);
+			this.gameManager.onGameOverLose(nextLocation);
 			return;
 		}
 
 		if (this.gameManager.getWorld().checkIfLocationIsGoal(nextLocation)) {
 			this.gameManager.setInteractionInfo("You escaped the haunted house! Congratulations!");
-			this.gameManager.onGameOverWin(currentLocation);
+			this.gameManager.onGameOverWin(nextLocation);
 			return;
 		}
 
 		this.gameManager.setCurrentLocation(nextLocation);
-		this.gameManager.setCurrentLocationDescription(nextLocation.getDescription());
+
 	}
 
 	private void search() {
@@ -205,7 +207,7 @@ public class ActionHandler {
 					+ "Your stomach gurgles uncomfortably. You probably shouldn't have done that."
 					+ System.lineSeparator() + "\tYou have taken " + damage + " damage.");
 			if (!this.gameManager.checkIfPlayerIsAlive()) {
-				this.gameManager.onGameOverLose(this.gameManager.getCurrentLocation());
+				this.gameManager.onGameOverLose("The liquid is now pouring out of the crater where your stomach once was. Congratulations! Your journey is over and you have lost the game.");
 			}
 		} else if (damage == 0) {
 			this.gameManager.setInteractionInfo(this.gameManager.getInteractionInfo() + System.lineSeparator()
@@ -293,9 +295,8 @@ public class ActionHandler {
 				npc.setDialogue(
 						"Ghost: I'm not quite sure what it was I was looking for... I vaguely recall writing about it. I just can't remember. Maybe you could help me remember?");
 				npc.setDescription("The ghost from before is staring at you.");
-			} else if (entrance.isNPCPresent()) {
-				this.world.getLocationByName(LocationName.ENTRANCEHALL)
-						.addAction(new Action(ActionType.GIVE.toString(), "item to ghost", ActionType.GIVE));
+			} else if (entrance.isNPCPresent() && !this.entranceHasGiveAction()) {
+				this.world.getLocationByName(LocationName.ENTRANCEHALL).addAction(new Action(ActionType.GIVE.toString(), "item to ghost", ActionType.GIVE));
 			}
 		}
 	}
@@ -305,6 +306,7 @@ public class ActionHandler {
 				"The ghost gives you an icy chill stare. You can feel your body freezing.");
 		this.gameManager.setInteractionInfo(ghostWrath, 25);
 		this.player.applyDamage(25);
+		
 		if (this.gameManager.getIsDressWorn()) {
 			this.gameManager.setInteractionInfo(this.gameManager.getInteractionInfo() + System.lineSeparator()
 					+ " Ghost: That dress is NOT yours to wear. Take it off immediately.");
@@ -314,10 +316,18 @@ public class ActionHandler {
 		}
 
 		if (!this.gameManager.checkIfPlayerIsAlive()) {
-			this.gameManager.setIsGameLost(true);
-			this.gameManager.setInteractionInfo(this.gameManager.getInteractionInfo() + System.lineSeparator()
-					+ " You are frozen completely. Your journey is over and you have lost the game. Maybe next time you will be more careful.");
+			this.gameManager.onGameOverLose("You are frozen completely. Your journey is over and you have lost the game. Maybe next time you will be more careful.");
 		}
+	}
+	
+	private boolean entranceHasGiveAction() {
+		for (Action action : this.world.getLocationByName(LocationName.ENTRANCEHALL).getActions()) {
+			if (action.getType() == ActionType.GIVE) {
+				return true;
+			}
+		}
+		
+		return false;
 	}
 
 	private void giveItemToNPC(Item item) {

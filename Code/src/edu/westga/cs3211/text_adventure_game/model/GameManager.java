@@ -234,7 +234,7 @@ public class GameManager {
 	}
 
 	/**
-	 * Sets if player is weating the ring
+	 * Sets if player is wearing the ring
 	 * 
 	 * @param isRingOnFinger true if the player is wearing the ring, false otherwise
 	 */
@@ -299,6 +299,16 @@ public class GameManager {
 		this.isGameOverLose = true;
 		this.setGameOverMessage();
 		this.setInteractionInfo(this.gameOverMessage);
+	}
+	
+	/**
+	 * Triggers game over lose for non movement related deaths
+	 * 
+	 * @param uniqueDeathMessage the message to place in interaction info
+	 */
+	public void onGameOverLose(String uniqueDeathMessage) {
+		this.isGameOverLose = true;
+		this.interactionInfo = this.interactionInfo.concat(System.lineSeparator() + uniqueDeathMessage);
 	}
 
 	/**

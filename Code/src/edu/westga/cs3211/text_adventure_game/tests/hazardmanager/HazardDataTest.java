@@ -26,7 +26,7 @@ public class HazardDataTest {
 
 		assertEquals(manager.getHazardData(HazardType.DANCINGSHADOWS).toString(), "18 The shadows attack you!");
 	}
-	
+
 	/**
 	 * Tests the getHazardTypeFromHazardData method
 	 */
@@ -34,17 +34,18 @@ public class HazardDataTest {
 	public void testGetHazardTypeFromHazardDataValid() {
 		HazardManager manager = new HazardManager();
 
-		assertEquals(manager.getHazardTypeFromHazardData(manager.getHazardData(HazardType.DANCINGSHADOWS)), HazardType.DANCINGSHADOWS);
+		assertEquals(manager.getHazardTypeFromHazardData(manager.getHazardData(HazardType.DANCINGSHADOWS)),
+				HazardType.DANCINGSHADOWS);
 	}
-	
-	/**
-     * Tests the getHazardTypeFromHazardData method for a non-existent HazardData.
-     */
-    @Test
-    public void testGetHazardTypeFromHazardDataInvalid() {
-        HazardManager manager = new HazardManager();
 
-        HazardData nonExistentHazardData = new HazardData(99, "This is a fake hazard!");
-        assertNull(manager.getHazardTypeFromHazardData(nonExistentHazardData));
-    }
+	/**
+	 * Tests the getHazardTypeFromHazardData method for a non-existent HazardData.
+	 */
+	@Test
+	public void testGetHazardTypeFromHazardDataInvalid() {
+		HazardManager manager = new HazardManager();
+
+		HazardData nonExistentHazardData = new HazardData(99, "This is a fake hazard!");
+		assertNull(manager.getHazardTypeFromHazardData(nonExistentHazardData));
+	}
 }
