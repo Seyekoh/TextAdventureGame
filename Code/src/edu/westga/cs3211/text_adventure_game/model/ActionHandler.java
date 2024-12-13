@@ -90,6 +90,8 @@ public class ActionHandler {
 		
 		if (this.player.getHealth() <= 0) {
 			this.gameManager.setInteractionInfo("You have died.");
+			this.gameManager.setCurrentLocation(nextLocation);
+			this.gameManager.setCurrentLocationDescription(nextLocation.getDescription());
 			this.gameManager.onGameOverLose(nextLocation);
 			return;
 		}

@@ -64,8 +64,6 @@ public class WorldManager {
 		this.removeExitLocationFromRemainingLocations(remainingLocations);
 		this.keepMainFloorLocationsInRemainingLocations(remainingLocations);
 
-		System.out.println(remainingLocations);
-
 		this.connectRandomLocations(remainingLocations, fixedLocations);
 	}
 
