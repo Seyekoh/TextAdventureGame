@@ -345,11 +345,9 @@ public class ActionHandler {
 		case MUSICBOX:
 			this.giveMusicBox();
 			break;
-		case NONE:
+		default:
 			this.gameManager.setInteractionInfo("You must select an item to give to the ghost.");
 			break;
-		default:
-			throw new IllegalArgumentException("Unknown item: " + item);
 		}
 	}
 
@@ -373,8 +371,7 @@ public class ActionHandler {
 		this.gameManager.setInteractionInfo(
 				"Ghost: Yes! That's it. That's what I was missing. Thank you for your assistance. Let me open the door for you. Goodbye.");
 		this.player.removeItemFromInventory(Item.MUSICBOX);
-		this.world.connectLocations(currentLocation, Direction.SOUTH,
-				this.world.getLocationByName(GlobalEnums.LocationName.EXIT));
+		this.world.connectLocations(currentLocation, Direction.SOUTH, this.world.getLocationByName(GlobalEnums.LocationName.EXIT));
 		currentLocation.addAction(new Action(GlobalEnums.ActionType.MOVE.toString(), Direction.SOUTH.toString(),
 				GlobalEnums.ActionType.MOVE));
 	}

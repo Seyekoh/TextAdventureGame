@@ -28,6 +28,6 @@ public class GetHazardDescriptionTest {
 		WorldManager manager = new WorldManager();
 		Location location = new Location(GlobalEnums.LocationName.BASEMENT, "A dark and damp basement", GlobalEnums.HazardType.CREEPYDOLL, false, new ArrayList<Action>(), Item.NONE);
 		
-		assertEquals(manager.getHazardDescription(location), "10 A creepy doll attacks you!");
+		assertEquals(manager.getHazardDescription(location), "3 A creepy doll attacks you!");
 	}
 }

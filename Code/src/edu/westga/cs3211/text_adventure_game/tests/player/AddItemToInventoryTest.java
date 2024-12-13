@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
+import edu.westga.cs3211.text_adventure_game.model.GlobalEnums.Item;
 import edu.westga.cs3211.text_adventure_game.model.Player;
 
 /**
@@ -20,9 +21,9 @@ public class AddItemToInventoryTest {
 	@Test
 	public void testAddItemToInventory() {
 		Player player = new Player();
-		player.addItemToInventory("Sword");
+		player.addItemToInventory(Item.RING);
 		
-		assertTrue(player.getInventory().contains("Sword"));
+		assertTrue(player.getInventory().contains(Item.RING));
 	}
 	
 	/**
@@ -33,19 +34,6 @@ public class AddItemToInventoryTest {
 		Player player = new Player();
 		try {
 			player.addItemToInventory(null);
-		} catch (IllegalArgumentException iae) {
-			assertTrue(true);
-		}
-	}
-	
-	/**
-	 * Tests the addItemToInventory method with a blank item
-	 */
-	@Test
-	public void testAddItemToInventoryBlank() {
-		Player player = new Player();
-		try {
-			player.addItemToInventory("");
 		} catch (IllegalArgumentException iae) {
 			assertTrue(true);
 		}

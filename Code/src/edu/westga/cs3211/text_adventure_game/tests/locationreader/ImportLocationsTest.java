@@ -41,7 +41,7 @@ public class ImportLocationsTest {
 	 */
 	@Test
 	public void testImportLocations() throws IOException {
-		this.createTestFile("ATTIC,Description1,NONE,true\n" + "BASEMENT,Description2,NONE,false\n");
+		this.createTestFile("ATTIC,Description1,NONE,true,NONE\n" + "BASEMENT,Description2,NONE,false,NONE\n");
 
 		this.locationReader = new LocationReader(TEST_FILE_PATH);
 		ArrayList<Location> locations = this.locationReader.importLocations();

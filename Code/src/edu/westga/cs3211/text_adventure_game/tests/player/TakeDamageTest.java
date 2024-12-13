@@ -23,5 +23,15 @@ public class TakeDamageTest {
 		player.applyDamage(10);
 		assertTrue(player.getHealth() == 90);
 	}
+	
+	/**
+	 * Tests the takeDamage method with a value high enough to make health negative
+	 */
+	@Test
+	public void testTakeDamageWithValueThatWillmakeHealthNegative() {
+		Player player = new Player();
+		player.applyDamage(110);
+		assertTrue(player.getHealth() == 0);
+	}
 
 }

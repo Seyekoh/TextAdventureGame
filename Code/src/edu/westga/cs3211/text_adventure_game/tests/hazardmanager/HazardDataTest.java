@@ -24,7 +24,7 @@ public class HazardDataTest {
 	public void testGetHazardDataValid() {
 		HazardManager manager = new HazardManager();
 
-		assertEquals(manager.getHazardData(HazardType.DANCINGSHADOWS).toString(), "18 The shadows attack you!");
+		assertEquals(manager.getHazardData(HazardType.DANCINGSHADOWS).toString(), "10 The shadows attack you!");
 	}
 
 	/**

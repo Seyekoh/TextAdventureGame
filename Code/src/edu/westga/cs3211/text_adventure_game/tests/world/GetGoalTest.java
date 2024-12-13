@@ -13,23 +13,23 @@ import edu.westga.cs3211.text_adventure_game.model.Location;
 import edu.westga.cs3211.text_adventure_game.model.World;
 
 /**
- * Tests the World class's getStartLocation method
+ * Tests the World class's getGoal method
  * 
  * @author James Bridges
  * @version Fall 2024
  */
-public class GetStartLocationTest {
+public class GetGoalTest {
 	
 	/**
-	 * Tests the getStartLocation method
+	 * Tests the getGoal method
 	 */
 	@Test
-	public void testGetStartLocation() {
+	public void testGetGoal() {
 		World world = new World();
-		Location location1 = new Location(GlobalEnums.LocationName.ENTRANCEHALL, "Entrance hall", HazardType.NONE, false, new ArrayList<>(), Item.NONE);
-		world.setStartLocation(location1);
-		
-		assertEquals(GlobalEnums.LocationName.ENTRANCEHALL, world.getStartLocation().getName());
+		Location location = new Location(GlobalEnums.LocationName.EXIT, "The exit", HazardType.NONE, true, new ArrayList<>(), Item.NONE);
+		world.addLocation(location);
+		world.setGoalLocation(location);
+		assertEquals(location, world.getGoalLocation());
 	}
 
 }

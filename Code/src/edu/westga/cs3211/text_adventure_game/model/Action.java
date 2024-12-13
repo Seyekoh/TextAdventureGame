@@ -1,3 +1,4 @@
+
 package edu.westga.cs3211.text_adventure_game.model;
 
 import edu.westga.cs3211.text_adventure_game.model.GlobalEnums.ActionType;

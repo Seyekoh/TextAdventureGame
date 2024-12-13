@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
+import edu.westga.cs3211.text_adventure_game.model.GlobalEnums.Item;
 import edu.westga.cs3211.text_adventure_game.model.Player;
 
 /**
@@ -22,7 +23,7 @@ public class GetInventoryTest {
 	@Test
 	public void testGetInventory() {
 		Player player = new Player();
-		List<String> inventory = player.getInventory();
+		List<Item> inventory = player.getInventory();
 		assertTrue(inventory.isEmpty());
 	}
 

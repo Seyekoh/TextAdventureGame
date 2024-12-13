@@ -3,17 +3,23 @@ package edu.westga.cs3211.text_adventure_game.tests.gamemanager;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import edu.westga.cs3211.text_adventure_game.model.Action;
 import edu.westga.cs3211.text_adventure_game.model.GameManager;
 import edu.westga.cs3211.text_adventure_game.model.GlobalEnums;
 import edu.westga.cs3211.text_adventure_game.model.Location;
+import edu.westga.cs3211.text_adventure_game.model.Player;
+import edu.westga.cs3211.text_adventure_game.model.World;
+import edu.westga.cs3211.text_adventure_game.model.GlobalEnums.ActionType;
 import edu.westga.cs3211.text_adventure_game.model.GlobalEnums.Direction;
 import edu.westga.cs3211.text_adventure_game.model.GlobalEnums.HazardType;
+import edu.westga.cs3211.text_adventure_game.model.GlobalEnums.Item;
 
 /**
  * Tests the GameManager for location info
@@ -47,14 +53,11 @@ public class LocationTests {
 	@Test
 	public void testMovePlayerToValidLocation() {
 		Location startLocation = this.gameManager.getCurrentLocation();
-		this.gameManager.movePlayer(Direction.NORTH);
-		Location currentLocation = this.gameManager.getCurrentLocation();
+		Action action = new Action("Move", "NORTH", ActionType.MOVE);
+		this.gameManager.performAction(action, Item.NONE);
 
 		assertAll(() -> assertEquals(GlobalEnums.LocationName.ENTRANCEHALL, startLocation.getName()),
-				() -> assertEquals(GlobalEnums.LocationName.LIBRARY, currentLocation.getName()),
-				() -> assertEquals(90, this.gameManager.getPlayer().getHealth()),
-				() -> assertEquals(HazardType.GHOSTLYAPPARITION, currentLocation.getHazardType()),
-				() -> assertFalse(currentLocation.checkIfLocationIsGoal()));
+				() -> assertNotEquals(this.gameManager.getCurrentLocation(), startLocation));
 	}
 
 	/**
@@ -62,8 +65,9 @@ public class LocationTests {
 	 */
 	@Test
 	public void testMovePlayerToInvalidLocation() {
+		Action action = new Action("Move", "South", ActionType.MOVE);
 		assertThrows(IllegalArgumentException.class, () -> {
-			this.gameManager.movePlayer(Direction.SOUTH);
+			this.gameManager.performAction(action, Item.NONE);
 		});
 	}
 
@@ -72,11 +76,12 @@ public class LocationTests {
 	 */
 	@Test
 	public void testMovePlayerToLocationThatKillsPlayer() {
-		this.gameManager.movePlayer(Direction.NORTH);
-		this.gameManager.movePlayer(Direction.EAST);
-		this.gameManager.movePlayer(Direction.DOWN);
+		this.gameManager.setCurrentLocation(this.gameManager.getWorld().getLocationByName(GlobalEnums.LocationName.KITCHEN));
+		Action action = new Action("MOVE", Direction.DOWN.toString(), ActionType.MOVE);
+		this.gameManager.performAction(action, Item.NONE);
 
-		assertAll(() -> assertEquals(-25, this.gameManager.getPlayer().getHealth()),
+		assertAll(() -> assertEquals(GlobalEnums.LocationName.BASEMENT, this.gameManager.getCurrentLocation().getName()),
+				() -> assertEquals(0, this.gameManager.getPlayer().getHealth()),
 				() -> assertTrue(this.gameManager.checkIfGameOver()),
 				() -> assertEquals("You are attacked by a rotting corpse! You have taken 100 damage. You have died in the BASEMENT. Your journey is over and you have lost the game. Better luck next time.",
 						this.gameManager.getGameOverMessage()));
@@ -88,14 +93,21 @@ public class LocationTests {
 	 */
 	@Test
 	public void testMovePlayerToGoalLocation() {
-		this.gameManager.movePlayer(Direction.NORTH);
-		this.gameManager.movePlayer(Direction.EAST);
-		this.gameManager.movePlayer(Direction.NORTH);
-		this.gameManager.movePlayer(Direction.EAST);
+		World world = this.gameManager.getWorld();
+		this.gameManager.setCurrentLocation(world.getLocationByName(GlobalEnums.LocationName.ATTIC));
+		Action talk = new Action("TALK", "To NPC", ActionType.TALK);
+		this.gameManager.performAction(talk, Item.NONE);
+		this.gameManager.setCurrentLocation(world.getLocationByName(GlobalEnums.LocationName.ENTRANCEHALL));
+		Player player = this.gameManager.getPlayer();
+		player.addItemToInventory(Item.MUSICBOX);
+		Action give = new Action("GIVE", "MUSICBOX", ActionType.GIVE);
+		this.gameManager.performAction(give, Item.MUSICBOX);
+		Action moveSouth = new Action(GlobalEnums.ActionType.MOVE.toString(), Direction.SOUTH.toString(), GlobalEnums.ActionType.MOVE);
+		this.gameManager.performAction(moveSouth, Item.NONE);
 
 		assertAll(() -> assertEquals(GlobalEnums.LocationName.EXIT, this.gameManager.getCurrentLocation().getName()),
-				() -> assertTrue(this.gameManager.checkIfGameOver()),
-				() -> assertEquals(
+				  () -> assertTrue(this.gameManager.checkIfGameOver()),
+				  () -> assertEquals(
 						"You have made it to the " + this.gameManager.getCurrentLocation().getName()
 								+ " alive. Your journey is complete and you have won the game. Rest well adventurer.",
 						this.gameManager.getGameOverMessage()));

@@ -6,8 +6,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import edu.westga.cs3211.text_adventure_game.model.Action;
 import edu.westga.cs3211.text_adventure_game.model.GameManager;
+import edu.westga.cs3211.text_adventure_game.model.GlobalEnums;
+import edu.westga.cs3211.text_adventure_game.model.GlobalEnums.ActionType;
 import edu.westga.cs3211.text_adventure_game.model.GlobalEnums.Direction;
+import edu.westga.cs3211.text_adventure_game.model.GlobalEnums.Item;
+import edu.westga.cs3211.text_adventure_game.model.World;
 
 /**
  * Tests the game over functionality in game manager
@@ -40,9 +45,9 @@ public class GameOverTest {
 	 */
 	@Test
 	public void testCheckIfGameOverGameLose() {
-		this.gameManager.movePlayer(Direction.NORTH);
-		this.gameManager.movePlayer(Direction.EAST);
-		this.gameManager.movePlayer(Direction.DOWN);
+		this.gameManager.getPlayer().applyDamage(99);
+		Action action = new Action("MOVE", "NORTH", ActionType.MOVE);
+		this.gameManager.performAction(action, Item.NONE);
 		
 		assertTrue(this.gameManager.checkIfGameOver());
 	}
@@ -52,11 +57,11 @@ public class GameOverTest {
 	 */
 	@Test
 	public void testCheckIfGameOverGameWin() {
-        this.gameManager.movePlayer(Direction.NORTH);
-        this.gameManager.movePlayer(Direction.EAST);
-        this.gameManager.movePlayer(Direction.NORTH);
-        this.gameManager.movePlayer(Direction.EAST);
-        
+		World world = this.gameManager.getWorld();
+		world.connectLocations(this.gameManager.getCurrentLocation(), Direction.SOUTH, world.getLocationByName(GlobalEnums.LocationName.EXIT));
+        Action action = new Action("MOVE", "SOUTH", ActionType.MOVE);
+        this.gameManager.performAction(action, Item.NONE);
+		
         assertTrue(this.gameManager.checkIfGameOver());
 	}
 }
