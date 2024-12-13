@@ -39,7 +39,7 @@ public class ActionTest {
 		this.gameManager.performAction(action, Item.NONE);
 
 		assertAll(() -> assertEquals(GlobalEnums.LocationName.LIBRARY, this.gameManager.getCurrentLocation().getName()),
-				() -> assertEquals(90, this.gameManager.getPlayer().getHealth()));
+				() -> assertEquals(95, this.gameManager.getPlayer().getHealth()));
 	}
 
 	/**
@@ -55,9 +55,9 @@ public class ActionTest {
 	 */
 	@Test
 	public void testGetInteractionInfo() {
-		this.gameManager.movePlayer(Direction.NORTH);
+		this.gameManager.performAction(new Action("MOVE", Direction.NORTH.toString(), ActionType.MOVE), Item.NONE);
 
-		String expected = "You have taken 10 damage due to: A ghastly apparition appears and attacks you!";
+		String expected = "You have taken 5 damage due to: A ghastly apparition appears and attacks you!";
 		String actual = this.gameManager.getInteractionInfo().replaceAll("\\s+", " ").trim();
 		assertEquals(expected, actual);
 	}
